@@ -1,0 +1,195 @@
+- alias: boiler_23_05_turn_on
+  description: 'включить розетку бойлера после 23:05, если нагрузка на розетке посудомойки меньше 15 Вт'
+  trigger:
+  - at: '23:05'
+    platform: time
+  condition:
+  - condition: state
+    entity_id: switch.0x00158d0003a58131_switch # розетка бойлера
+    state: 'off'
+  - condition: numeric_state
+    below: '15'
+    entity_id: sensor.load_158d0003535c2f # розетка посудомойки
+  action:
+  - service: switch.turn_on
+    entity_id: switch.0x00158d0003a58131_switch
+    
+- alias: boiler_06_50_turn_off
+  description: 'выключить розетку бойлера в 06:50'
+  trigger:
+  - at: '06:50'
+    platform: time
+  condition:
+  - condition: state
+    entity_id: switch.0x00158d0003a58131_switch
+    state: 'on'
+  action:
+  - service: switch.turn_off # 
+    entity_id: switch.0x00158d0003a58131_switch
+
+- alias: boiler_turn_on_after_start
+  description: 'включить розетку бойлера после старта системы в период с 23:05 по 06:50, если нагрузка на розетке посудомойки меньше 15 Вт'
+  trigger:
+  - event: start
+    platform: homeassistant
+  condition:
+#   - condition: time
+#     after: '23:05'
+#     before: '06:50'
+#   - condition: state
+#     entity_id: switch.0x00158d0003a58131_switch
+#     state: 'off'
+  - condition: numeric_state
+    below: '15'
+    entity_id: sensor.load_158d0003535c2f
+  action:
+  - service: switch.turn_on # 
+    entity_id: switch.0x00158d0003a58131_switch
+
+- alias: boiler_turn_off_after_start
+  description: 'выключить розетку бойлера после старта системы в период с 06:50 по 23:05'
+  trigger:
+  - event: start
+    platform: homeassistant
+  condition:
+#   - condition: time
+#     after: '06:50'
+#     before: '23:05'
+#   - condition: state
+#     entity_id: switch.0x00158d0003a58131_switch
+#     state: 'on'
+  action:
+  - service: switch.turn_off # 
+    entity_id: switch.0x00158d0003a58131_switch
+
+- alias: boiler_stop_when_dishwasher
+  description: 'выключить розетку бойлера, когда нагрузка на розетке посудомойки больше 15 Вт'
+  trigger:
+  - above: '15'
+    entity_id: sensor.load_158d0003535c2f
+    platform: numeric_state
+  condition:
+#   - after: '23:05'
+#     before: '06:50'
+#     condition: time
+  - condition: state
+    entity_id: switch.0x00158d0003a58131_switch
+    state: 'on'
+  action:
+  - service: switch.turn_off # 
+    entity_id: switch.0x00158d0003a58131_switch
+    
+- alias: boiler_start_when_dishwasher
+  description: 'включить розетку бойлера, когда нагрузка на розетке посудомойки меньше 15 Вт в течение 15 минут'
+  trigger:
+  - below: '15'
+    entity_id: sensor.load_158d0003535c2f
+    for: 00:15
+    platform: numeric_state
+  condition:
+#   - after: '23:05'
+#     before: '06:50'
+#     condition: time
+  - condition: state
+    entity_id: switch.0x00158d0003a58131_switch
+    state: 'off'
+  - condition: state
+    entity_id: timer.boiler_low_voltage
+    state: 'idle'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.0x00158d0003a58131_switch
+
+- alias: boiler_stop_when_washing_machine
+  description: 'выключить розетку бойлера, когда нагрузка на розетку стиралки больше 5 Вт'
+  trigger:
+  - above: '5'
+    entity_id: sensor.load_broadlink_1
+    platform: numeric_state
+  condition:
+  - condition: state
+    entity_id: switch.0x00158d0003a58131_switch
+    state: 'on'
+  action:
+  - service: switch.turn_off # 
+    entity_id: switch.0x00158d0003a58131_switch
+    
+- alias: boiler_start_when_washing_machine
+  description: 'включить розетку бойлера, когда нагрузка на розетку стиралки меньше 5 Вт'
+  trigger:
+  - below: '5'
+    entity_id: sensor.load_broadlink_1
+    platform: numeric_state
+  condition:
+  - condition: state
+    entity_id: switch.0x00158d0003a58131_switch
+    state: 'off'
+  - condition: state
+    entity_id: timer.boiler_low_voltage
+    state: 'idle'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.0x00158d0003a58131_switch
+
+- alias: boiler_issue
+  description: 'Notify when boiler fuse is ON'
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.0x00158d0003a58131_power
+    below: '50'
+    for: 02:01
+  condition:
+  - condition: state
+    entity_id: switch.0x00158d0003a58131_switch
+    state: 'on'
+  action:
+  - service: notify.telegram
+    data:
+      message: "Бойлер не греет уже 2 часа! Поверьте предохранитель! {{now()}}"
+  mode: single
+  
+- alias: boiler_low_voltage_off
+  description: 'старт таймера на 10 минут при падении напряжения в сети ниже 185v'
+  initial_state: true
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.input_voltage
+    below: '185'
+  condition:
+  - condition: state
+    entity_id: switch.0x00158d0003a58131_switch
+    state: 'on'
+  action:
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: timer.boiler_low_voltage
+            state: 'idle'
+        sequence:
+          - service: switch.turn_off # 
+            entity_id: switch.0x00158d0003a58131_switch
+          - service: timer.start
+            entity_id: timer.boiler_low_voltage
+    default:
+      - service: timer.cancel
+        entity_id: timer.boiler_low_voltage
+      - service: timer.start
+        entity_id: timer.boiler_low_voltage
+
+- alias: boiler_low_voltage_on
+  description: 'включение бойлера после таймера на 10 минут при падении напряжения в сети ниже 185v'
+  trigger:
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.boiler_low_voltage
+  condition:
+  - condition: state
+    entity_id: switch.0x00158d0003a58131_switch
+    state: 'off'
+  action:
+  - service: switch.turn_on # 
+    entity_id: switch.0x00158d0003a58131_switch
+
+
+

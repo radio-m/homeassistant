@@ -1,0 +1,23 @@
+title: Подвал
+icon: mdi:fan
+cards:
+  - type: horizontal-stack
+    cards:
+        - type: entities
+          show_header_toggle: false
+          entities:
+            - entity: input_boolean.cooler_automation_active
+            - entity: climate.basement
+              name: "Вентилятор в подвале"
+            - entity: sensor.0x00158d0003ce7f8d_temperature #mi_t_582d3434ca5b
+              name: "Температура в подвале"
+            - entity: sensor.bme280_temperature
+              name: "Температура на улице"
+            - type: divider
+            - entity: input_select.basement_automode_cooler
+              name: "Режим"
+            - entity: switch.xiaomi_power_strip
+              name: "Реле вентилятора"
+              secondary_info: last-changed
+            - entity: input_number.basement_set_outdoor_temp
+              name: "Вкл только если t° меньше °C"

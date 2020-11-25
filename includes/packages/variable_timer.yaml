@@ -1,0 +1,33 @@
+variable_timer:
+
+  timer:
+    variable:
+
+  input_number: 
+    timer_minutes: # ползунок указания времени таймера в минутах
+      name: Minutes
+      initial: 0
+      max: 60 # максимальное число
+      min: 0 # минимальное число
+      step: 1 # шаг
+
+  script:
+    var_timer:
+      sequence:
+        - service: timer.start
+          data_template:
+            entity_id: timer.variable
+            duration: '{{ states.input_number.timer_minutes.state | int * 60 }}' # время таймера в секундах! (заданное значение * 60)
+
+  automation:
+  - alias: 'Timer done'
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data: 
+          entity_id: timer.variable
+    action:
+    - service: notify.mobile_app_mi_9
+      data:
+        title: "Home Assistant"
+        message: "timer finished"

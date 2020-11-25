@@ -1,0 +1,20 @@
+heater_notify_telegram:
+  description: 'Send a telegram notification'
+  fields:
+    title:
+      description: 'The title of the notification'
+      example: 'State change'
+    message:
+      description: 'The message content'
+      example: 'The heater is on!'
+  sequence:
+    - condition: state
+      entity_id: person.sergei
+      state: 'not_home'
+    - condition: state
+      entity_id: input_boolean.heater_notifications
+      state: 'on'
+    - service: notify.telegram
+      data_template:
+        title: "{{ title }}"
+        message: "{{ message }}"

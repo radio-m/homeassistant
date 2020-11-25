@@ -1,0 +1,431 @@
+westen:
+  ### Climate автор WildeRNS (//4pda.ru/forum/index.php?showuser=499932)
+  climate:
+    - platform: generic_thermostat
+      name: Westen
+      heater: switch.gas_heater_relay
+      target_sensor: sensor.0x00158d00044afff0_temperature #sensor.mi_t_582d3434ca5b # temp sensor in room
+      ac_mode: False
+      target_temp: 22
+      min_temp: 18
+      max_temp: 25
+      hot_tolerance: 0.5
+      cold_tolerance: 0.5
+      away_temp: 18
+  
+  group:
+      Central heater:
+        name: Central heater
+        entities:
+          - input_boolean.heater_automation_active
+          - climate.westen
+          - sensor.bme280_temperature
+          - sensor.heater_relay_status
+      heater_show_automations:
+        name: Show Heater automations
+        entities:
+          - automation.heater_set_away_mode_on
+          - automation.heater_set_away_mode_off
+          - automation.heater_set_day_temp
+          - automation.heater_set_night_temp
+          - automation.heater_automode_on
+          - automation.heater_day_temp
+          - automation.heater_set_auto_mode_when_outdoor_temp_equals_or_lower
+          - automation.heater_set_off_mode_when_outdoor_temp_equals_or_highter
+          - automation.heater_set_auto_mode_when_outdoor_temp_equals_or_lower_temp_changed
+          - automation.heater_set_off_mode_when_outdoor_temp_equals_or_highter_temp_changed
+  
+  input_boolean:
+    heater_automation_active:
+      name: 'Heater Automation'
+    heater_day_night_automode:
+      name: 'Day/Night mode'
+    heater_outdoor_temp_mode:
+      name: 'Outdoor temp mode'
+    heater_notifications:
+      name: 'Notications'
+  
+  input_select:
+    heater_automode_heater:
+      name: Select Heater Mode
+      options:
+        - 'Auto'
+        - 'Manual'
+        - 'Off'
+  
+  sensor:
+    - platform: template
+      sensors:
+        heater_away_mode_status:
+          value_template: '{{ states.climate.westen.attributes.preset_mode }}'
+        heater_relay_status:
+          value_template: '{{ states.switch.boiler_relay.state }}'
+  
+  ### westen gas-heater switch from custom esp8266 relay
+  switch:
+    - platform: template
+      switches:
+        westen:
+          value_template: "{{ is_state('switch.boiler_relay', 'on') }}"
+          turn_on:
+            - service: switch.turn_on
+              data:
+                entity_id: switch.boiler_relay
+            
+          turn_off:
+            - service: switch.turn_off
+              data:
+                entity_id: switch.boiler_relay
+  
+  input_number:
+    heater_set_day_temp:
+      name: Day temperature (heater)
+      initial: 22
+      min: 18
+      max: 25
+      step: 0.5
+      unit_of_measurement: "°C"
+      mode: slider
+    heater_set_night_temp:
+      name: Night temperature (heater)
+      initial: 21.5
+      min: 18
+      max: 25
+      step: 0.5
+      unit_of_measurement: "°C"
+      mode: slider
+    heater_set_outdoor_temp:
+      name: Set outdoor temp
+      initial: 17
+      min: 5
+      max: 20
+      step: 0.5
+      unit_of_measurement: "°C"
+      mode: box
+  
+  automation:
+    - alias: "heater off"
+      trigger:
+        platform: state
+        entity_id: input_select.heater_automode_heater
+        to: 'Off'
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+      action:
+        - service: climate.set_hvac_mode
+          data:
+            entity_id: climate.westen
+            hvac_mode: "off"
+        - service: script.heater_notify_telegram
+          data_template:
+            title: 'Котел'
+            message: 
+                 'виключений. Задана температура {{ states.climate.westen.attributes.temperature }}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
+  
+    - alias: "heater automode on"
+      trigger:
+        platform: state
+        entity_id: input_select.heater_automode_heater
+        to: 'Auto'
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+      action:
+        - service: climate.set_hvac_mode
+          data:
+            entity_id: climate.westen
+            hvac_mode: "heat"
+        - service: climate.set_temperature
+          data_template:
+            entity_id: climate.westen
+            temperature: >
+              {% if is_state('sensor.heater_away_mode_status', 'away') %}
+                {{ states.climate.westen.attributes.temperature }}
+              {% else %}
+                {{ states.input_number.heater_set_day_temp.state }}
+              {% endif %}
+        - service: script.heater_notify_telegram
+          data_template:
+            title: 'Котел'
+            message: 
+              'включений Автоматичний режим. Задана температура {{ states.climate.westen.attributes.temperature }}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
+  
+    - alias: 'heater day Temp'
+      trigger:
+        - platform: state
+          entity_id: input_number.heater_set_day_temp
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+         - condition: state
+           entity_id: sensor.heater_away_mode_status
+           state: 'none'
+      action:
+        - service: climate.set_temperature
+          data_template:
+            entity_id: climate.westen
+            temperature: '{{ states.input_number.heater_set_day_temp.state }}'
+    
+    - alias: 'heater Set night temp'
+      trigger:
+        - platform: time
+          at: '23:50:00'
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+         - condition: state
+           entity_id: input_boolean.heater_day_night_automode
+           state: 'on'
+         - condition: state
+           entity_id: sensor.heater_away_mode_status
+           state: 'none'
+         - condition: template
+           value_template: "{{ states.input_select.heater_automode_heater.state != 'Manual' }}"
+      action:
+        - service: climate.set_temperature
+          data_template:
+            entity_id: climate.westen
+            temperature: '{{ states.input_number.heater_set_night_temp.state }}'
+        - service: script.heater_notify_telegram
+          data_template:
+            title: 'Котел'
+            message: 
+              'Включений нічний режим. Задана температура {{ states.climate.westen.attributes.temperature }}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
+  
+    - alias: 'heater Set day temp'
+      trigger:
+        - platform: time
+          at: '06:00:00'
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+         - condition: state
+           entity_id: input_boolean.heater_day_night_automode
+           state: 'on'
+         - condition: state
+           entity_id: sensor.heater_away_mode_status
+           state: 'none'
+         - condition: template
+           value_template: "{{ states.input_select.heater_automode_heater.state != 'Manual' }}"
+      action:
+        - service: climate.set_temperature
+          data_template:
+            entity_id: climate.westen
+            temperature: '{{ states.input_number.heater_set_day_temp.state }}'
+        - service: script.heater_notify_telegram
+          data_template:
+            title: 'Котел'
+            message: 
+              'Включений дений режим. Задана температура {{ states.climate.westen.attributes.temperature }}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
+  
+    - alias: "heater Set away mode on"
+      trigger:
+        platform: state
+        entity_id: group.people
+        to: not_home
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+         - condition: state
+           entity_id: sensor.heater_away_mode_status
+           state: 'none'
+         - condition: template
+           value_template: "{{ states.input_select.heater_automode_heater.state != 'Manual' }}"
+      action:
+        - service: climate.set_preset_mode
+          data:
+            entity_id: climate.westen
+            preset_mode: "away"
+        - service: homeassistant.turn_off
+          entity_id: automation.heater_day_temp
+        - service: script.heater_notify_telegram
+          data_template:
+            title: 'Котел'
+            message: 
+              'Включений режим Нікого немає вдома. Задана температура {{ states.climate.westen.attributes.temperature }}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
+  
+    - alias: "heater Set away mode off"
+      trigger:
+        platform: state
+        entity_id: group.people
+        to: home
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+         - condition: state
+           entity_id: sensor.heater_away_mode_status
+           state: 'away'
+         - condition: template
+           value_template: "{{ states.input_select.heater_automode_heater.state != 'Manual' }}"
+      action:
+        - service: climate.set_preset_mode
+          data:
+            entity_id: climate.westen
+            preset_mode: "none"
+        - service: homeassistant.turn_on
+          entity_id: automation.heater_day_temp
+        - service: script.heater_notify_telegram
+          data_template:
+            title: 'Котел'
+            message: 
+              'Виключений режим Нікого немає вдома'
+  
+    - alias: "heater set auto mode when outdoor temp equals or lower"
+      trigger:
+        - platform: state
+          entity_id: sensor.bme280_temperature
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+         - condition: state
+           entity_id: input_boolean.heater_outdoor_temp_mode
+           state: 'on'
+         - condition: state
+           entity_id: input_select.heater_automode_heater
+           state: 'Off'
+         - condition: template
+           value_template: "{{ (states.sensor.bme280_temperature.state|float) <= (states.input_number.heater_set_outdoor_temp.state|float) }}"
+      action:
+        - service: input_select.select_option
+          data:
+            entity_id: input_select.heater_automode_heater
+            option: "Auto"
+        - service: homeassistant.turn_on
+          entity_id: automation.heater_set_off_mode_when_outdoor_temp_equals_or_highter
+        - service: script.heater_notify_telegram
+          data_template:
+            title: 'Котел'
+            message: 
+              'включений Автоматичний режим: На вулиці знизилась температура до {{ states.sensor.bme280_temperature.state}}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
+        - service: homeassistant.turn_off
+          entity_id: automation.heater_set_auto_mode_when_outdoor_temp_equals_or_lower
+  
+    - alias: "heater set off mode when outdoor temp equals or highter"
+      trigger:
+        - platform: state
+          entity_id: sensor.bme280_temperature
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+         - condition: state
+           entity_id: input_boolean.heater_outdoor_temp_mode
+           state: 'on'
+         - condition: template
+           value_template: "{{ (states.sensor.bme280_temperature.state|float) >= (states.input_number.heater_set_outdoor_temp.state|float) }}"
+         - condition: template
+           value_template: "{{ states.input_select.heater_automode_heater.state != 'Manual' }}"
+      action:
+        - service: input_select.select_option
+          data:
+            entity_id: input_select.heater_automode_heater
+            option: "Off"
+        - service: homeassistant.turn_on
+          entity_id: automation.heater_set_auto_mode_when_outdoor_temp_equals_or_lower
+        - service: script.heater_notify_telegram
+          data_template:
+            title: 'Котел'
+            message: 
+              'виключений: На вулиці виросла температура до {{ states.sensor.bme280_temperature.state}}°C'
+        - service: homeassistant.turn_off
+          entity_id: automation.heater_set_off_mode_when_outdoor_temp_equals_or_highter
+  
+    - alias: "heater set auto mode when outdoor temp equals or lower temp changed"
+      trigger:
+        - platform: state
+          entity_id: input_number.heater_set_outdoor_temp
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+         - condition: state
+           entity_id: input_boolean.heater_outdoor_temp_mode
+           state: 'on'
+         - condition: state
+           entity_id: input_select.heater_automode_heater
+           state: 'Off'
+         - condition: template
+           value_template: "{{ (states.sensor.bme280_temperature.state|float) <= (states.input_number.heater_set_outdoor_temp.state|float) }}"
+      action:
+        - service: input_select.select_option
+          data:
+            entity_id: input_select.heater_automode_heater
+            option: "Auto"
+        - service: script.heater_notify_telegram
+          data_template:
+            title: 'Котел'
+            message: 
+              'включений Автоматичний режим: На вулиці знизилась температура до {{ states.sensor.bme280_temperature.state}}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
+  
+    - alias: "heater set off mode when outdoor temp equals or highter temp changed"
+      trigger:
+        - platform: state
+          entity_id: input_number.heater_set_outdoor_temp
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+         - condition: state
+           entity_id: input_boolean.heater_outdoor_temp_mode
+           state: 'on'
+         - condition: template
+           value_template: "{{ states.input_select.heater_automode_heater.state != 'Manual' }}"
+         - condition: template
+           value_template: "{{ (states.sensor.bme280_temperature.state|float) >= (states.input_number.heater_set_outdoor_temp.state|float) }}"
+      action:
+        - service: input_select.select_option
+          data:
+            entity_id: input_select.heater_automode_heater
+            option: "Off"
+        - service: script.heater_notify_telegram
+          data_template:
+            title: 'Котел'
+            message: 
+              'виключений: На вулиці виросла температура до {{ states.sensor.bme280_temperature.state}}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
+  
+    - alias: "heater set outdoor auto mode when ha starts"
+      trigger:
+        - platform: homeassistant
+          event: start
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+         - condition: state
+           entity_id: input_boolean.heater_outdoor_temp_mode
+           state: 'on'
+         - condition: template
+           value_template: "{{ (states.sensor.bme280_temperature.state|float) <= (states.input_number.heater_set_outdoor_temp.state|float) }}"
+      action:
+        - service: homeassistant.turn_on
+          entity_id: automation.heater_set_off_mode_when_outdoor_temp_equals_or_highter
+        - service: homeassistant.turn_off
+          entity_id: automation.heater_set_auto_mode_when_outdoor_temp_equals_or_lower
+  
+    - alias: "heater set outdoor off mode when ha starts"
+      trigger:
+        - platform: homeassistant
+          event: start
+      condition:
+         - condition: state
+           entity_id: input_boolean.heater_automation_active
+           state: 'on'
+         - condition: state
+           entity_id: input_boolean.heater_outdoor_temp_mode
+           state: 'on'
+         - condition: template
+           value_template: "{{ (states.sensor.bme280_temperature.state|float) >= (states.input_number.heater_set_outdoor_temp.state|float) }}"
+      action:
+        - service: homeassistant.turn_on
+          entity_id: automation.heater_set_auto_mode_when_outdoor_temp_equals_or_lower
+        - service: homeassistant.turn_off
+          entity_id: automation.heater_set_off_mode_when_outdoor_temp_equals_or_highter

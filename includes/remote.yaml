@@ -1,0 +1,33 @@
+  - platform: xiaomi_miio
+    name: "Xiaomi IR remote"
+    host: 192.168.31.113
+    token: 1302aad65116454626a004eee8925167
+    slot: 1
+    timeout: 30
+    commands:
+      audio_power:
+        command:
+        #   - raw:nMwmcwlk0mswmEsms2ADKbgBtNAAynMwlkxmwCDAEKAigExgEFNQNyAHQCowMvAykFTwMXAXKYzacAZeBl4KngQyB5AQ/gDvMZuGmYXVhU+BygQ/gOoB2oDRTCAA
+          - raw:nMwmkwlk0mswmEsms3ADKbABsAWYAZTGbAKNMZtOACCnICLgBmBuQCBgDoBl4GUgqeBbUxm4OpgIEAQoMtgqYBD4HmgTIBl4FKBdeCp4Q/gy+A0UwgA=
+    #   tv_power:
+    #     command:
+    #       - raw:nMwnEwlk0ms5mEsms3ADKbTCWTaYADqAecxmwDpAMIBB4EDAL/MZtNQCOBK8AjwCPBW8ETwIPCP8ChwDDBb8KrwCPAI+WTCAAA==
+      tv_on:
+        command:
+        #   - raw:nMwm0wlk0ms5mEsm0xmEsmoBhTaYADrNZxMJZMZtNwCFAY8AMwD0mYGHgYMBzIAbAM+AR4N3g3aE+U1AbICDwIFATMCAwF6mM2moBHgEOFV4BHgzIFo0wgA=
+        #   - raw:nMwnEwlk0ms5mEsms1ADIAcptMABymwAZTeYSyYzYB0gGDm0xAg8BegKCAwkAQgIDmM2AtMBkwWmmM3A2MAjwCPAIYG6wRPAg8CDJtMgKLDBsDqAMnCqQAjgKzARuYQA
+        #   - raw:nMwmcwlk0m0ymEsms3ADKcgBlNZhLJtMQB1mM3mABCgMIBB4C/zQDCgCIBK8AjwCPBW8ETwIPCP8BdZjNpwAR4BDgZODr4BHgEHMIAA=
+        #   - raw:nMwmcwlk0m0ymEsms1mEsAHSaABlOQAym8wlkxm04AIUBBAGCAg8BfAQCmM3mABHAleAR4BHgreEf4EFBYeBxQQ/gEUBk4DPgEeAQcwgAA==
+        #   - raw:nMwmswlk0ms5mEsm0wmEsms2ADKbgBkAeU1AYKYzcBQwCCAgwA8ptMQKGAPIBewMFAYKYzYB0wSnAQScAEeARoHthD4Ef4O/gQWFO8xmwUhgEODJAGVhD+FnQCMTCAA=
+        #   - raw:nMwmswlk0ms5mEsms3ADIAd5tMJZNphMJZMZsA6QBBgIGBBACZADmAv4A5zGbTgCBZjNwHTBKYBmAU4AR8G7wVuCPwBjAj/BtsAjwqvAZgBUws4C8uYQAA==
+        #   - raw:nMwm0wlk0m0ymEsms1ADKcgBlNwB2mkwlkxm8wAYUCDwIHAXQAcgF3mM2nABHAleAR4BHg3SCtQA6AQZMQj/AX0FLwCKCq8AjwCLmEAA
+          - raw:nMwnEwlk0ms5mEsmoBBTWbTCWTaYADrNZvMJZMZsAoYAZgQGAgQEHgL/MZtNQCOBK0AhALzAR8GVACIBW8ERAIPCw8I+wUuBtsKrwCPAIuYQAA==
+        #   - raw:nEzmEsnE0mEsmM2m4BBAGGAg04mQA7AHuAP4D9AeSCTADLTCAA==
+        #   - raw:nEzmEsnE0mEsmM2m4BBAGGAgwA/gD+APcxm02AQkEnJhAA==
+        #   - raw:nEzmEsnE0mEsmM2m4BCziZAD8BAwA8AP+AOQHigk+AycwgA=
+        #   - raw:nEzmEsnE0mEsmM2m4BCziZAD+AP4A/geOAgwJOTCAA==
+        #   - raw:nEymEsnE0mEsmM2m4BBTMAMgEGAH8AfwB7A8kEmAGWmEAA==
+        #   - raw:nEzmEsnE0ADKZADrMZtNwENAHgCjgD4AHIDRQEGBBkBAphAA
+        #   - raw:nEzmEsnE0mEsmM2m4BCgIOAPEyAP8AfwPHBJwAwwAymEAA==
+        #   - raw:nEzmEsnE0ADIAdpjNpuAhoA/ziZAL+Bo4IPgIHMIAA==
+        #   - raw:nEzmEsnE0ADIAdpjNpuAhoA/gD+AOcxm02BB8AwwAymEAA==

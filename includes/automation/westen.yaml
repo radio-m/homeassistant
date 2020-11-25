@@ -1,0 +1,29 @@
+- id: '1593151953410'
+  alias: 'increase_temp'
+  description: ''
+  trigger:
+  - device_id: bc22989ac4f244a0bad5d0fe0ded7a37
+    domain: binary_sensor
+    entity_id: binary_sensor.btn_up_2
+    platform: device
+    type: turned_on
+  action:
+  - service: climate.set_temperature
+    data_template:
+      entity_id: climate.westen
+      temperature: "{{(state_attr('climate.westen' , 'temperature')|round(1)) + 0.5 }}"
+      
+- id: '1593151953411'
+  alias: 'decrease_temp'
+  description: ''
+  trigger:
+  - device_id: bc22989ac4f244a0bad5d0fe0ded7a37
+    domain: binary_sensor
+    entity_id: binary_sensor.btn_dn_2
+    platform: device
+    type: turned_on
+  action:
+  - service: climate.set_temperature
+    data_template:
+      entity_id: climate.westen
+      temperature: "{{(state_attr('climate.westen' , 'temperature')|round(1)) - 0.5 }}"

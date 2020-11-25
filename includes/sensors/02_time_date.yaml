@@ -1,0 +1,11 @@
+- platform: time_date
+  display_options:
+    - 'time'
+    - 'date'
+    - 'date_time'
+    - 'time_date'
+    
+- platform: template
+  sensors:
+    time_date_custom:
+      value_template: "{{ now().strftime('%H:%M %d.%m.%y') }}"

@@ -1,0 +1,594 @@
+title: Расход электроэнергии 
+icon: mdi:counter
+cards:
+
+    - type: vertical-stack
+      cards:
+      - type: iframe
+        id: graph1
+        url: !secret graph3
+        aspect_ratio: 35%
+
+      - type: iframe
+        id: graph1
+        url: !secret graph4
+        aspect_ratio: 35%
+
+      - type: iframe
+        id: graph1
+        url: !secret graph5
+        aspect_ratio: 35%
+
+      - type: iframe
+        id: graph1
+        url: !secret graph6
+        aspect_ratio: 35%
+
+    - type: entities
+      show_header_toggle: false
+      entities:
+# Общее по входу
+      - entity: sensor.load_input_energy
+        secondary_info: >-
+          сегодня: <b>[[
+          sensor.mqtt_power_today_input_energy.state ]]</b> кВт⋅ч<br>
+          этот месяц: <b>[[
+          sensor.mqtt_power_month_input_energy.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_month_input_energy.state
+          ]]</b> грн<br>
+          вчера: <b>[[
+          sensor.mqtt_power_yesterday_input_energy.state ]]</b> кВт⋅ч<br>
+          прошлый месяц: <b>[[
+          sensor.mqtt_power_lastmonth_input_energy.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_lastmonth_input_energy.state ]]</b> грн
+        type: 'custom:secondaryinfo-entity-row'
+#Общее по сенсорам
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - entity: sensor.load_total_energy
+        secondary_info: >-
+          сегодня: <b>[[
+          sensor.mqtt_power_today_total_energy.state ]]</b> кВт⋅ч<br>
+          этот месяц: <b>[[
+          sensor.mqtt_power_month_total_energy.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_month_total_energy.state
+          ]]</b> грн<br>
+          вчера: <b>[[
+          sensor.mqtt_power_yesterday_total_energy.state ]]</b> кВт⋅ч<br>
+          прошлый месяц: <b>[[
+          sensor.mqtt_power_lastmonth_total_energy.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_lastmonth_total_energy.state ]]</b> грн
+        type: 'custom:secondaryinfo-entity-row'
+# Бойлер
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - entity: sensor.load_158d0003a58131
+        secondary_info: >-
+          сегодня: <b>[[
+          sensor.mqtt_power_today_158d0003a58131.state ]]</b> кВт⋅ч<br>
+          этот месяц: <b>[[
+          sensor.mqtt_power_month_158d0003a58131.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_month_158d0003a58131.state
+          ]]</b> грн<br>
+          вчера: <b>[[
+          sensor.mqtt_power_yesterday_158d0003a58131.state ]]</b> кВт⋅ч<br>
+          прошлый месяц: <b>[[
+          sensor.mqtt_power_lastmonth_158d0003a58131.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_lastmonth_158d0003a58131.state ]]</b> грн
+        type: 'custom:secondaryinfo-entity-row'
+# Холодильник
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - entity: sensor.load_158d0003a52e45
+        secondary_info: >-
+          сегодня: <b>[[
+          sensor.mqtt_power_today_158d0003a52e45.state ]]</b> кВт⋅ч<br>
+          этот месяц: <b>[[
+          sensor.mqtt_power_month_158d0003a52e45.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_month_158d0003a52e45.state
+          ]]</b> грн<br>
+          вчера: <b>[[
+          sensor.mqtt_power_yesterday_158d0003a52e45.state ]]</b> кВт⋅ч<br>
+          прошлый месяц: <b>[[
+          sensor.mqtt_power_lastmonth_158d0003a52e45.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_lastmonth_158d0003a52e45.state ]]</b> грн
+        type: 'custom:secondaryinfo-entity-row'
+# Посудомойка
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - entity: sensor.load_158d0003535c2f
+        secondary_info: >-
+          сегодня: <b>[[
+          sensor.mqtt_power_today_158d0003535c2f.state ]]</b> кВт⋅ч<br>
+          этот месяц: <b>[[
+          sensor.mqtt_power_month_158d0003535c2f.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_month_158d0003535c2f.state
+          ]]</b> грн<br>
+          вчера: <b>[[
+          sensor.mqtt_power_yesterday_158d0003535c2f.state ]]</b> кВт⋅ч<br>
+          прошлый месяц: <b>[[
+          sensor.mqtt_power_lastmonth_158d0003535c2f.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_lastmonth_158d0003535c2f.state ]]</b> грн
+        type: 'custom:secondaryinfo-entity-row'
+# Удлинитель 3+3
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - entity: sensor.load_xiaomi_power_strip
+        secondary_info: >-
+          сегодня: <b>[[
+          sensor.mqtt_power_today_xiaomi_power_strip.state ]]</b> кВт⋅ч<br>
+          этот месяц: <b>[[
+          sensor.mqtt_power_month_xiaomi_power_strip.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_month_xiaomi_power_strip.state
+          ]]</b> грн<br>
+          вчера: <b>[[
+          sensor.mqtt_power_yesterday_xiaomi_power_strip.state ]]</b> кВт⋅ч<br>
+          прошлый месяц: <b>[[
+          sensor.mqtt_power_lastmonth_xiaomi_power_strip.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_lastmonth_xiaomi_power_strip.state ]]</b> грн
+        type: 'custom:secondaryinfo-entity-row'
+# Стиральная машина
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - entity: sensor.load_broadlink_1
+        secondary_info: >-
+          сегодня: <b>[[
+          sensor.mqtt_power_today_broadlink_1.state ]]</b> кВт⋅ч<br>
+          этот месяц: <b>[[
+          sensor.mqtt_power_month_broadlink_1.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_month_broadlink_1.state
+          ]]</b> грн<br>
+          вчера: <b>[[
+          sensor.mqtt_power_yesterday_broadlink_1.state ]]</b> кВт⋅ч<br>
+          прошлый месяц: <b>[[
+          sensor.mqtt_power_lastmonth_broadlink_1.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_lastmonth_broadlink_1.state ]]</b> грн
+        type: 'custom:secondaryinfo-entity-row'
+
+    # - type: vertical-stack # 'custom:vertical-stack-in-card'
+    #   cards:
+    #   - type: markdown
+    #      content: >
+    #          ## Общее потребление
+    #   - type: horizontal-stack
+    #      cards:      
+
+    #      - type: custom:canvas-gauge-card
+    #       entity:
+    #         - sensor.load_total_energy
+    #       card_height: 180
+    #       gauge:
+    #           type: "radial-gauge"
+    #           title: Мощность Вт
+    #           width: 220
+    #           height: 200
+    #           minValue: 0
+    #           maxValue: 10000
+    #           startAngle: 45
+    #           ticksAngle: 270
+    #           valueBox: true
+    #           majorTicks: ["0", "1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"]
+    #           minorTicks: 4
+    #           strokeTicks: true
+    #           highlights: [{"from": 0, "to": 5000,"color": "rgba(10, 255, 0, .75)"},{"from": 5000, "to": 7000,"color": "rgba(255, 255, 0, .75)"},{"from": 7000, "to": 9000,"color": "rgba(255, 140, 0, .75)"}, {"from": 9000, "to": 10000,"color": "rgba(255, 0, 0, .75)"}]
+    #           borderShadowWidth: 0
+    #           borderOuterWidth: 0
+    #           borderMiddleWidth: 0
+    #           borderInnerWidth: 0
+    #   - type: horizontal-stack
+    #      cards:
+    #      - type: markdown
+    #       content: >
+    #           **Текущий** 
+    #      - type: markdown
+    #       content: >
+    #           **Прошедший** 
+    #   - type: horizontal-stack
+    #      cards:
+    #      - type: entities
+    #       show_header_toggle: false
+    #       entities:
+    #       - entity: sensor.mqtt_power_today_total_energy
+    #          name: День
+    #          icon: mdi:counter
+    #       - entity: sensor.mqtt_power_month_total_energy
+    #          name: Месяц
+    #          icon: mdi:counter
+    #       - entity: sensor.money_month_total_energy
+    #          name: Месяц
+    #          icon: mdi:cash
+
+    #      - type: entities
+    #       show_header_toggle: false
+    #       entities:
+    #       - entity: sensor.mqtt_power_yesterday_total_energy
+    #          name: День
+    #          icon: mdi:counter
+    #       - entity: sensor.mqtt_power_lastmonth_total_energy
+    #          name: Месяц
+    #          icon: mdi:counter
+    #       - entity: sensor.money_lastmonth_total_energy
+    #          name: Месяц
+    #          icon: mdi:cash
+
+    # - type: vertical-stack # 'custom:vertical-stack-in-card'
+    #   cards:
+    #   - type: markdown
+    #     content: >
+    #         ## Бойлер
+    #   - type: horizontal-stack
+    #     cards:      
+
+    #     - type: custom:canvas-gauge-card
+    #       entity:
+    #       - sensor.load_158d0003a58131
+    #       card_height: 180
+    #       gauge:
+    #           type: "radial-gauge"
+    #           title: Мощность Вт
+    #           width: 220
+    #           height: 200
+    #           minValue: 0
+    #           maxValue: 2500
+    #           startAngle: 45
+    #           ticksAngle: 270
+    #           valueBox: true
+    #           majorTicks: ["0", "250", "500", "750", "1000", "1250", "1500", "1750", "2000", "2250", "2500"]
+    #           minorTicks: 4
+    #           strokeTicks: true
+    #           highlights: [{"from": 0, "to": 1750,"color": "rgba(10, 255, 0, .75)"},{"from": 1750, "to": 2000,"color": "rgba(255, 255, 0, .75)"},{"from": 2000, "to": 2250,"color": "rgba(255, 140, 0, .75)"}, {"from": 2250, "to": 2500,"color": "rgba(255, 0, 0, .75)"}]
+    #           borderShadowWidth: 0
+    #           borderOuterWidth: 0
+    #           borderMiddleWidth: 0
+    #           borderInnerWidth: 0
+
+    #   - type: horizontal-stack
+    #     cards:
+    #     - type: markdown
+    #       content: >
+    #           **Текущий** 
+    #     - type: markdown
+    #       content: >
+    #           **Прошедший** 
+    #   - type: horizontal-stack
+    #     cards:
+    #     - type: entities
+    #       show_header_toggle: false
+    #       entities:
+    #       - entity: sensor.mqtt_power_today_158d0003a58131
+    #         name: День
+    #         icon: mdi:counter
+    #       - entity: sensor.mqtt_power_month_158d0003a58131
+    #         name: Месяц
+    #         icon: mdi:counter
+    #       - entity: sensor.money_month_158d0003a58131
+    #         name: Месяц
+    #         icon: mdi:cash
+
+    #     - type: entities
+    #       show_header_toggle: false
+    #       entities:
+    #       - entity: sensor.mqtt_power_yesterday_158d0003a58131
+    #         name: День
+    #         icon: mdi:counter
+    #       - entity: sensor.mqtt_power_lastmonth_158d0003a58131
+    #         name: Месяц
+    #         icon: mdi:counter
+    #       - entity: sensor.money_lastmonth_158d0003a58131
+    #         name: Месяц
+    #         icon: mdi:cash
+
+    # - type: vertical-stack # 'custom:vertical-stack-in-card'
+    #   cards:
+    #   - type: markdown
+    #      content: >
+    #          ## Холодильник
+    #   - type: horizontal-stack
+    #      cards:      
+
+    #      - type: custom:canvas-gauge-card
+    #       entity:
+    #         - sensor.load_158d0003a52e45
+    #       card_height: 180
+    #       gauge:
+    #           type: "radial-gauge"
+    #           title: Мощность Вт
+    #           width: 220
+    #           height: 200
+    #           minValue: 0
+    #           maxValue: 2500
+    #           startAngle: 45
+    #           ticksAngle: 270
+    #           valueBox: true
+    #           majorTicks: ["0", "250", "500", "750", "1000", "1250", "1500", "1750", "2000", "2250", "2500"]
+    #           minorTicks: 4
+    #           strokeTicks: true
+    #           highlights: [{"from": 0, "to": 1750,"color": "rgba(10, 255, 0, .75)"},{"from": 1750, "to": 2000,"color": "rgba(255, 255, 0, .75)"},{"from": 2000, "to": 2250,"color": "rgba(255, 140, 0, .75)"}, {"from": 2250, "to": 2500,"color": "rgba(255, 0, 0, .75)"}]
+    #           borderShadowWidth: 0
+    #           borderOuterWidth: 0
+    #           borderMiddleWidth: 0
+    #           borderInnerWidth: 0
+    #   - type: horizontal-stack
+    #      cards:
+    #      - type: markdown
+    #       content: >
+    #           **Текущий** 
+    #      - type: markdown
+    #       content: >
+    #           **Прошедший** 
+    #   - type: horizontal-stack
+    #      cards:
+    #      - type: entities
+    #       show_header_toggle: false
+    #       entities:
+    #       - entity: sensor.mqtt_power_today_158d0003a52e45
+    #          name: День
+    #          icon: mdi:counter
+    #       - entity: sensor.mqtt_power_month_158d0003a52e45
+    #          name: Месяц
+    #          icon: mdi:counter
+    #       - entity: sensor.money_month_158d0003a52e45
+    #          name: Месяц
+    #          icon: mdi:cash
+
+    #      - type: entities
+    #       show_header_toggle: false
+    #       entities:
+    #       - entity: sensor.mqtt_power_yesterday_158d0003a52e45
+    #          name: День
+    #          icon: mdi:counter
+    #       - entity: sensor.mqtt_power_lastmonth_158d0003a52e45
+    #          name: Месяц
+    #          icon: mdi:counter
+    #       - entity: sensor.money_lastmonth_158d0003a52e45
+    #          name: Месяц
+    #          icon: mdi:cash
+
+    # - type: vertical-stack # 'custom:vertical-stack-in-card'
+    #   cards:
+    #   - type: markdown
+    #      content: >
+    #          ## Посудомойка
+    #   - type: horizontal-stack
+    #      cards:      
+
+    #      - type: custom:canvas-gauge-card
+    #       entity:
+    #         - sensor.load_158d0003535c2f
+    #       card_height: 180
+    #       gauge:
+    #           type: "radial-gauge"
+    #           title: Мощность Вт
+    #           width: 220
+    #           height: 200
+    #           minValue: 0
+    #           maxValue: 2500
+    #           startAngle: 45
+    #           ticksAngle: 270
+    #           valueBox: true
+    #           majorTicks: ["0", "250", "500", "750", "1000", "1250", "1500", "1750", "2000", "2250", "2500"]
+    #           minorTicks: 4
+    #           strokeTicks: true
+    #           highlights: [{"from": 0, "to": 1750,"color": "rgba(10, 255, 0, .75)"},{"from": 1750, "to": 2000,"color": "rgba(255, 255, 0, .75)"},{"from": 2000, "to": 2250,"color": "rgba(255, 140, 0, .75)"}, {"from": 2250, "to": 2500,"color": "rgba(255, 0, 0, .75)"}]
+    #           borderShadowWidth: 0
+    #           borderOuterWidth: 0
+    #           borderMiddleWidth: 0
+    #           borderInnerWidth: 0
+    #   - type: horizontal-stack
+    #      cards:
+    #      - type: markdown
+    #       content: >
+    #           **Текущий** 
+    #      - type: markdown
+    #       content: >
+    #           **Прошедший** 
+    #   - type: horizontal-stack
+    #      cards:
+    #      - type: entities
+    #       show_header_toggle: false
+    #       entities:
+    #       - entity: sensor.mqtt_power_today_158d0003535c2f
+    #          name: День
+    #          icon: mdi:counter
+    #       - entity: sensor.mqtt_power_month_158d0003535c2f
+    #          name: Месяц
+    #          icon: mdi:counter
+    #       - entity: sensor.money_month_158d0003535c2f
+    #          name: Месяц
+    #          icon: mdi:cash
+
+    #      - type: entities
+    #       show_header_toggle: false
+    #       entities:
+    #       - entity: sensor.mqtt_power_yesterday_158d0003535c2f
+    #          name: День
+    #          icon: mdi:counter
+    #       - entity: sensor.mqtt_power_lastmonth_158d0003535c2f
+    #          name: Месяц
+    #          icon: mdi:counter
+    #       - entity: sensor.money_lastmonth_158d0003535c2f
+    #          name: Месяц
+    #          icon: mdi:cash
+             
+    # - type: vertical-stack # 'custom:vertical-stack-in-card'
+    #   cards:
+    #   - type: markdown
+    #      content: >
+    #          ## Xiaomi power strip
+    #   - type: horizontal-stack
+    #      cards:      
+
+    #      - type: custom:canvas-gauge-card
+    #       entity:
+    #         - sensor.load_xiaomi_power_strip
+    #       card_height: 180
+    #       gauge:
+    #           type: "radial-gauge"
+    #           title: Мощность Вт
+    #           width: 220
+    #           height: 200
+    #           minValue: 0
+    #           maxValue: 2500
+    #           startAngle: 45
+    #           ticksAngle: 270
+    #           valueBox: true
+    #           majorTicks: ["0", "250", "500", "750", "1000", "1250", "1500", "1750", "2000", "2250", "2500"]
+    #           minorTicks: 4
+    #           strokeTicks: true
+    #           highlights: [{"from": 0, "to": 1750,"color": "rgba(10, 255, 0, .75)"},{"from": 1750, "to": 2000,"color": "rgba(255, 255, 0, .75)"},{"from": 2000, "to": 2250,"color": "rgba(255, 140, 0, .75)"}, {"from": 2250, "to": 2500,"color": "rgba(255, 0, 0, .75)"}]
+    #           borderShadowWidth: 0
+    #           borderOuterWidth: 0
+    #           borderMiddleWidth: 0
+    #           borderInnerWidth: 0
+    #   - type: horizontal-stack
+    #      cards:
+    #      - type: markdown
+    #       content: >
+    #           **Текущий** 
+    #      - type: markdown
+    #       content: >
+    #           **Прошедший** 
+    #   - type: horizontal-stack
+    #      cards:
+    #      - type: entities
+    #       show_header_toggle: false
+    #       entities:
+    #       - entity: sensor.mqtt_power_today_xiaomi_power_strip
+    #          name: День
+    #          icon: mdi:counter
+    #       - entity: sensor.mqtt_power_month_xiaomi_power_strip
+    #          name: Месяц
+    #          icon: mdi:counter
+    #       - entity: sensor.money_month_xiaomi_power_strip
+    #          name: Месяц
+    #          icon: mdi:cash
+
+    #      - type: entities
+    #       show_header_toggle: false
+    #       entities:
+    #       - entity: sensor.mqtt_power_yesterday_xiaomi_power_strip
+    #          name: День
+    #          icon: mdi:counter
+    #       - entity: sensor.mqtt_power_lastmonth_xiaomi_power_strip
+    #          name: Месяц
+    #          icon: mdi:counter
+    #       - entity: sensor.money_lastmonth_xiaomi_power_strip
+    #          name: Месяц
+    #          icon: mdi:cash
+
+    # - type: vertical-stack # 'custom:vertical-stack-in-card'
+    #   cards:
+    #   - type: markdown
+    #      content: >
+    #          ## Стиральная машина
+    #   - type: horizontal-stack
+    #      cards:      
+
+    #      - type: custom:canvas-gauge-card
+    #       entity:
+    #         - sensor.load_broadlink_1
+    #       card_height: 180
+    #       gauge:
+    #           type: "radial-gauge"
+    #           title: Мощность Вт
+    #           width: 220
+    #           height: 200
+    #           minValue: 0
+    #           maxValue: 2500
+    #           startAngle: 45
+    #           ticksAngle: 270
+    #           valueBox: true
+    #           majorTicks: ["0", "250", "500", "750", "1000", "1250", "1500", "1750", "2000", "2250", "2500"]
+    #           minorTicks: 4
+    #           strokeTicks: true
+    #           highlights: [{"from": 0, "to": 1750,"color": "rgba(10, 255, 0, .75)"},{"from": 1750, "to": 2000,"color": "rgba(255, 255, 0, .75)"},{"from": 2000, "to": 2250,"color": "rgba(255, 140, 0, .75)"}, {"from": 2250, "to": 2500,"color": "rgba(255, 0, 0, .75)"}]
+    #           borderShadowWidth: 0
+    #           borderOuterWidth: 0
+    #           borderMiddleWidth: 0
+    #           borderInnerWidth: 0
+    #   - type: horizontal-stack
+    #      cards:
+    #      - type: markdown
+    #       content: >
+    #           **Текущий** 
+    #      - type: markdown
+    #       content: >
+    #           **Прошедший** 
+    #   - type: horizontal-stack
+    #      cards:
+    #      - type: entities
+    #       show_header_toggle: false
+    #       entities:
+    #       - entity: sensor.mqtt_power_today_broadlink_1
+    #          name: День
+    #          icon: mdi:counter
+    #       - entity: sensor.mqtt_power_month_broadlink_1
+    #          name: Месяц
+    #          icon: mdi:counter
+    #       - entity: sensor.money_month_broadlink_1
+    #          name: Месяц
+    #          icon: mdi:cash
+
+    #      - type: entities
+    #       show_header_toggle: false
+    #       entities:
+    #       - entity: sensor.mqtt_power_yesterday_broadlink_1
+    #          name: День
+    #          icon: mdi:counter
+    #       - entity: sensor.mqtt_power_lastmonth_broadlink_1
+    #          name: Месяц
+    #          icon: mdi:counter
+    #       - entity: sensor.money_lastmonth_broadlink_1
+    #          name: Месяц
+    #          icon: mdi:cash
+    - type: vertical-stack
+      cards:
+      - type: entities
+        show_header_toggle: false
+        entities:
+
+        - entity: switch.0x00158d0003a58131_switch
+          secondary_info: last-changed
+        - entity: switch.0x00158d0003a52e45_switch
+        - entity: switch.0x00158d0003535c2f_switch
+
+        - type: custom:fold-entity-row
+          head:
+            type: section
+            label: 'Boiler low voltage'
+          entities:
+            - automation.boiler_low_voltage_off
+            - automation.boiler_low_voltage_on
+            - timer.boiler_low_voltage
+          group_config: 
+            secondary_info: last-triggered
+
+      - type: entities
+        show_header_toggle: false
+        entities:
+
+        - entity: switch.xiaomi_power_strip
+        - entity: switch.broadlink_1
+
+
+

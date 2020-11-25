@@ -1,0 +1,13 @@
+#XIAOMI SMART WIFI SOCKET
+  - platform: xiaomi_miio
+    host: 192.168.31.111
+    token: !secret xiaomi_miio_token
+    model: chuangmi.plug.m3
+    name: undertabble_mi_wifi_socket
+
+#XIAOMI SMART POWER STRIP
+  - platform: xiaomi_miio
+    host: 192.168.31.110
+    token: !secret xiaomi_power_strip_token
+    model: qmi.powerstrip.v1
+    name: Xiaomi Power Strip

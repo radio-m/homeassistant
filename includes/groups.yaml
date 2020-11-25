@@ -1,0 +1,23 @@
+people:
+  name: people
+  entities:
+    - device_tracker.redmi_note_3
+    - device_tracker.mi9_miphone
+    - device_tracker.s50
+    - device_tracker.redmi_5_plus_router
+    - device_tracker.redmi5plus_mom
+
+motion_light:
+  name: 'Motion light'
+  entities:
+    - automation.vkliuchenie_sveta_v_vannoi_po_datchiku_dvizheniia
+    - automation.vkliuchenie_taimera_osveshcheniia_v_vannoi
+    - automation.avtomaticheskoe_vykliuchenie_sveta_v_vannoi_po_taimeru
+    - automation.sbros_taimera_esli_svet_v_vannoi_vykliuchen
+
+boiler_low_voltage:
+  name: 'Boiler low voltage'
+  entities:
+    - automation.boiler_low_voltage_off
+    - automation.boiler_low_voltage_timer
+    - automation.boiler_low_voltage_on

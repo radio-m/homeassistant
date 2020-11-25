@@ -1,0 +1,107 @@
+title: "Свет"
+icon: mdi:lightbulb
+cards:
+  - type: horizontal-stack
+    cards:
+
+    - type: light
+      entity: light.wall_switch
+      name: "Свет в детской"
+      icon: mdi:ceiling-light
+    - type: light
+      entity: light.coridor_light
+      name: "Свет в коридоре"
+      icon: mdi:coach-lamp
+    - type: light
+      entity: light.magic_light
+      name: "Свет под кроватью"
+      icon: mdi:led-strip-variant
+      double_tap_action:
+        action: call-service
+        service: light.turn_on
+        service_data:
+          entity_id: light.magic_light
+          brightness_pct: 10
+
+
+  - type: horizontal-stack
+    cards:
+
+    - type: light
+      entity: light.boiler_room
+      name: "Свет в котельной"
+      icon: mdi:ceiling-light
+    - type: light
+      entity: light.bath
+      name: "Свет в ванной"
+      icon: mdi:ceiling-light
+
+    - type: light
+      entity: light.gateway_led
+      icon: mdi:alarm-light
+      name: "Светодиод шлюза" 
+
+  - type: vertical-stack
+    cards:
+    - type: button
+      entity: switch.my_pc
+      name: "Компьютер"
+      state_color: true
+      icon: mdi:desktop-classic
+
+    - type: vertical-stack
+      cards:
+        - type: entities
+          entities:
+            - timer.pc
+        - type: horizontal-stack
+          cards:
+
+            - type: button
+              name: "ПК таймер старт"
+              icon: mdi:timer-outline
+              tap_action:
+                action: call-service
+                service: script.turn_on
+                service_data:
+                  entity_id: script.start_pc_timer
+
+            - type: button
+              name: "ПК таймер пауза"
+              icon: mdi:pause-circle-outline
+              tap_action:
+                action: call-service
+                service: script.turn_on
+                service_data:
+                  entity_id: script.pause_pc_timer
+
+            - type: button
+              name: "ПК таймер отмена"
+              icon: mdi:timer-off-outline
+              tap_action:
+                action: call-service
+                service: script.turn_on
+                service_data:
+                  entity_id: script.cancel_pc_timer
+
+  - type: entities
+    entities:
+    - type: custom:fold-entity-row
+      head: group.motion_light
+      group_config:
+        secondary_info: last-changed
+      entities:
+        - automation.vkliuchenie_sveta_v_vannoi_po_datchiku_dvizheniia
+        - automation.vkliuchenie_taimera_osveshcheniia_v_vannoi
+        - automation.avtomaticheskoe_vykliuchenie_sveta_v_vannoi_po_taimeru
+        - automation.sbros_taimera_esli_svet_v_vannoi_vykliuchen
+
+#   - type: entities
+#     show_header_toggle: false
+#     entities:
+#       - entity: group.motion_light
+#         type: custom:fold-entity-row
+#         name: "Автоматизации"
+#         icon: mdi:calendar-text
+#         config:
+#           secondary_info: entity-id

@@ -1,0 +1,3 @@
+switch.broadlink_1:
+  icon: mdi:washing-machine
+  friendly_name: "Стиральная машина"

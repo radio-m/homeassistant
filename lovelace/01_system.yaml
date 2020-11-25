@@ -1,0 +1,185 @@
+title: System
+icon: mdi:cog
+cards:
+
+  - type: entities
+    show_header_toggle: false
+    entities:
+    - type: 'custom:bignumber-card'
+      entity: sensor.time
+    - type: "custom:atomic-calendar"
+      title: "Календарь"
+      entities:
+      - entity: calendar.prazdniki_ukrainy
+        type: holiday   # events from this calendar will be red
+      - entity: calendar.ru_prazdniki_ukrainy
+        type: holiday
+      - entity: calendar.contacts
+        type: icon1
+      enableModeChange: true
+      defaultMode: 2
+      fullDayEventText: 'Весь день'
+      maxDaysToShow: 7
+      showLocation: true
+      showMonth: true
+      showLoader: true
+      showDate: true
+      showCurrentEventLine: false
+      dimFinishedEvents: true
+      finishedEventOpacity: 0.6
+      showProgressBar: true
+    - entity: sensor.last_boot_custom
+      name: Сервер в онлайне
+      icon: mdi:av-timer
+    - entity: sensor.online_custom
+      name: Home Assistant в онлайне
+      icon: mdi:clock
+    - type: divider
+    - entity: sensor.current_ha
+      name: Установлен Home Assistant
+      icon: mdi:alpha-v-circle
+    - entity: sensor.version
+      name: Последний Home Assistant
+      icon: mdi:alpha-v-circle-outline
+    - entity: sensor.hacs
+      name: Community updates avaliable
+      icon: mdi:update
+    - type: divider
+    - type: call-service
+      icon: mdi:restart
+      name: Перезагрузка
+      action_name: выполнить
+      service: homeassistant.restart
+
+
+  - type: vertical-stack
+    cards:
+    - type: iframe
+      id: graph1
+      url: !secret graph1
+      aspect_ratio: 75%
+    - type: horizontal-stack
+      cards:
+        - type: gauge
+          name: CPU
+          unit: '%'
+          entity: sensor.processor_use
+          severity:
+            green: 0
+            yellow: 45
+            red: 85
+        - type: gauge
+          name: RAM
+          unit: '%'
+          entity: sensor.memory_use_percent
+          severity:
+            green: 0
+            yellow: 45
+            red: 85
+        - type: gauge
+          name: CPU
+          unit: '°C'
+          entity: sensor.cpu_temperature
+          min: 20
+          max: 80
+          severity:
+            green: 20
+            yellow: 50
+            red: 60
+#     - type: history-graph
+#       entities:
+#       - entity: sensor.cpu_temperature
+#         name: CPU t
+#       - entity: sensor.memory_use_percent
+#         name: RAM
+#       - entity: sensor.processor_use
+#         name: CPU
+    - type: entities
+      show_header_toggle: false
+      entities:
+        - person.anatolii
+        - person.svetlana
+        - person.sergei
+        - person.olga
+  - type: vertical-stack
+    cards:
+
+    - type: iframe
+      id: graph2
+      url: !secret graph2
+      aspect_ratio: 75%
+
+    - type: glance
+      show_icon: true
+      show_name: true
+      show_state: true
+      title: Coronavirus in Ukraine
+      entities:
+        - entity: sensor.ukraine_coronavirus_confirmed
+          icon: 'mdi:emoticon-neutral-outline'
+          name: Confirmed
+        - entity: sensor.ukraine_coronavirus_current
+          icon: 'mdi:emoticon-frown-outline'
+          name: Current
+        - entity: sensor.ukraine_coronavirus_recovered
+          icon: 'mdi:emoticon-happy-outline'
+          name: Recovered
+        - entity: sensor.ukraine_coronavirus_deaths
+          icon: 'mdi:emoticon-dead-outline'
+          name: Deaths
+    - type: custom:mini-graph-card
+      entities:
+        - entity: sensor.home_assistant_v2_db
+          name: База данных
+          color: '#0066ff'
+      icon: mdi:database
+      show:
+        graph: bar
+    - type: entities
+      show_header_toggle: false
+      entities:
+        - entity: sensor.home_assistant_v2_db
+          name: Объем базы данных
+          icon: mdi:database
+          secondary_info: entity-id
+
+  - type: glance
+    title: '-- Component Count --'
+    columns: 4
+    entities:
+          - entity: sensor.count_automations
+            name: Automations
+            icon: mdi:autorenew
+          - entity: sensor.count_scripts
+            name: Scripts
+            icon: mdi:script-text-outline
+          - entity: sensor.count_zones
+            name: Zones
+            icon: mdi:map-marker-radius
+          - entity: sensor.count_device_trackers
+            name: Device Trackers
+            icon: mdi:map-marker
+          - entity: sensor.count_switches
+            name: Switches
+            icon: mdi:light-switch
+          - entity: sensor.count_sensors
+            name: Sensors
+            icon: mdi:resistor
+          - entity: sensor.count_binary_sensors
+            name: Binary Sensors
+            icon: mdi:unfold-more-horizontal
+          - entity: sensor.count_input_booleans
+            name: Input Booleans
+            icon: mdi:toggle-switch
+          - entity: sensor.count_input_numbers
+            name: Input Numbers
+            icon: mdi:numeric
+          - entity: sensor.count_input_texts
+            name: Input Texts
+            icon: mdi:alphabetical
+          - entity: sensor.count_input_selects
+            name: Input Select
+            icon: mdi:view-list
+          - entity: sensor.count_input_datetimes
+            name: Input Date Times
+            icon: mdi:calendar-clock

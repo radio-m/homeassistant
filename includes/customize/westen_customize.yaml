@@ -1,0 +1,107 @@
+climate.westen:
+  friendly_name: Котел Westen
+  templates:
+    icon_color: >
+      if (state === 'idle') return 'rgb(0, 153, 255)';
+      if (state === 'heat') return 'rgb(255, 195, 0)';
+      return 'rgb(189, 189, 189)';
+switch.gas_heater_relay:
+  friendly_name: Реле котла
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 153, 255)';
+      else return 'rgb(189, 189, 189)';
+    icon: >
+      if (state === 'on') return 'mdi:toggle-switch';
+      else return 'mdi:toggle-switch-off-outline';
+input_number.heater_set_day_temp:
+  friendly_name: Температура вдень (котел)
+  templates:
+    icon: mdi:temperature-celsius
+    icon_color: rgb(255, 195, 0)
+input_number.heater_set_night_temp:
+  friendly_name: Температура вночі (котел)
+  templates:
+    icon: mdi:temperature-celsius
+    icon_color: rgb(0, 153, 255)
+input_number.heater_set_outdoor_temp:
+  friendly_name: Температура на дворі (вкл котел)
+  templates:
+    icon: mdi:temperature-celsius
+input_select.heater_automode_heater:
+  friendly_name: "Режим обігріву (авто/ручний/викл)"
+  templates:
+    icon_color: >
+      if (state == 'Auto') return 'rgb(255, 195, 0)';
+      if (state == 'Manual') return 'rgb(0, 153, 255)';
+      if (state == 'Off') return 'rgb(189, 189, 189)';
+      return 'rgb(189, 189, 189)';
+    icon: >
+      if (state == 'Auto') return 'mdi:radiator';
+      if (state == 'Manual') return 'mdi:gesture-double-tap';
+      if (state == 'Off') return 'mdi:mdi:radiator-off';
+      return 'mdi:radiator-off';
+input_boolean.heater_automation_active:
+  friendly_name: "Автоматизація котла"
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 153, 255)';
+      else return 'rgb(189, 189, 189)';
+    icon: >
+      if (state === 'on') return 'mdi:calendar-check';
+      else return 'mdi:calendar-remove';
+input_boolean.heater_outdoor_temp_mode:
+  friendly_name: "Враховувати темп. на вулиці"
+  templates:
+    icon_color: "if (state === 'on') return 'rgb(0, 153, 255)'; else return 'rgb(189, 189, 189)';"
+    icon: "if (state === 'on') return 'mdi:weather-partlycloudy'; else return 'mdi:home-outline';"
+input_boolean.heater_day_night_automode:
+  friendly_name: "Режим День/Ніч"
+  templates:
+    icon_color: "if (state === 'on') return 'rgb(0, 153, 255)'; else return 'rgb(255, 195, 0)';"
+    icon: "if (state === 'on') return 'mdi:theme-light-dark'; else return 'mdi:white-balance-sunny';"
+sensor.heater_away_mode_status:
+  friendly_name: Режим відсутності в домі
+  templates:
+    icon_color: "if (state === 'away') return 'rgb(0, 153, 255)'; else return 'rgb(189, 189, 189)';"
+    icon: "if (state === 'away') return 'mdi:account-off'; else return 'mdi:account-check';"
+    state: if (state === 'away') return 'Активний'; else return 'Не активний';
+sensor.heater_relay_status:
+  friendly_name: Реле котла
+  templates:
+    icon_color: "if (state === 'on') return 'rgb(0, 153, 255)'; else return 'rgb(189, 189, 189)';"
+    icon: "if (state === 'on') return 'mdi:toggle-switch'; else return 'mdi:toggle-switch-off-outline';"
+    state: if (state === 'on') return 'Вкл'; else return 'Викл';
+input_boolean.heater_show_additional_params:
+  friendly_name: Показати Автоматизації
+  templates:
+    icon: "mdi:calendar-text"
+input_boolean.heater_notifications:
+  templates:
+    icon_color: "if (state === 'on') return 'rgb(0, 153, 255)'; else return 'rgb(189, 189, 189)';"
+    icon: "if (state === 'on') return 'mdi:bell-ring'; else return 'mdi:bell-off';"
+group.heater_show_automations:
+  friendly_name: Показати Автоматизації
+  templates:
+    icon: "mdi:calendar-text"
+group.remperature:
+  friendly_name: "Температури в домі"
+  templates:
+    icon: "mdi:temperature"
+automation.heater_set_away_mode_on:
+  friendly_name: "Режим відсутності вкл, коли всі вийшли з дому"
+  persistent: true
+automation.heater_set_away_mode_off:
+  friendly_name: "Режим відсутності викл, коли всі прийшли"
+automation.heater_set_day_temp:
+  friendly_name: "Переключити на денну температуру (06:00)"
+automation.heater_set_night_temp:
+  friendly_name: "Переключити на нічну температуру (23:50)"
+automation.heater_automode_on:
+  friendly_name: "Вкл Автоматичний режим"
+automation.heater_day_temp:
+  friendly_name: "Слайдер температури (день)"
+automation.heater_set_auto_mode_when_outdoor_temp_equals_or_lower:
+  friendly_name: "Авто-режим, якщо t зменшилась"
+automation.heater_set_off_mode_when_outdoor_temp_equals_or_highter:
+  friendly_name: "Вимк якщо t збільшилась"

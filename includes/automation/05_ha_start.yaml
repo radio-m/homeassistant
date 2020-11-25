@@ -1,0 +1,13 @@
+- id: '1585439765216'
+  alias: Notify_HA_start
+  description: ''
+  trigger:
+  - event: start
+    platform: homeassistant
+  condition: []
+  action:
+  - service: notify.mobile_app_mi_9
+    data:
+      title: "Home Assistant"
+      message: "HA start"
+

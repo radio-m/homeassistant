@@ -1,0 +1,23 @@
+  start_pc_timer:
+    alias: Start PC timer
+    sequence:
+      - service: timer.start
+        entity_id: timer.pc
+
+  pause_pc_timer:
+    alias: Pause PC timer
+    sequence:
+      - service: timer.pause
+        entity_id: timer.pc
+
+  cancel_pc_timer:
+    alias: Cancel PC timer
+    sequence:
+      - service: timer.cancel
+        entity_id: timer.pc
+
+  finish_pc_timer:
+    alias: Finish PC timer
+    sequence:
+      - service: timer.finish
+        entity_id: timer.pc

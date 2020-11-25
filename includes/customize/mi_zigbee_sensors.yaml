@@ -1,0 +1,9 @@
+sensor.0x00158d00044afff0_temperature:
+  friendly_name: 'C Bedroom temperature'
+sensor.0x00158d00044afff0_humidity:
+  friendly_name: 'C Bedroom humidity'
+
+sensor.0x00158d00041d6e0b_temperature:
+  friendly_name: 'M Bedroom temperature'
+sensor.0x00158d00041d6e0b_humidity:
+  friendly_name: 'M Bedroom humidity'

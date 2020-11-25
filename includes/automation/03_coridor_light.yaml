@@ -1,0 +1,39 @@
+- alias: coridor_light_sunset_on
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+  condition: []
+  action:
+  - service: switch.turn_on
+    entity_id: switch.coridor_night_light_relay
+  mode: single
+  
+- alias: coridor_light_00_00_off
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00
+  condition: []
+  action:
+  - service: switch.turn_off
+    entity_id: switch.coridor_night_light_relay
+  mode: single
+    
+- alias: coridor_light_online
+  description: 'Включает свет в коридоре после отключения электричества(по подключению светильника)'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.coridor_light
+    to: "on"
+    for:
+      seconds: 5
+  condition:
+  - condition: sun
+    after: sunset
+  - condition: time
+    before: 00:00
+  action:
+  - service: switch.turn_on
+    entity_id: switch.coridor_night_light_relay
+  mode: single

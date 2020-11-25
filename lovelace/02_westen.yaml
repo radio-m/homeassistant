@@ -1,0 +1,224 @@
+title: Котел
+icon: mdi:radiator
+cards:
+  - type: horizontal-stack
+    cards:
+    #   - type: custom:vertical-stack-in-card
+    #     # title: Управління котлом
+    #     cards:
+    #     # - type: thermostat
+    #     #   entity: climate.westen
+        - type: entities
+          show_header_toggle: false
+          entities:
+            - entity: input_boolean.heater_automation_active
+            - entity: climate.westen
+              name: "Котел Westen"
+            - entity: sensor.0x00158d00044afff0_temperature #mi_t_582d3434ca5b
+              name: "Температура в домі"
+            - entity: sensor.bme280_temperature
+              name: "Температура на вулиці"
+            - entity: binary_sensor.gas_heater_relay
+              name: "Реле котла"
+            - entity: sensor.heater_away_mode_status
+              name: "Режим 'Нікого немає вдома'"
+            - type: divider
+            - entity: input_select.heater_automode_heater
+              name: "Режим"
+            - entity: switch.gas_heater_relay
+              name: "Реле котла"
+              secondary_info: last-changed
+            - entity: input_boolean.heater_day_night_automode
+              name: "Окрема t° для Дня/Ночі"
+            - entity: input_number.heater_set_day_temp
+              name: "День"
+            - entity: input_number.heater_set_night_temp
+              name: "Ніч"
+            - entity: input_boolean.heater_outdoor_temp_mode
+              name: "Враховувати t° на вулиці"
+            - entity: input_number.heater_set_outdoor_temp
+              name: "Вкл тільки якщо t° меньше °C"
+            - entity: input_boolean.heater_notifications
+              name: Сповіщати
+            - type: divider
+            - entity: group.heater_show_automations
+              type: custom:fold-entity-row
+              name: "Автоматизації"
+              icon: mdi:calendar-text
+            #   group_config:
+            #     secondary_info: entity-id
+
+  - type: horizontal-stack
+    cards:
+        - type: entities
+          show_header_toggle: false
+          entities:
+            - entity: input_boolean.cooler_automation_active
+            - entity: climate.basement
+              name: "Вентилятор в подвале"
+            - entity: sensor.0x00124b001c4b2d3c_temperature #mi_t_582d3434ca5b
+              name: "Температура в подвале"
+            - entity: sensor.bme280_temperature
+              name: "Температура на улице"
+            - type: divider
+            - entity: input_select.basement_automode_cooler
+              name: "Режим"
+            - entity: switch.0x00124b0022254e4d_switch
+              name: "Реле вентилятора"
+              secondary_info: last-changed
+            - entity: input_number.basement_set_outdoor_temp
+              name: "Вкл только если t° меньше °C"
+            - type: custom:fold-entity-row
+              head:
+                type: section
+                label: 'Автоматизации'
+              entities:
+                - automation.basement_cooler_automode_on
+                - automation.set_auto_when_out_temp_lower
+                - automation.set_off_when_out_temp_higher
+                - automation.basement_cooler_set_auto_mode_when_outdoor_temp_equals_or_lower_temp_changed
+                - automation.basement_cooler_set_off_mode_when_outdoor_temp_equals_or_highter_temp_changed
+#  - type: custom:vertical-stack-in-card
+  - type: vertical-stack
+    # title: Температура
+    cards:
+      - type: weather-forecast
+        entity: weather.home_assistant
+
+      - type: custom:mini-graph-card
+        entities:
+          - sensor.bme280_temperature
+        #   - color: red
+        #     entity: sensor.dew_point
+        name: Out temp
+        show:
+          labels: true
+          labels_secondary: true
+        hours_to_show: 48
+        points_per_hour: 1
+        color_thresholds:
+          - value: -40
+            color: "#0000ff"
+          - value: 0
+            color: "#00aaff"
+          - value: 15
+            color: "#00ff55"
+          - value: 30
+            color: "#ffff00"
+
+      - type: custom:mini-graph-card
+        entities:
+          - sensor.ble_temperature_living_room
+          - sensor.0x00158d00044afff0_temperature
+          - sensor.0x00158d00041d6e0b_temperature
+          - sensor.ble_temperature_c_bedroom_bt
+        name: In temp
+        show:
+          labels: true
+        color_thresholds:
+          - value: 18
+            color: "#0000ff"
+          - value: 21
+            color: "#00ff55"
+          - value: 24
+            color: "#ffff00"
+        hours_to_show: 24
+        points_per_hour: 2
+
+#   - type: custom:vertical-stack-in-card
+  - type: vertical-stack
+    cards:
+    - type: horizontal-stack
+      title: "Out"
+      cards:
+        - type: sensor
+          entity: sensor.bme280_temperature
+          graph: line
+          name: Temperature
+        - type: sensor
+          entity: sensor.bme280_humidity
+          graph: line
+          name: Humidity
+        - type: sensor
+          entity: sensor.bme280_pressure_in_mmhg
+          graph: line
+          name: Pressure
+
+    - type: horizontal-stack
+      title: "Living room"
+      cards:
+        - type: sensor
+          entity: sensor.ble_temperature_living_room
+          graph: line
+          name: Temperature
+        - type: sensor
+          entity: sensor.ble_humidity_living_room
+          graph: line
+          name: Humidity
+          
+    - type: horizontal-stack
+      title: "M bedroom"
+      cards:
+        - type: sensor
+          entity: sensor.0x00158d00041d6e0b_temperature
+          graph: line
+          name: Temperature
+        - type: sensor
+          entity: sensor.0x00158d00041d6e0b_humidity
+          graph: line
+          name: Humidity
+          
+    - type: horizontal-stack
+      title: "C bedroom"
+      cards:
+        - type: sensor
+          entity: sensor.0x00158d00044afff0_temperature
+          graph: line
+          name: Temperature
+        - type: sensor
+          entity: sensor.0x00158d00044afff0_humidity
+          graph: line
+          name: Humidity
+          
+    - type: horizontal-stack
+      title: "G bedroom"
+      cards:
+        - type: sensor
+          entity: sensor.0x00158d0003ce7f8d_temperature
+          graph: line
+          name: Temperature
+        - type: sensor
+          entity: sensor.0x00158d0003ce7f8d_humidity
+          graph: line
+          name: Humidity
+          
+    - type: horizontal-stack
+      title: "Basement"
+      cards:
+        - type: sensor
+          entity: sensor.0x00124b001c4b2d3c_temperature
+          graph: line
+          name: Temperature
+        - type: sensor
+          entity: sensor.0x00124b001c4b2d3c_humidity
+          graph: line
+          name: Humidity    
+          
+    - type: horizontal-stack
+      title: "Lumber room"
+      cards:
+        - type: sensor
+          entity: sensor.0x00124b0022417252_temperature
+          graph: line
+          name: Temperature
+        - type: sensor
+          entity: sensor.0x00124b0022417252_humidity
+          graph: line
+          name: Humidity    
+          
+          
+          
+          
+          
+          
+          

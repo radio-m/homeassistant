@@ -1,0 +1,141 @@
+
+# Configure Home Assistant (frontend, api, etc)
+homeassistant:
+  latitude: !secret latitude
+  longitude: !secret longitude
+  elevation: !secret elevation
+  unit_system: metric
+  time_zone: !secret time_zone
+  customize: !include_dir_merge_named includes/customize
+  packages: !include_dir_merge_named includes/packages
+  allowlist_external_dirs :
+    - /config
+
+default_config:
+
+recorder: !include includes/recorder.yaml
+
+logger:
+    default: warning
+    logs:
+      homeassistant.loader: error
+
+wake_on_lan:
+
+mqtt:
+  broker: core-mosquitto  # Локальный брокер
+  discovery: true
+  discovery_prefix: homeassistant
+  client_id: home-assistant-1
+  keepalive: 60
+  username: mqtt
+  password: mqtt
+  birth_message:
+    topic: "tele/hass1/LWT"
+    payload: "Online"
+    qos: 1
+    retain: true
+  will_message:
+    topic: "tele/hass1/LWT"
+    payload: "Offline"
+    qos: 1
+    retain: true
+
+#lovelace
+lovelace:
+  mode: yaml
+  resources:
+    - url: /hacsfiles/canvas-gauge-card/canvas-gauge-card.js
+      type: module
+    - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
+      type: module
+    - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js
+      type: js
+    - url: /hacsfiles/lovelace-fold-entity-row/fold-entity-row.js
+      type: module
+    - url: /hacsfiles/bignumber-card/bignumber-card.js
+      type: js
+    - url: /hacsfiles/atomic_calendar/atomic_calendar.js
+      type: module
+    - url: /hacsfiles/secondaryinfo-entity-row/secondaryinfo-entity-row.js
+      type: module
+    - url: /hacsfiles/lovelace-card-tools/card-tools.js
+      type: module
+    # - url: /hacsfiles/custom-ui/custom-ui.js?v=20200528
+    #   type: module
+    - url: /hacsfiles/stack-in-card/stack-in-card.js
+      type: module
+    - url: /hacsfiles/lovelace-card-mod/card-mod.js
+      type: module
+
+frontend:
+  themes: !include_dir_merge_named themes/
+  extra_module_url:
+    - /hacsfiles/custom-ui/custom-ui.js
+    
+panel_iframe:
+  gateway:
+    title: 'SLS gateway'
+    icon: mdi:access-point-network
+    url: !secret slsip
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+google:
+  client_id: !secret google_client_id 
+  client_secret: !secret google_client_secret
+  
+# Telegram Bot
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_api_key 
+    allowed_chat_ids:
+      - !secret my_chat
+    #   - CHAT_ID_2
+    
+# Router
+asuswrt:
+  host: 192.168.31.1
+  username: !secret router_usr
+  password: !secret router_pwd
+  interface: "eth2.2"
+  sensors:
+    - devices
+#    - upload
+#    - download
+#    - upload_speed
+#    - download_speed
+
+device_tracker:
+  - platform: asuswrt
+    consider_home: 180
+    new_device_defaults:
+      track_new_devices: false
+
+rest_command:
+  narodmon:
+    url: http://narodmon.ru/get?ID={{ID}}&T1={{T1}}&H1={{H1}}&P1={{P1}}
+
+#Folders
+sensor: !include_dir_merge_list includes/sensors
+binary_sensor: !include_dir_merge_list includes/bin_sensor
+automation: !include_dir_merge_list includes/automation
+script: !include_dir_merge_named includes/scripts
+switch: !include_dir_merge_list includes/switches
+
+#Files
+light: !include includes/light.yaml
+scene: !include includes/scenes.yaml
+group: !include includes/groups.yaml
+notify: !include includes/notify.yaml
+timer: !include includes/timer.yaml
+input_boolean: !include includes/input_boolean.yaml
+input_number: !include includes/input_number.yaml
+remote: !include includes/remote.yaml
+ble_monitor: !include includes/ble_monitor.yaml
+influxdb: !include includes/influxdb.yaml
+
+
+

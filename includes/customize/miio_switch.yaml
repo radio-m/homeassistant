@@ -1,0 +1,6 @@
+switch.undertabble_mi_wifi_socket:
+  icon: mdi:monitor-speaker
+  
+switch.xiaomi_power_strip:
+  icon: mdi:led-strip
+

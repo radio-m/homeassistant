@@ -1,0 +1,64 @@
+- alias: roof_light_toggle
+  trigger:
+    - platform: state
+      entity_id: sensor.0x00158d0003faaada_action
+      to: "left"
+  action:
+    - service: switch.toggle
+      entity_id: switch.relay_wall_switch_bedroom
+      
+- alias: underbed_light_10
+  trigger:
+    - platform: state
+      entity_id: sensor.0x00158d0003faaada_action
+      to: "right"
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.magic_light
+        brightness_pct: 10
+    # - service: light.toggle
+    #   entity_id: light.magic_light
+
+- alias: underbed_light_100
+  trigger:
+    - platform: state
+      entity_id: sensor.0x00158d0003faaada_action
+      to: "right_double"
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.magic_light
+        brightness_pct: 100
+        
+- alias: underbed_light_off
+  trigger:
+    - platform: state
+      entity_id: sensor.0x00158d0003faaada_action
+      to: "right_long"
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.magic_light
+      
+- alias: light_off
+  trigger:
+    - platform: state
+      entity_id: sensor.0x00158d0003faaada_action
+      to: "both"
+  action:
+    - service: switch.turn_off
+      entity_id: switch.relay_wall_switch_bedroom
+    - service: light.turn_off
+      entity_id: light.magic_light  
+      
+- alias: underbed_light_toggle
+  trigger:
+    - platform: event
+      event_type: esphome.wall_switch_action
+      event_data:
+        title: dbl_click
+  action:
+    - service: light.toggle
+      data:
+        entity_id: light.magic_light

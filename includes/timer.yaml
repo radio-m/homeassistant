@@ -1,0 +1,23 @@
+  pc:
+    name: 'ПК выкл через'
+    duration: '00:30:00'
+    
+  10_min:
+    name: '10 minutes timer'
+    duration: '00:10:00'
+    
+  20_min:
+    name: '20 minutes timer'
+    duration: '00:20:00'
+    
+  30_min:
+    name: '30 minutes timer'
+    duration: '00:30:00'
+
+  bath_light:
+    name: 'motion bath timer'
+    duration: '00:15:00'
+
+  boiler_low_voltage:
+    name: 'boiler low voltage'
+    duration: '00:10:00'

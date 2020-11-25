@@ -1,0 +1,119 @@
+title: ESPHome 
+icon: mdi:chip
+cards:
+
+  - type: entities
+    title: 'Input energy monitor'
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - binary_sensor.energy_monitor_input
+      - sensor.ip_energy_monitor_input
+      - sensor.status_energy_monitor_input
+      - type: divider
+      - sensor.input_voltage
+      - sensor.input_current
+      - sensor.input_power
+      - sensor.input_power_factor
+      - sensor.input_power_factor_2
+      - sensor.input_energy
+      - sensor.input_frequency
+      - switch.restart_energy_monitor_input
+
+  - type: entities
+    title: 'Gas-heater control'
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - binary_sensor.gas_heater_control
+      - sensor.ip_gas_heater_control
+      - sensor.status_gas_heater_control
+      - type: divider
+   #   - binary_sensor.gas_heater_button_control
+      - sensor.water_temperature
+      - switch.gas_heater_relay
+      - switch.restart_gas_heater_control
+      
+  - type: entities
+    title: 'Wall switch'
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - binary_sensor.wall_switch_bedroom
+      - sensor.ip_wall_switch_bedroom
+      - sensor.status_wall_switch_bedroom
+      - type: divider
+      - binary_sensor.button_wall_switch_bedroom
+      - switch.relay_wall_switch_bedroom
+      - switch.restart_wall_switch_bedroom
+
+  - type: entities
+    title: 'Coridor light'
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - binary_sensor.coridor_light
+      - sensor.ip_coridor_light
+      - sensor.status_coridor_light
+      - type: divider
+      - binary_sensor.coridor_night_light_button
+      - switch.coridor_night_light_relay
+      - switch.restart_coridor_light
+      
+  - type: entities
+    title: 'BME280'
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - binary_sensor.bme280
+      - sensor.ip_bme280
+      - sensor.status_bme280
+      - type: divider
+      - sensor.bme280_temperature
+      - sensor.bme280_humidity
+      - sensor.bme280_pressure
+      - sensor.bme280_pressure_in_mmhg
+      - sensor.dew_point
+      - switch.restart_bme280
+
+  - type: entities
+    title: 'Wireless relay'
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - binary_sensor.diy_wireless_relay
+      - sensor.ip_diy_wireless_relay
+      - sensor.status_diy_wireless_relay
+      - type: divider
+      - binary_sensor.diy_wireless_relay_button
+      - switch.diy_wireless_relay
+      - switch.restart_diy_wireless_relay
+      
+  - type: entities
+    title: 'Magic Light'
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - binary_sensor.magic_light
+      - sensor.ip_magic_light
+      - sensor.status_magic_light
+      - type: divider
+      - light.magic_light
+      - switch.restart_magic_light
+
+
+      
+  - type: entities
+    title: 'Power strip'
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - switch.xiaomi_power_strip
+
+  - type: entities
+    title: 'Wi-Fi socket'
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - switch.undertabble_mi_wifi_socket
+      - switch.broadlink_1

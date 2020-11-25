@@ -1,0 +1,102 @@
+    title: СС 2531
+    icon: mdi:usb-flash-drive
+    
+    cards:
+
+      - type: vertical-stack
+        cards:
+        - type: entities
+          entities:
+          - entity: binary_sensor.sls_state
+            state_color: true
+          - entity: sensor.sls_uptimestr
+          - entity: sensor.sls_rssi
+          - entity: sensor.sls_uptime
+          - entity: sensor.sls_freemem
+          - entity: sensor.sls_ip
+          - entity: sensor.sls_version
+          - entity: binary_sensor.sls_paring
+          - entity: switch.sls_main_join
+            state_color: true
+          show_header_toggle: false
+          title: SLS Gateway
+          state_color: true
+
+      - type: vertical-stack
+        cards:
+        - type: entities
+          entities:
+            - entity: sensor.0x00158d0003a58131_linkquality
+              name: "Бойлер"
+            - entity: sensor.0x00158d0003a52e45_linkquality
+              name: "Холодильник"
+            - entity: sensor.0x00158d0003535c2f_linkquality
+              name: "Посудомойка"
+            - entity: sensor.0x00158d000359b03a_linkquality
+              name: "Кнопка"
+            - entity: sensor.0x00158d00044afff0_linkquality
+              name: "Датчик в детской"
+            - entity: sensor.0x00158d00041d6e0b_linkquality
+              name: "Датчик в спальне"
+            - entity: sensor.0x00158d0003ce7f8d_linkquality
+              name: "Датчик у бабушки"
+            - entity: sensor.0x00158d0003faaada_linkquality
+              name: "Выключатель двойной в детской"
+            - entity: sensor.0x00158d000421fd0c_linkquality
+              name: "Выключатель одинарный в ванной"
+            - entity: sensor.0x00158d00041b19c6_linkquality
+              name: "Выключатель двойной в ванной"
+            - entity: sensor.0x00124b001c4b2d3c_linkquality
+              name: "Датчик температуры в подвале"
+            - entity: sensor.0x00124b0022417252_linkquality
+              name: "Датчик температуры в чулане"
+            - entity: sensor.0x00124b0022254e4d_linkquality
+              name: "Реле вытяжки в подвале"
+            - entity: sensor.0x00124b002135564f_linkquality
+              name: "Датчик движения"
+
+
+      - type: vertical-stack
+        cards:
+        - type: entities
+          entities:
+            - entity: input_number.timer_minutes
+              name: minutes
+            - type: call-service
+              icon: mdi:timer-outline
+              name: "timer"
+              secondary_info: timer.variable
+              action_name: старт
+              service: script.turn_on
+              service_data:
+                entity_id: script.var_timer
+            - entity: timer.variable
+      - type: horizontal-stack
+        cards:
+          - type: entity-button
+            tap_action:
+              action: call-service
+              service: remote.send_command
+              service_data:
+                command: audio_power
+                entity_id: remote.xiaomi_ir_remote
+            show_icon: true
+            entity: remote.xiaomi_ir_remote
+            icon: 'mdi:speaker'
+          - type: entity-button
+            tap_action:
+               action: call-service
+               service: remote.send_command
+               service_data:
+                 command: tv_on
+                 entity_id: remote.xiaomi_ir_remote
+            show_icon: true
+            entity: remote.xiaomi_ir_remote
+            icon: 'mdi:television'
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: climate.basement
+          - type: thermostat
+            entity: climate.basement

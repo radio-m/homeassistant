@@ -1,0 +1,8 @@
+- id: '1549565387339'
+  alias: Narodmon send data every 10 min
+  trigger:
+    - platform: time_pattern
+      minutes: '/10'
+  condition: []
+  action:
+  - service: script.1549561403890

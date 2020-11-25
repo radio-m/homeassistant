@@ -1,0 +1,49 @@
+binary_sensor.energy_monitor_input:
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';
+      
+binary_sensor.gas_heater_control:
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';
+      
+binary_sensor.wall_switch_bedroom:
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';
+      
+binary_sensor.coridor_light:
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';
+      
+binary_sensor.bme280:
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';
+
+binary_sensor.magic_light:
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';
+      
+binary_sensor.diy_wireless_relay:
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';
+binary_sensor.gas_heater_relay:
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(255, 195, 0)';
+      else return 'rgb(0, 153, 255)';
+    icon: >
+      if (state === 'on') return 'mdi:radiator';
+      else return 'mdi:radiator-disabled';

@@ -1,0 +1,11 @@
+sensor.ble_temperature_living_room:
+ friendly_name: Living room temperature
+ 
+sensor.ble_humidity_living_room:
+ friendly_name: Living room humidity
+ 
+sensor.ble_humidity_c_bedroom_bt:
+ friendly_name: C bedroom BT humidity
+ 
+sensor.ble_temperature_c_bedroom_bt:
+ friendly_name: C bedroom BT temperature

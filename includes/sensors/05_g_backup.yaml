@@ -1,0 +1,23 @@
+  - platform: template
+    sensors:
+      last_google_backup:
+        friendly_name: 'Последний бэкап'
+        value_template: >
+                       {% if states.sensor.snapshot_backup %}
+                         {{ (as_timestamp(state_attr('sensor.snapshot_backup','last_snapshot'))) | timestamp_custom("%d.%m.%Y %H:%M") }} 
+                       {% endif %}
+        icon_template: mdi:calendar-check-outline
+
+        # value_template: '{{ as_timestamp(states.sensor.snapshot_backup.attributes.last_snapshot) | timestamp_custom("%d.%m.%y %H:%M") }}'
+
+#   - platform: template
+#     sensors:
+#       gdrive_files:
+#         friendly_name: 'Бэкапов на G диске'
+#         value_template: '{{ states.sensor.snapshot_backup.attributes.snapshots_in_google_drive }}'
+
+#   - platform: template
+#     sensors:
+#       local_files:
+#         friendly_name: 'Локальных бэкапов'
+#         value_template: '{{ states.sensor.snapshot_backup.attributes.snapshots_in_hassio }}'

@@ -1,0 +1,99 @@
+# Включение света в ванной по датчику движения
+- alias: Включение света в ванной по датчику движения
+  initial_state: false
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.0x00124b002135564f_occupancy
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: light.bath
+      state: 'off'
+    - condition: time
+      after: 00:00:00
+    - condition: sun
+      before: sunrise
+  action:
+    - service: light.turn_on
+      entity_id: light.bath
+
+# Включение таймера освещения в ванной
+- alias: Включение таймера освещения в ванной
+  initial_state: false
+  trigger:
+    - platform: state
+      entity_id: light.bath
+      to: 'on'
+  condition:
+    - condition: time
+      after: 00:00:00
+    - condition: sun
+      before: sunrise
+  action:
+    - service: timer.cancel
+      entity_id: timer.bath_light
+    - service: timer.start
+      entity_id: timer.bath_light
+
+# Автоматическое выключение света в ванной по таймеру
+- alias: Автоматическое выключение света в ванной по таймеру
+  initial_state: false
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.bath_light
+  condition:
+    - condition: state
+      entity_id: light.bath
+      state: 'on'
+    - condition: time
+      after: 00:00:00
+    - condition: sun
+      before: sunrise
+  action:
+    - service: light.turn_off
+      entity_id: light.bath
+      
+# Сброс таймера если свет в ванной выключен
+- alias: Сброс таймера если свет в ванной выключен
+  initial_state: false
+  trigger:
+    - platform: state
+      entity_id: light.bath
+      from: 'on'
+      to: 'off'
+  condition:
+    - condition: time
+      after: 00:00:00
+    - condition: sun
+      before: sunrise
+  action:
+    - service: timer.cancel
+      entity_id: timer.bath_light
+    - service: automation.turn_off
+      entity_id: automation.vkliuchenie_sveta_v_vannoi_po_datchiku_dvizheniia
+    - delay: 00:02:00
+    - service: automation.turn_on
+      entity_id: automation.vkliuchenie_sveta_v_vannoi_po_datchiku_dvizheniia
+
+# # Обновление таймера освещения в ванной      
+# - alias: Обновление таймера освещения в ванной
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.0x00124b002135564f_occupancy
+#       to: 'on'
+#   condition:
+#     - condition: state
+#       entity_id: light.bath
+#       state: 'on'
+#     - condition: time
+#       after: 00:00:00
+#     - condition: sun
+#       before: sunrise
+#   action:
+#     - service: timer.cancel
+#       entity_id: timer.bath_light
+#     - service: timer.start
+#       entity_id: timer.bath_light
+

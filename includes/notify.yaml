@@ -1,0 +1,4 @@
+# Example configuration.yaml entry for the notifier
+  - name: telegram
+    platform: telegram
+    chat_id: !secret my_chat

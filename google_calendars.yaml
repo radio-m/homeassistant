@@ -1,0 +1,29 @@
+- cal_id: "doc.zerg@gmail.com"
+  entities:
+  - device_id: google_calendar
+    name: Give me everything
+    track: true
+
+- cal_id: sn7mune1njb877jo46b9g3hmsg@group.calendar.google.com
+  entities:
+  - device_id: prazdniki_ukrainy
+    ignore_availability: true
+    name: "Holidays in Ukraine"
+    track: true
+    max_results: 15
+
+- cal_id: addressbook#contacts@group.v.calendar.google.com
+  entities:
+  - device_id: contacts
+    ignore_availability: true
+    name: Contacts
+    track: true
+    max_results: 15
+
+- cal_id: ru.ukrainian#holiday@group.v.calendar.google.com
+  entities:
+  - device_id: ru_prazdniki_ukrainy
+    ignore_availability: true
+    name: "Holidays in Ukraine ru"
+    track: true
+    max_results: 15

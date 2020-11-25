@@ -1,0 +1,19 @@
+- alias: motion_light_automations_on
+  trigger:
+    - platform: state
+      entity_id: sensor.0x00158d000359b03a_action
+      to: "single"
+  action:
+    - service: homeassistant.turn_on
+      entity_id: group.motion_light
+
+- alias: motion_light_automations_off
+  trigger:
+    - platform: state
+      entity_id: sensor.0x00158d000359b03a_action
+      to: "double"
+  action:
+    - service: homeassistant.turn_off
+      entity_id: group.motion_light
+    - service: timer.cancel
+      entity_id: timer.bath_light

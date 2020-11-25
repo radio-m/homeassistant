@@ -1,0 +1,90 @@
+  username: homeassistant
+  password: homeassistant
+  max_retries: 3
+  default_measurement: state
+  include:
+    entities:
+      - climate.westen
+      - binary_sensor.gas_heater_relay
+      - switch.gas_heater_relay
+      - sensor.heater_relay_status
+      - sensor.thermostat_status
+      - group.central_heater
+      
+      - climate.basement
+
+#System
+      - sensor.cpu_temperature
+      - sensor.processor_use
+      - sensor.memory_use_percent
+      - sensor.home_assistant_v2_db
+
+#BME280
+      - sensor.ds18b20_out_temperature
+      - sensor.bme280_humidity
+      - sensor.bme280_pressure
+      - sensor.bme280_pressure_in_mmhg
+      - sensor.bme280_temperature
+      - sensor.dew_point
+
+#zigbee sensors
+#Mi
+      - sensor.0x00158d00041d6e0b_temperature
+      - sensor.0x00158d00044afff0_temperature
+      - sensor.0x00158d0003ce7f8d_temperature
+
+      - sensor.0x00158d00041d6e0b_humidity
+      - sensor.0x00158d00044afff0_humidity
+      - sensor.0x00158d0003ce7f8d_humidity
+#SONOff
+      - sensor.0x00124b0022417252_temperature
+      - sensor.0x00124b001c4b2d3c_temperature
+      
+      - sensor.0x00124b0022417252_humidity
+      - sensor.0x00124b001c4b2d3c_humidity
+
+#BT sensors
+      - sensor.ble_humidity_c_bedroom_bt
+      - sensor.ble_temperature_c_bedroom_bt
+      - sensor.ble_humidity_living_room
+      - sensor.ble_temperature_living_room
+
+#Power current
+      - sensor.load_158d0003535c2f
+      - sensor.load_158d0003a52e45
+      - sensor.load_158d0003a58131
+      - sensor.load_broadlink_1
+      - sensor.load_total_energy
+      - sensor.load_xiaomi_power_strip
+      - sensor.load_input_energy
+
+      - sensor.0x00158d0003535c2f_power
+      - sensor.0x00158d0003a52e45_power
+      - sensor.0x00158d0003a58131_power
+
+#ASUSwrt
+      - sensor.asuswrt_download_speed
+      - sensor.asuswrt_upload_speed
+
+#Energy monitor
+      - sensor.input_current
+      - sensor.input_energy
+      - sensor.input_frequency
+      - sensor.input_power
+      - sensor.input_power_factor
+      - sensor.input_power_factor_2
+      - sensor.input_voltage
+      
+      - sensor.mqtt_power_today_input_energy
+      - sensor.mqtt_power_month_input_energy
+      - sensor.mqtt_power_yesterday_input_energy
+      - sensor.mqtt_power_lastmonth_input_energy
+      
+  component_config:
+    counter.hotw:
+      override_measurement: lt
+  component_config_glob:
+    sensor.*humidity*:
+      override_measurement: humidity
+    sensor.*temperature*:
+      override_measurement: temperature

@@ -1,0 +1,68 @@
+sls_gateway:
+    switch:
+      - platform: mqtt
+        name: "SLS Main join"
+        state_topic: "Zigbee4A18/bridge/config/permit_join"
+        command_topic: "Zigbee4A18/bridge/config/permit_join"
+        payload_on: "true"
+        payload_off: "false"
+    sensor:
+    ###### Шлюз основной ######
+      - platform: mqtt
+        name: "SLS uptime"
+        state_topic: "Zigbee4A18/bridge/config"
+        unit_of_measurement: 'sec'
+        value_template: "{{ value_json.Uptime }}"
+      - platform: mqtt
+        name: "SLS UptimeStr"
+        state_topic: "Zigbee4A18/bridge/config"
+        value_template: "{{ value_json.UptimeStr }}"
+      - platform: mqtt
+        name: "SLS IP"
+        state_topic: "Zigbee4A18/bridge/config"
+        value_template: "{{ value_json.IP }}"
+      - platform: mqtt
+        name: "SLS RSSI"
+        state_topic: "Zigbee4A18/bridge/config"
+        unit_of_measurement: 'dB'
+        value_template: "{{ value_json.RSSI }}"
+      - platform: mqtt
+        name: "SLS Version"
+        state_topic: "Zigbee4A18/bridge/config"
+        value_template: "{{ value_json.Version }}"
+      - platform: mqtt
+        name: "SLS FreeMem"
+        state_topic: "Zigbee4A18/bridge/config"
+        unit_of_measurement: 'Byte'
+        value_template: "{{ value_json.FreeMem }}"
+    binary_sensor:
+    #SLS paring
+      - platform: mqtt
+        name: "SLS paring"
+        state_topic: "Zigbee4A18/bridge/config"
+        payload_on: "True"
+        payload_off: "False"
+        value_template: '{{ value_json.permit_join }}'
+      - platform: mqtt
+        name: "SLS state"
+        state_topic: "Zigbee4A18/bridge/state"
+        payload_on: "online"
+        payload_off: "offline"
+    
+    automation:
+      - alias: sls_offline
+        description: 'Notify when SLS gateway offline'
+        trigger:
+        - platform: state
+          entity_id: binary_sensor.sls_state
+        condition:
+        action:
+        - service: notify.telegram
+          data_template:
+            message: >
+              {% if is_state('binary_sensor.sls_state', 'on') %}
+                SLS шлюз онлайн ) {{ now() }}
+              {% else %}
+                SLS шлюз оффлайн ( {{ now() }}
+              {% endif %}
+        mode: single

@@ -1,0 +1,9 @@
+  - platform: wake_on_lan
+    mac: 30:9C:23:82:3F:67
+    name: my_pc
+    host: 192.168.31.235
+    turn_off:
+      service: hassio.addon_stdin
+      data:
+        addon: core_rpc_shutdown
+        input: my_pc

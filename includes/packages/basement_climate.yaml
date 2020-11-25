@@ -1,0 +1,160 @@
+basement:
+  ### Climate автор WildeRNS (//4pda.ru/forum/index.php?showuser=499932)
+  climate:
+    - platform: generic_thermostat
+      name: Basement
+      heater: switch.0x00124b0022254e4d_switch
+      target_sensor: sensor.0x00124b001c4b2d3c_temperature #sensor.mi_t_582d3434ca5b # temp sensor in room
+      ac_mode: True
+      target_temp: 10
+      min_temp: 0
+      max_temp: 20
+      hot_tolerance: 0.5
+      cold_tolerance: 0.5
+      min_cycle_duration:
+        minutes: 10
+    #   initial_hvac_mode: "cool"
+      precision: 0.5
+
+  group:
+      cooler_show_automations:
+        name: Show Cooler automations
+        entities:
+          - automation.basement_cooler_automode_on
+          - automation.set_auto_when_out_temp_lower
+          - automation.set_off_when_out_temp_higher
+          - automation.basement_cooler_set_auto_mode_when_outdoor_temp_equals_or_lower_temp_changed
+          - automation.basement_cooler_set_off_mode_when_outdoor_temp_equals_or_highter_temp_changed
+
+  input_boolean:
+    cooler_automation_active:
+      name: 'Cooler Automation'
+
+  input_select:
+    basement_automode_cooler:
+      name: Select Basement Cooler Mode
+      options:
+        - 'Auto'
+        - 'Manual'
+        - 'Off'
+
+  input_number:
+    basement_set_outdoor_temp:
+      name: Basement set outdoor temp
+      initial: 5
+      min: 0
+      max: 15
+      step: 0.5
+      unit_of_measurement: "°C"
+      mode: box
+      
+  automation:
+    - alias: "Basement cooler off"
+      trigger:
+        platform: state
+        entity_id: input_select.basement_automode_cooler
+        to: 'Off'
+      condition:
+         - condition: state
+           entity_id: input_boolean.cooler_automation_active
+           state: 'on'
+      action:
+        - service: climate.set_hvac_mode
+          data:
+            entity_id: climate.basement
+            hvac_mode: "off"
+
+    - alias: "Basement cooler automode on"
+      trigger:
+        platform: state
+        entity_id: input_select.basement_automode_cooler
+        to: 'Auto'
+      condition:
+         - condition: state
+           entity_id: input_boolean.cooler_automation_active
+           state: 'on'
+      action:
+        - service: climate.set_hvac_mode
+          data:
+            entity_id: climate.basement
+            hvac_mode: "cool"
+
+    - alias: "Set auto when out temp lower"
+      trigger:
+        - platform: state
+          entity_id: sensor.bme280_temperature
+      condition:
+         - condition: state
+           entity_id: input_select.basement_automode_cooler
+           state: 'Off'
+         - condition: template
+           value_template: "{{ (states.sensor.bme280_temperature.state|float) <= (states.input_number.basement_set_outdoor_temp.state|float) }}"
+      action:
+        - service: input_select.select_option
+          data:
+            entity_id: input_select.basement_automode_cooler
+            option: "Auto"
+        - service: automation.turn_on
+          entity_id: automation.set_off_when_out_temp_higher
+        - service: automation.turn_off
+          entity_id: automation.set_auto_when_out_temp_lower
+
+    - alias: "Set off when out temp higher"
+      trigger:
+        - platform: state
+          entity_id: sensor.bme280_temperature
+      condition:
+         - condition: template
+           value_template: "{{ (states.sensor.bme280_temperature.state|float) >= (states.input_number.basement_set_outdoor_temp.state|float) }}"
+         - condition: template
+           value_template: "{{ states.input_select.basement_automode_cooler.state != 'Manual' }}"
+      action:
+        - service: input_select.select_option
+          data:
+            entity_id: input_select.basement_automode_cooler
+            option: "Off"
+        - service: automation.turn_on
+          entity_id: automation.set_auto_when_out_temp_lower
+        - service: automation.turn_off
+          entity_id: automation.set_off_when_out_temp_higher
+
+    - alias: "Basement cooler set auto mode when outdoor temp equals or lower temp changed"
+      trigger:
+        - platform: state
+          entity_id: input_number.basement_set_outdoor_temp
+      condition:
+         - condition: state
+           entity_id: input_boolean.cooler_automation_active
+           state: 'on'
+         - condition: state
+           entity_id: input_select.basement_automode_cooler
+           state: 'Off'
+         - condition: template
+           value_template: "{{ (states.sensor.bme280_temperature.state|float) <= (states.input_number.basement_set_outdoor_temp.state|float) }}"
+      action:
+        - service: input_select.select_option
+          data:
+            entity_id: input_select.basement_automode_cooler
+            option: "Auto"
+
+    - alias: "Basement cooler set off mode when outdoor temp equals or highter temp changed"
+      trigger:
+        - platform: state
+          entity_id: input_number.basement_set_outdoor_temp
+      condition:
+         - condition: state
+           entity_id: input_boolean.cooler_automation_active
+           state: 'on'
+         - condition: template
+           value_template: "{{ states.input_select.basement_automode_cooler.state != 'Manual' }}"
+         - condition: template
+           value_template: "{{ (states.sensor.bme280_temperature.state|float) >= (states.input_number.basement_set_outdoor_temp.state|float) }}"
+      action:
+        - service: input_select.select_option
+          data:
+            entity_id: input_select.basement_automode_cooler
+            option: "Off"
+
+
+
+

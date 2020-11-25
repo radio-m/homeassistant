@@ -1,0 +1,86 @@
+# # Вкладка **** Бойлер ****
+
+# title: Бойлер
+# icon: 'mdi:water-boiler'
+# cards:
+#     - type: entities
+#       show_header_toggle: false
+#       entities:
+#       - entity: switch.0x00158d0003a58131_switch
+#         name: Питание бойлера
+#         secondary_info: last-changed
+#         icon: 'mdi:power-standby'
+#       - entity: input_boolean.boiler_001_night
+#         name: Ночной режим
+#       - entity: input_boolean.boiler_001_auto_off
+#         name: Автоотключение бойлера
+#       - entity: sensor.load_158d0003a58131
+#         name: Потребление сейчас
+#         icon: 'mdi:gauge'
+
+#     - type: glance
+#       title: Потребление эл./энергии за день
+#       columns: 3
+#       entities:
+#       - entity: sensor.energy_total_day_load_158d0003a58131_001
+#         name: Всего
+#         icon: 'mdi:counter'
+#       - entity: sensor.load_158d0003a58131_daily_energy_001_day
+#         name: Тариф "День"
+#         icon: 'mdi:counter'
+#       - entity: sensor.load_158d0003a58131_daily_energy_001_night
+#         name: Тариф "Ночь"
+#         icon: 'mdi:counter'
+
+#     - type: glance
+#       title: Потребление эл./энергии за неделю
+#       columns: 3
+#       entities:
+#       - entity: sensor.energy_total_weekly_load_158d0003a58131_001
+#         name: Всего
+#         icon: 'mdi:counter'
+#       - entity: sensor.load_158d0003a58131_weekly_energy_001_day
+#         name: Тариф "День"
+#         icon: 'mdi:counter'
+#       - entity: sensor.load_158d0003a58131_weekly_energy_001_night
+#         name: Тариф "Ночь"
+#         icon: 'mdi:counter'
+
+#     - type: glance
+#       title: Потребление эл./энергии за месяц
+#       columns: 3
+#       entities:
+#       - entity: sensor.energy_total_month_load_158d0003a58131_001
+#         name: Всего
+#         icon: 'mdi:counter'
+#       - entity: sensor.load_158d0003a58131_monthly_energy_001_day
+#         name: Тариф "День"
+#         icon: 'mdi:counter'
+#       - entity: sensor.load_158d0003a58131_monthly_energy_001_night
+#         name: Тариф "Ночь"
+#         icon: 'mdi:counter'
+
+
+# # Начислено
+#     - type: glance
+#       title: Начислено за потребление бойлера
+#       column_width: calc(100% / 3)
+#       entities:
+#       - entity: sensor.energy_payment_day_load_158d0003a58131_001
+#         name: За день
+#       - entity: sensor.energy_payment_week_load_158d0003a58131_001
+#         name: За неделю
+
+#       - entity: sensor.energy_payment_month_load_158d0003a58131_001
+#         name: За месяц
+#         icon: 'mdi:counter'
+
+# # Ввод тарифов
+#     - type: glance
+#       title: Тарифы на электроэнергию (₴ за кВт·ч)
+#       column_width: calc(100% / 2)
+#       entities:
+#       - entity: input_number.energy_tariff_day
+#         name: Дневной тариф
+#       - entity: input_number.energy_tariff_night
+#         name: Ночной тариф
