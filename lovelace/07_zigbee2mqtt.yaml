@@ -100,3 +100,9 @@
               - entity: climate.basement
           - type: thermostat
             entity: climate.basement
+          - type: 'custom:button-card'
+            entity: light.magic_light
+            icon: mdi:sofa
+            color: auto
+            tap_action:
+              action: more-info    

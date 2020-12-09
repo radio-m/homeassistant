@@ -1,5 +1,5 @@
-  username: homeassistant
-  password: homeassistant
+  username: !secret influx_usr
+  password: !secret influx_pwd
   max_retries: 3
   default_measurement: state
   include:

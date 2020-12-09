@@ -14,7 +14,7 @@ cards:
             - entity: input_boolean.heater_automation_active
             - entity: climate.westen
               name: "Котел Westen"
-            - entity: sensor.0x00158d00044afff0_temperature #mi_t_582d3434ca5b
+            - entity: sensor.0x00158d00044afff0_temperature # ble_temperature_living_room
               name: "Температура в домі"
             - entity: sensor.bme280_temperature
               name: "Температура на вулиці"

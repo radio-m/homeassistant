@@ -6,22 +6,22 @@ cards:
       cards:
       - type: iframe
         id: graph1
-        url: !secret graph3
+        url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=4
         aspect_ratio: 35%
 
       - type: iframe
         id: graph1
-        url: !secret graph4
+        url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=6
         aspect_ratio: 35%
 
       - type: iframe
         id: graph1
-        url: !secret graph5
+        url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=8
         aspect_ratio: 35%
 
       - type: iframe
         id: graph1
-        url: !secret graph6
+        url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=2
         aspect_ratio: 35%
 
     - type: entities

@@ -76,7 +76,13 @@
       - sensor.input_power_factor
       - sensor.input_power_factor_2
       - sensor.input_voltage
-      
+
+# Persons
+      - person.anatolii
+      - person.olga
+      - person.sergei
+      - person.svetlana
+ 
   exclude:
     entities:
       - switch.restart_gas_heater_control

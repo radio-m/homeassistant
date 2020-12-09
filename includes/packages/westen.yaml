@@ -4,13 +4,13 @@ westen:
     - platform: generic_thermostat
       name: Westen
       heater: switch.gas_heater_relay
-      target_sensor: sensor.0x00158d00044afff0_temperature #sensor.mi_t_582d3434ca5b # temp sensor in room
+      target_sensor: sensor.0x00158d00044afff0_temperature # temp sensor in room
       ac_mode: False
       target_temp: 22
       min_temp: 18
       max_temp: 25
       hot_tolerance: 0.5
-      cold_tolerance: 0.5
+      cold_tolerance: 0.2
       away_temp: 18
   
   group:

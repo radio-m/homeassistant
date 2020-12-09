@@ -56,7 +56,7 @@ cards:
     cards:
     - type: iframe
       id: graph1
-      url: !secret graph1
+      url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/je0Sj6WRz/cpu-parameters?orgId=1&panelId=2
       aspect_ratio: 75%
     - type: horizontal-stack
       cards:
@@ -97,16 +97,33 @@ cards:
     - type: entities
       show_header_toggle: false
       entities:
-        - person.anatolii
-        - person.svetlana
-        - person.sergei
-        - person.olga
+        - entity: person.anatolii
+          secondary_info: >-
+            Updated: [[ sensor.anatolii_last_update.state ]]<br>
+            Changed: [[ sensor.anatolii_last_change.state ]]
+          type: 'custom:secondaryinfo-entity-row'
+        - entity: person.svetlana
+          secondary_info: >-
+            Updated: [[ sensor.svetlana_last_update.state ]]<br>
+            Changed: [[ sensor.svetlana_last_change.state ]]
+          type: 'custom:secondaryinfo-entity-row'
+        - entity: person.sergei
+          secondary_info: >-
+            Updated: [[ sensor.sergei_last_update.state ]]<br>
+            Changed: [[ sensor.sergei_last_change.state ]]
+          type: 'custom:secondaryinfo-entity-row'
+        - entity: person.olga
+          secondary_info: >-
+            Updated: [[ sensor.olga_last_update.state ]]<br>
+            Changed: [[ sensor.olga_last_change.state ]]
+          type: 'custom:secondaryinfo-entity-row'
+
   - type: vertical-stack
     cards:
 
     - type: iframe
       id: graph2
-      url: !secret graph2
+      url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=2
       aspect_ratio: 75%
 
     - type: glance
