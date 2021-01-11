@@ -86,6 +86,7 @@ cards:
 
   - type: entities
     entities:
+    - switch.broadlink_2
     - type: custom:fold-entity-row
       head: group.motion_light
       group_config:

@@ -54,6 +54,8 @@
       - sensor.load_158d0003a52e45
       - sensor.load_158d0003a58131
       - sensor.load_broadlink_1
+      - sensor.load_broadlink_2
+      - sensor.load_bw_shp8
       - sensor.load_total_energy
       - sensor.load_xiaomi_power_strip
       - sensor.load_input_energy
@@ -61,6 +63,7 @@
       - sensor.0x00158d0003535c2f_power
       - sensor.0x00158d0003a52e45_power
       - sensor.0x00158d0003a58131_power
+      - sensor.bw_shp8_power
 
 #ASUSwrt
       - sensor.asuswrt_download_speed

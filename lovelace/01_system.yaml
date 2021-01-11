@@ -1,9 +1,15 @@
 title: System
 icon: mdi:cog
+background: center / cover no-repeat fixed url('https://www.verdict.co.uk/wp-content/uploads/2019/01/shutterstock_1107359975-e1547040824633.jpg')
 cards:
 
   - type: entities
     show_header_toggle: false
+    style: |
+      ha-card {
+        --ha-card-background: rgba(0, 0, 0, 0.6);
+        color: white
+        }
     entities:
     - type: 'custom:bignumber-card'
       entity: sensor.time
@@ -45,12 +51,18 @@ cards:
       name: Community updates avaliable
       icon: mdi:update
     - type: divider
-    - type: call-service
-      icon: mdi:restart
-      name: Перезагрузка
-      action_name: выполнить
-      service: homeassistant.restart
-
+    - entity: sensor.home_assistant_v2_db
+      name: Объем базы данных
+      icon: mdi:database
+    - type: divider
+    - entity: zone.home
+      icon: 'mdi:restart'
+      name: "Перезагрузить НА"
+      tap_action:
+        action: call-service
+        confirmation:
+          text: Are you sure you want to restart?
+        service: homeassistant.restart
 
   - type: vertical-stack
     cards:
@@ -96,27 +108,16 @@ cards:
 #         name: CPU
     - type: entities
       show_header_toggle: false
+      style: |
+        ha-card {
+          --ha-card-background: rgba(0, 0, 0, 0.6);
+          color: white
+          }
       entities:
         - entity: person.anatolii
-          secondary_info: >-
-            Updated: [[ sensor.anatolii_last_update.state ]]<br>
-            Changed: [[ sensor.anatolii_last_change.state ]]
-          type: 'custom:secondaryinfo-entity-row'
         - entity: person.svetlana
-          secondary_info: >-
-            Updated: [[ sensor.svetlana_last_update.state ]]<br>
-            Changed: [[ sensor.svetlana_last_change.state ]]
-          type: 'custom:secondaryinfo-entity-row'
         - entity: person.sergei
-          secondary_info: >-
-            Updated: [[ sensor.sergei_last_update.state ]]<br>
-            Changed: [[ sensor.sergei_last_change.state ]]
-          type: 'custom:secondaryinfo-entity-row'
         - entity: person.olga
-          secondary_info: >-
-            Updated: [[ sensor.olga_last_update.state ]]<br>
-            Changed: [[ sensor.olga_last_change.state ]]
-          type: 'custom:secondaryinfo-entity-row'
 
   - type: vertical-stack
     cards:
@@ -130,6 +131,11 @@ cards:
       show_icon: true
       show_name: true
       show_state: true
+      style: |
+        ha-card {
+          --ha-card-background: rgba(0, 0, 0, 0.6);
+          color: white
+          }
       title: Coronavirus in Ukraine
       entities:
         - entity: sensor.ukraine_coronavirus_confirmed
@@ -144,25 +150,15 @@ cards:
         - entity: sensor.ukraine_coronavirus_deaths
           icon: 'mdi:emoticon-dead-outline'
           name: Deaths
-    - type: custom:mini-graph-card
-      entities:
-        - entity: sensor.home_assistant_v2_db
-          name: База данных
-          color: '#0066ff'
-      icon: mdi:database
-      show:
-        graph: bar
-    - type: entities
-      show_header_toggle: false
-      entities:
-        - entity: sensor.home_assistant_v2_db
-          name: Объем базы данных
-          icon: mdi:database
-          secondary_info: entity-id
 
   - type: glance
     title: '-- Component Count --'
     columns: 4
+    style: |
+        ha-card {
+          --ha-card-background: rgba(0, 0, 0, 0.6);
+          color: white
+          }
     entities:
           - entity: sensor.count_automations
             name: Automations

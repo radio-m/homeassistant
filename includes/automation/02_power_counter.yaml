@@ -99,7 +99,33 @@
         payload: '{{(states.sensor.mqtt_power_month_broadlink_1.state | float +
                     (states.sensor.load_broadlink_1.state | float /120000))|round(5)}}'
         retain: true
-        
+
+##### Broadlink 2
+    - service: mqtt.publish
+      data_template:
+        topic: "power/broadlink_2/today"
+        payload: '{{(states.sensor.mqtt_power_today_broadlink_2.state | float +
+                    (states.sensor.load_broadlink_2.state | float /120000))|round(5)}}'
+        retain: true
+    - service: mqtt.publish
+      data_template:
+        topic: "power/broadlink_2/month"
+        payload: '{{(states.sensor.mqtt_power_month_broadlink_2.state | float +
+                    (states.sensor.load_broadlink_2.state | float /120000))|round(5)}}'
+        retain: true
+
+#BlitzWolf BW-SHP8
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp8/today"
+        payload: '{{(states.sensor.mqtt_power_today_bw_shp8.state | float +
+                    (states.sensor.load_bw_shp8.state | float /120000))|round(5)}}'
+        retain: true
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp8/month"
+        payload: '{{(states.sensor.mqtt_power_month_bw_shp8.state | float +
+                    (states.sensor.load_bw_shp8.state | float /120000))|round(5)}}'
 ############################################################################################################
 ##### Начало дня    
 - alias: 00_power_new_day
@@ -145,12 +171,23 @@
         topic: "power/xiaomi_power_strip/yesterday"
         payload: '{{(states.sensor.mqtt_power_today_xiaomi_power_strip.state | float )|round(5)}}'
         retain: true
-
-##### Broadlink 1       
+##### Broadlink 1
     - service: mqtt.publish
       data_template:
         topic: "power/broadlink_1/yesterday"
         payload: '{{(states.sensor.mqtt_power_today_broadlink_1.state | float )|round(5)}}'
+        retain: true
+##### Broadlink 2
+    - service: mqtt.publish
+      data_template:
+        topic: "power/broadlink_2/yesterday"
+        payload: '{{(states.sensor.mqtt_power_today_broadlink_2.state | float )|round(5)}}'
+        retain: true
+#BlitzWolf BW-SHP8      
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp8/yesterday"
+        payload: '{{(states.sensor.mqtt_power_today_bw_shp8.state | float )|round(5)}}'
         retain: true
 
     - delay: 00:00:05
@@ -196,6 +233,18 @@
     - service: mqtt.publish
       data_template:
         topic: "power/broadlink_1/today"
+        payload: '{{ 0.0 }}'
+        retain: true
+##### Broadlink 2
+    - service: mqtt.publish
+      data_template:
+        topic: "power/broadlink_2/today"
+        payload: '{{ 0.0 }}'
+        retain: true
+#BlitzWolf BW-SHP8
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp8/today"
         payload: '{{ 0.0 }}'
         retain: true
 
@@ -254,6 +303,18 @@
         topic: "power/broadlink_1/lastmonth"
         payload: '{{(states.sensor.mqtt_power_month_broadlink_1.state | float )|round(5)}}'
         retain: true
+##### Broadlink 2
+    - service: mqtt.publish
+      data_template:
+        topic: "power/broadlink_2/lastmonth"
+        payload: '{{(states.sensor.mqtt_power_month_broadlink_2.state | float )|round(5)}}'
+        retain: true
+#BlitzWolf BW-SHP8
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp8/lastmonth"
+        payload: '{{(states.sensor.mqtt_power_month_bw_shp8.state | float )|round(5)}}'
+        retain: true
 
     - delay: 00:00:05
 
@@ -298,5 +359,17 @@
     - service: mqtt.publish
       data_template:
         topic: "power/broadlink_1/month"
+        payload: '{{ 0.0 }}'
+        retain: true
+##### Broadlink 2
+    - service: mqtt.publish
+      data_template:
+        topic: "power/broadlink_2/month"
+        payload: '{{ 0.0 }}'
+        retain: true
+#BlitzWolf BW-SHP8
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp8/month"
         payload: '{{ 0.0 }}'
         retain: true

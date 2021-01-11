@@ -68,21 +68,21 @@ cards:
     - type: entities
       show_header_toggle: false
       entities:
-      - entity: sensor.load_158d0003a58131
+      - entity: sensor.load_bw_shp8
         secondary_info: >-
           сегодня: <b>[[
-          sensor.mqtt_power_today_158d0003a58131.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_today_bw_shp8.state ]]</b> кВт⋅ч<br>
           этот месяц: <b>[[
-          sensor.mqtt_power_month_158d0003a58131.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_month_bw_shp8.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_month_158d0003a58131.state
+          sensor.money_month_bw_shp8.state
           ]]</b> грн<br>
           вчера: <b>[[
-          sensor.mqtt_power_yesterday_158d0003a58131.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_yesterday_bw_shp8.state ]]</b> кВт⋅ч<br>
           прошлый месяц: <b>[[
-          sensor.mqtt_power_lastmonth_158d0003a58131.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_lastmonth_bw_shp8.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_lastmonth_158d0003a58131.state ]]</b> грн
+          sensor.money_lastmonth_bw_shp8.state ]]</b> грн
         type: 'custom:secondaryinfo-entity-row'
 # Холодильник
     - type: entities
@@ -567,8 +567,9 @@ cards:
         show_header_toggle: false
         entities:
 
-        - entity: switch.0x00158d0003a58131_switch
+        - entity: switch.bw_shp8_relay
           secondary_info: last-changed
+        - entity: sensor.bw_shp8_voltage
         - entity: switch.0x00158d0003a52e45_switch
         - entity: switch.0x00158d0003535c2f_switch
 

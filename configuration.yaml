@@ -14,10 +14,11 @@ homeassistant:
       trusted_networks:
         - 192.168.31.0/24
     - type: homeassistant
-#   external_url: !secret ext_ip
-#   internal_url: !secret int_ip
+  external_url: !secret ext_ip
+  internal_url: https://192.168.31.125:8123
 
 # http:
+#   server_port: 433
 #   ssl_certificate: /ssl/fullchain.pem
 #   ssl_key: /ssl/privkey.pem
 #   ip_ban_enabled: false
@@ -89,7 +90,7 @@ panel_iframe:
   gateway:
     title: 'SLS gateway'
     icon: mdi:access-point-network
-    url: !secret slsip
+    url: /slsgateway/
 
 # Text to speech
 tts:
@@ -154,7 +155,6 @@ timer: !include includes/timer.yaml
 input_boolean: !include includes/input_boolean.yaml
 input_number: !include includes/input_number.yaml
 remote: !include includes/remote.yaml
-ble_monitor: !include includes/ble_monitor.yaml
 influxdb: !include includes/influxdb.yaml
 
 

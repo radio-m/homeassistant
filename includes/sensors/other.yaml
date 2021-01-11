@@ -19,21 +19,3 @@
 #       attribute_templates:
 #         entities: >
 #           {{ states | selectattr('state', 'in', ['unavailable', 'unknown', 'none']) | map(attribute='entity_id') | list | join('\n') }}
-- platform: template
-  sensors:
-    anatolii_last_update:
-      value_template: "{{ as_timestamp(states.person.anatolii.last_updated) | timestamp_custom('%H:%M %d.%m',True) }}"
-    anatolii_last_change:
-      value_template: "{{ as_timestamp(states.person.anatolii.last_changed) | timestamp_custom('%H:%M %d.%m',True) }}"
-    svetlana_last_update:
-      value_template: "{{ as_timestamp(states.person.svetlana.last_updated) | timestamp_custom('%H:%M %d.%m',True) }}"
-    svetlana_last_change:
-      value_template: "{{ as_timestamp(states.person.svetlana.last_changed) | timestamp_custom('%H:%M %d.%m',True) }}"
-    sergei_last_update:
-      value_template: "{{ as_timestamp(states.person.sergei.last_updated) | timestamp_custom('%H:%M %d.%m',True) }}"
-    sergei_last_change:
-      value_template: "{{ as_timestamp(states.person.sergei.last_changed) | timestamp_custom('%H:%M %d.%m',True) }}"
-    olga_last_update:
-      value_template: "{{ as_timestamp(states.person.olga.last_updated) | timestamp_custom('%H:%M %d.%m',True) }}"
-    olga_last_change:
-      value_template: "{{ as_timestamp(states.person.olga.last_changed) | timestamp_custom('%H:%M %d.%m',True) }}"

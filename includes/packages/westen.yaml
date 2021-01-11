@@ -4,9 +4,9 @@ westen:
     - platform: generic_thermostat
       name: Westen
       heater: switch.gas_heater_relay
-      target_sensor: sensor.0x00158d00044afff0_temperature # temp sensor in room
+      target_sensor: sensor.ble_temperature_living_room # sensor.0x00158d00044afff0_temperature # temp sensor in room
       ac_mode: False
-      target_temp: 22
+      target_temp: 19
       min_temp: 18
       max_temp: 25
       hot_tolerance: 0.5
@@ -80,7 +80,7 @@ westen:
   input_number:
     heater_set_day_temp:
       name: Day temperature (heater)
-      initial: 22
+      initial: 19
       min: 18
       max: 25
       step: 0.5
@@ -88,7 +88,7 @@ westen:
       mode: slider
     heater_set_night_temp:
       name: Night temperature (heater)
-      initial: 21.5
+      initial: 19
       min: 18
       max: 25
       step: 0.5

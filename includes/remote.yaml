@@ -1,6 +1,6 @@
   - platform: xiaomi_miio
     name: "Xiaomi IR remote"
-    host: 192.168.31.113
+    host: 192.168.31.115
     token: 1302aad65116454626a004eee8925167
     slot: 1
     timeout: 30

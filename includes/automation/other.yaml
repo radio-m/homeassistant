@@ -29,14 +29,15 @@
       to: "on"
       entity_id: binary_sensor.0x00124b002135564f_occupancy
   condition:
-    - condition: time
-      after: 00:00:00
+    # - condition: time
+    #   after: 00:00:00
     - condition: sun
       before: sunrise
   action:
     - service: light.turn_on
       data:
         entity_id: light.gateway_led
+        brightness_pct: 1
 
 - id: motion light off
   alias: motion light off

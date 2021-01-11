@@ -2,6 +2,7 @@
 - id: Notify unavailable devices
   alias: Notify unavailable devices
   initial_state: true
+  mode: parallel
   trigger:
   - platform: state
     to: unavailable

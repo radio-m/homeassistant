@@ -5,14 +5,14 @@
     platform: time
   condition:
   - condition: state
-    entity_id: switch.0x00158d0003a58131_switch # розетка бойлера
+    entity_id: switch.bw_shp8_relay # розетка бойлера
     state: 'off'
   - condition: numeric_state
     below: '15'
     entity_id: sensor.load_158d0003535c2f # розетка посудомойки
   action:
   - service: switch.turn_on
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
     
 - alias: boiler_06_50_turn_off
   description: 'выключить розетку бойлера в 06:50'
@@ -21,11 +21,11 @@
     platform: time
   condition:
   - condition: state
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
     state: 'on'
   action:
   - service: switch.turn_off # 
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
 
 - alias: boiler_turn_on_after_start
   description: 'включить розетку бойлера после старта системы в период с 23:05 по 06:50, если нагрузка на розетке посудомойки меньше 15 Вт'
@@ -37,14 +37,14 @@
 #     after: '23:05'
 #     before: '06:50'
 #   - condition: state
-#     entity_id: switch.0x00158d0003a58131_switch
+#     entity_id: switch.bw_shp8_relay
 #     state: 'off'
   - condition: numeric_state
     below: '15'
     entity_id: sensor.load_158d0003535c2f
   action:
   - service: switch.turn_on # 
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
 
 - alias: boiler_turn_off_after_start
   description: 'выключить розетку бойлера после старта системы в период с 06:50 по 23:05'
@@ -56,11 +56,11 @@
 #     after: '06:50'
 #     before: '23:05'
 #   - condition: state
-#     entity_id: switch.0x00158d0003a58131_switch
+#     entity_id: switch.bw_shp8_relay
 #     state: 'on'
   action:
   - service: switch.turn_off # 
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
 
 - alias: boiler_stop_when_dishwasher
   description: 'выключить розетку бойлера, когда нагрузка на розетке посудомойки больше 15 Вт'
@@ -73,11 +73,11 @@
 #     before: '06:50'
 #     condition: time
   - condition: state
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
     state: 'on'
   action:
   - service: switch.turn_off # 
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
     
 - alias: boiler_start_when_dishwasher
   description: 'включить розетку бойлера, когда нагрузка на розетке посудомойки меньше 15 Вт в течение 15 минут'
@@ -91,14 +91,14 @@
 #     before: '06:50'
 #     condition: time
   - condition: state
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
     state: 'off'
   - condition: state
     entity_id: timer.boiler_low_voltage
     state: 'idle'
   action:
   - service: switch.turn_on
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
 
 - alias: boiler_stop_when_washing_machine
   description: 'выключить розетку бойлера, когда нагрузка на розетку стиралки больше 5 Вт'
@@ -108,11 +108,11 @@
     platform: numeric_state
   condition:
   - condition: state
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
     state: 'on'
   action:
   - service: switch.turn_off # 
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
     
 - alias: boiler_start_when_washing_machine
   description: 'включить розетку бойлера, когда нагрузка на розетку стиралки меньше 5 Вт'
@@ -122,25 +122,25 @@
     platform: numeric_state
   condition:
   - condition: state
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
     state: 'off'
   - condition: state
     entity_id: timer.boiler_low_voltage
     state: 'idle'
   action:
   - service: switch.turn_on
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
 
 - alias: boiler_issue
   description: 'Notify when boiler fuse is ON'
   trigger:
   - platform: numeric_state
-    entity_id: sensor.0x00158d0003a58131_power
+    entity_id: sensor.bw_shp8_power
     below: '50'
     for: 02:01
   condition:
   - condition: state
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
     state: 'on'
   action:
   - service: notify.telegram
@@ -157,7 +157,7 @@
     below: '185'
   condition:
   - condition: state
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
     state: 'on'
   action:
   - choose:
@@ -167,7 +167,7 @@
             state: 'idle'
         sequence:
           - service: switch.turn_off # 
-            entity_id: switch.0x00158d0003a58131_switch
+            entity_id: switch.bw_shp8_relay
           - service: timer.start
             entity_id: timer.boiler_low_voltage
     default:
@@ -185,11 +185,11 @@
       entity_id: timer.boiler_low_voltage
   condition:
   - condition: state
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
     state: 'off'
   action:
   - service: switch.turn_on # 
-    entity_id: switch.0x00158d0003a58131_switch
+    entity_id: switch.bw_shp8_relay
 
 
 
