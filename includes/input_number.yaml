@@ -11,3 +11,8 @@
     step: 0.01
     mode: box
     
+  c_bedroom_humidity:
+    name: Влажность в детской
+    min: 50
+    max: 60
+    step: 0.5

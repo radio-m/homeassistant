@@ -1,0 +1,5 @@
+  - platform: template
+    sensors:
+      boiler_on:
+        friendly_name: boiler_on
+        value_template: "{{ states('sensor.bw_shp8_power') | float > 1 }}"

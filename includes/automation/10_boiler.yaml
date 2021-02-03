@@ -9,7 +9,7 @@
     state: 'off'
   - condition: numeric_state
     below: '15'
-    entity_id: sensor.load_158d0003535c2f # розетка посудомойки
+    entity_id: sensor.load_bw_shp13_1 # розетка посудомойки
   action:
   - service: switch.turn_on
     entity_id: switch.bw_shp8_relay
@@ -41,7 +41,7 @@
 #     state: 'off'
   - condition: numeric_state
     below: '15'
-    entity_id: sensor.load_158d0003535c2f
+    entity_id: sensor.load_bw_shp13_1
   action:
   - service: switch.turn_on # 
     entity_id: switch.bw_shp8_relay
@@ -66,7 +66,7 @@
   description: 'выключить розетку бойлера, когда нагрузка на розетке посудомойки больше 15 Вт'
   trigger:
   - above: '15'
-    entity_id: sensor.load_158d0003535c2f
+    entity_id: sensor.load_bw_shp13_1
     platform: numeric_state
   condition:
 #   - after: '23:05'
@@ -83,7 +83,7 @@
   description: 'включить розетку бойлера, когда нагрузка на розетке посудомойки меньше 15 Вт в течение 15 минут'
   trigger:
   - below: '15'
-    entity_id: sensor.load_158d0003535c2f
+    entity_id: sensor.load_bw_shp13_1
     for: 00:15
     platform: numeric_state
   condition:

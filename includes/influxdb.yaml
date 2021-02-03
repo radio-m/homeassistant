@@ -4,13 +4,15 @@
   default_measurement: state
   include:
     entities:
+#Climate
       - climate.westen
       - binary_sensor.gas_heater_relay
       - switch.gas_heater_relay
       - sensor.heater_relay_status
       - sensor.thermostat_status
       - group.central_heater
-      
+      - sensor.water_system
+      - sensor.water_out
       - climate.basement
 
 #System
@@ -56,6 +58,8 @@
       - sensor.load_broadlink_1
       - sensor.load_broadlink_2
       - sensor.load_bw_shp8
+      - sensor.load_bw_shp13_1
+      - sensor.load_bw_shp13_2
       - sensor.load_total_energy
       - sensor.load_xiaomi_power_strip
       - sensor.load_input_energy
@@ -63,12 +67,27 @@
       - sensor.0x00158d0003535c2f_power
       - sensor.0x00158d0003a52e45_power
       - sensor.0x00158d0003a58131_power
+
       - sensor.bw_shp8_power
+      - sensor.bw_shp8_current
+      - sensor.bw_shp8_voltage
+
+      - sensor.bw_shp13_1_power
+      - sensor.bw_shp13_1_current
+      - sensor.bw_shp13_1_voltage
+
+      - sensor.bw_shp13_2_power
+      - sensor.bw_shp13_2_current
+      - sensor.bw_shp13_2_voltage
 
 #ASUSwrt
       - sensor.asuswrt_download_speed
       - sensor.asuswrt_upload_speed
 
+      - sensor.speedtest_download
+      - sensor.speedtest_ping
+      - sensor.speedtest_upload
+      
 #Energy monitor
       - sensor.input_current
       - sensor.input_energy

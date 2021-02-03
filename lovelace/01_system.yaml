@@ -67,12 +67,22 @@ cards:
   - type: vertical-stack
     cards:
     - type: iframe
+      style: |
+        ha-card {
+          --ha-card-background: rgba(0, 0, 0, 0.6);
+          color: white
+          }
       id: graph1
       url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/je0Sj6WRz/cpu-parameters?orgId=1&panelId=2
       aspect_ratio: 75%
     - type: horizontal-stack
       cards:
         - type: gauge
+          style: |
+            ha-card {
+              --ha-card-background: rgba(0, 0, 0, 0.6);
+              color: white
+              }
           name: CPU
           unit: '%'
           entity: sensor.processor_use
@@ -81,6 +91,11 @@ cards:
             yellow: 45
             red: 85
         - type: gauge
+          style: |
+            ha-card {
+              --ha-card-background: rgba(0, 0, 0, 0.6);
+              color: white
+              }
           name: RAM
           unit: '%'
           entity: sensor.memory_use_percent
@@ -89,6 +104,11 @@ cards:
             yellow: 45
             red: 85
         - type: gauge
+          style: |
+            ha-card {
+              --ha-card-background: rgba(0, 0, 0, 0.6);
+              color: white
+              }
           name: CPU
           unit: '°C'
           entity: sensor.cpu_temperature
@@ -106,6 +126,37 @@ cards:
 #         name: RAM
 #       - entity: sensor.processor_use
 #         name: CPU
+
+    - type: custom:mini-graph-card
+      style: |
+        ha-card {
+          --ha-card-background: rgba(0, 0, 0, 0.6);
+          color: white
+          }
+      name: Speedtest
+      icon: mdi:speedometer
+      align_state: left
+      hour24: true
+      points_per_hour: 1
+      line_width: 3
+      font_size: 75
+      font_size_header : 22
+      show:
+        extrema: true
+        labels: true
+        points: false
+        legend: false
+      entities:
+        - entity: sensor.speedtest_download
+          name: Download
+          color: green
+        - entity: sensor.speedtest_upload
+          name: Upload
+          color: red
+        - entity: sensor.speedtest_ping
+          name: Ping
+          color: yellow
+
     - type: entities
       show_header_toggle: false
       style: |

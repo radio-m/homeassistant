@@ -126,6 +126,36 @@
         topic: "power/bw_shp8/month"
         payload: '{{(states.sensor.mqtt_power_month_bw_shp8.state | float +
                     (states.sensor.load_bw_shp8.state | float /120000))|round(5)}}'
+        retain: true
+
+#BlitzWolf BW-SHP13_1
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp13_1/today"
+        payload: '{{(states.sensor.mqtt_power_today_bw_shp13_1.state | float +
+                    (states.sensor.load_bw_shp13_1.state | float /120000))|round(5)}}'
+        retain: true
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp13_1/month"
+        payload: '{{(states.sensor.mqtt_power_month_bw_shp13_1.state | float +
+                    (states.sensor.load_bw_shp13_1.state | float /120000))|round(5)}}'
+        retain: true
+
+#BlitzWolf BW-SHP13_2
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp13_2/today"
+        payload: '{{(states.sensor.mqtt_power_today_bw_shp13_2.state | float +
+                    (states.sensor.load_bw_shp13_2.state | float /120000))|round(5)}}'
+        retain: true
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp13_2/month"
+        payload: '{{(states.sensor.mqtt_power_month_bw_shp13_2.state | float +
+                    (states.sensor.load_bw_shp13_2.state | float /120000))|round(5)}}'
+        retain: true
+
 ############################################################################################################
 ##### Начало дня    
 - alias: 00_power_new_day
@@ -189,6 +219,18 @@
         topic: "power/bw_shp8/yesterday"
         payload: '{{(states.sensor.mqtt_power_today_bw_shp8.state | float )|round(5)}}'
         retain: true
+#BlitzWolf BW-SHP13_1      
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp13_1/yesterday"
+        payload: '{{(states.sensor.mqtt_power_today_bw_shp13_1.state | float )|round(5)}}'
+        retain: true
+#BlitzWolf BW-SHP13_2    
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp13_2/yesterday"
+        payload: '{{(states.sensor.mqtt_power_today_bw_shp13_2.state | float )|round(5)}}'
+        retain: true
 
     - delay: 00:00:05
 
@@ -245,6 +287,18 @@
     - service: mqtt.publish
       data_template:
         topic: "power/bw_shp8/today"
+        payload: '{{ 0.0 }}'
+        retain: true
+#BlitzWolf BW-SHP13_1
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp13_1/today"
+        payload: '{{ 0.0 }}'
+        retain: true
+#BlitzWolf BW-SHP13_2
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp13_2/today"
         payload: '{{ 0.0 }}'
         retain: true
 
@@ -315,6 +369,18 @@
         topic: "power/bw_shp8/lastmonth"
         payload: '{{(states.sensor.mqtt_power_month_bw_shp8.state | float )|round(5)}}'
         retain: true
+#BlitzWolf BW-SHP13_1
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp13_1/lastmonth"
+        payload: '{{(states.sensor.mqtt_power_month_bw_shp13_1.state | float )|round(5)}}'
+        retain: true
+#BlitzWolf BW-SHP13_2
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp13_2/lastmonth"
+        payload: '{{(states.sensor.mqtt_power_month_bw_shp13_2.state | float )|round(5)}}'
+        retain: true
 
     - delay: 00:00:05
 
@@ -371,5 +437,17 @@
     - service: mqtt.publish
       data_template:
         topic: "power/bw_shp8/month"
+        payload: '{{ 0.0 }}'
+        retain: true
+#BlitzWolf BW-SHP13_1
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp13_1/month"
+        payload: '{{ 0.0 }}'
+        retain: true
+#BlitzWolf BW-SHP13_2
+    - service: mqtt.publish
+      data_template:
+        topic: "power/bw_shp13_2/month"
         payload: '{{ 0.0 }}'
         retain: true

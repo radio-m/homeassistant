@@ -29,8 +29,8 @@ cards:
       - sensor.ip_gas_heater_control
       - sensor.status_gas_heater_control
       - type: divider
-   #   - binary_sensor.gas_heater_button_control
-      - sensor.water_temperature
+      - sensor.water_system
+      - sensor.water_out
       - switch.gas_heater_relay
       - switch.restart_gas_heater_control
       

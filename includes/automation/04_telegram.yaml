@@ -259,7 +259,21 @@
           {% elif state == 'sunny' %} Ясно {{"\U00002600"}}
           {% elif state == 'windy' %} Ветрено {{"\U0001F32C"}}
           {% elif state == 'windy-variant' %} Ветрено {{"\U0001F32C"}}
-          {% else %} Нет данных
-          {% endif %}
+          {% else %} Нет данных {% endif %}
           Температура {{ state_attr('weather.home_assistant', 'temperature') }} °C
-          Скорость ветра {{ state_attr('weather.home_assistant', 'wind_speed') }} км/ч
+          Ветер {{ state_attr('weather.home_assistant', 'wind_speed') }} км/ч
+
+- alias: 'Gas heater notify'
+  trigger:
+    platform: state
+    entity_id: switch.gas_heater_relay
+  action:
+    - service: notify.telegram
+      data:
+        message: "Реле котла отработало"
+
+
+
+
+
+

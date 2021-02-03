@@ -38,7 +38,11 @@
       data:
         entity_id: light.gateway_led
         brightness_pct: 1
-
+    - service: light.turn_on
+      data:
+        entity_id: light.coridor_rgb
+        brightness_pct: 2
+        
 - id: motion light off
   alias: motion light off
   trigger:
@@ -53,3 +57,6 @@
     - service: light.turn_off
       data:
         entity_id: light.gateway_led
+    - service: light.turn_off
+      data:
+        entity_id: light.coridor_rgb

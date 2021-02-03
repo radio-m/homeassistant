@@ -108,21 +108,21 @@ cards:
     - type: entities
       show_header_toggle: false
       entities:
-      - entity: sensor.load_158d0003535c2f
+      - entity: sensor.load_bw_shp13_1
         secondary_info: >-
           сегодня: <b>[[
-          sensor.mqtt_power_today_158d0003535c2f.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_today_bw_shp13_1.state ]]</b> кВт⋅ч<br>
           этот месяц: <b>[[
-          sensor.mqtt_power_month_158d0003535c2f.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_month_bw_shp13_1.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_month_158d0003535c2f.state
+          sensor.money_month_bw_shp13_1.state
           ]]</b> грн<br>
           вчера: <b>[[
-          sensor.mqtt_power_yesterday_158d0003535c2f.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_yesterday_bw_shp13_1.state ]]</b> кВт⋅ч<br>
           прошлый месяц: <b>[[
-          sensor.mqtt_power_lastmonth_158d0003535c2f.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_lastmonth_bw_shp13_1.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_lastmonth_158d0003535c2f.state ]]</b> грн
+          sensor.money_lastmonth_bw_shp13_1.state ]]</b> грн
         type: 'custom:secondaryinfo-entity-row'
 # Удлинитель 3+3
     - type: entities
@@ -569,9 +569,16 @@ cards:
 
         - entity: switch.bw_shp8_relay
           secondary_info: last-changed
+        - type: attribute
+          entity: sensor.boiler_on_today
+          name: "Бойлер сегодня включен"
+          attribute: value
         - entity: sensor.bw_shp8_voltage
+          name: "Напряжение на розетке бойлера"
         - entity: switch.0x00158d0003a52e45_switch
-        - entity: switch.0x00158d0003535c2f_switch
+        - entity: switch.bw_shp13_1_switch
+        - entity: sensor.bw_shp13_1_voltage
+          name: "Напряжение на розетке посудомойки"
 
         - type: custom:fold-entity-row
           head:

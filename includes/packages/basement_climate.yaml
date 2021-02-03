@@ -14,7 +14,7 @@ basement:
       min_cycle_duration:
         minutes: 10
     #   initial_hvac_mode: "cool"
-      precision: 0.5
+      precision: 0.1
 
   group:
       cooler_show_automations:

@@ -71,28 +71,27 @@
               service_data:
                 entity_id: script.var_timer
             - entity: timer.variable
-      - type: horizontal-stack
-        cards:
-          - type: entity-button
-            tap_action:
-              action: call-service
-              service: remote.send_command
-              service_data:
-                command: audio_power
-                entity_id: remote.xiaomi_ir_remote
-            show_icon: true
-            entity: remote.xiaomi_ir_remote
-            icon: 'mdi:speaker'
-          - type: entity-button
-            tap_action:
-               action: call-service
-               service: remote.send_command
-               service_data:
-                 command: tv_on
-                 entity_id: remote.xiaomi_ir_remote
-            show_icon: true
-            entity: remote.xiaomi_ir_remote
-            icon: 'mdi:television'
-      - type: entity-button
-        show_icon: true
-        entity: binary_sensor.motion
+
+      - type: media-control
+        entity: media_player.raspberrypi
+
+      - type: entities
+        entities:
+          - entity: sensor.0x00158d00044afff0_humidity
+          - entity: input_number.c_bedroom_humidity
+          - entity: switch.bw_shp13_2_switch
+          - entity: automation.uvlazhnitel_v_detskoi
+          
+      - type: entities
+        entities:
+          - entity: climate.uvlazhnitel_v_detskoi
+            name: "Увлажнитель в детской"
+          
+          
+          
+          
+          
+          
+          
+          
+        

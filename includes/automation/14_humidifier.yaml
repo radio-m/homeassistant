@@ -1,0 +1,20 @@
+- id: c_bedroom_humidifier
+  alias: 'Увлажнитель в детской'
+  trigger:
+    platform: state
+    entity_id:
+      - input_number.c_bedroom_humidity
+      - sensor.0x00158d00044afff0_humidity
+  action:
+    service_template: >-
+      {% set hi = (states('input_number.c_bedroom_humidity') | float) + 2.5 %}
+      {% set lo = hi - 5 %}
+      {% set humidity = states('sensor.0x00158d00044afff0_humidity') | float %}
+      {% if humidity > hi %}
+        switch.turn_off
+      {% elif humidity < lo %}
+        switch.turn_on
+      {% else %}
+        switch.turn_{{states('switch.bw_shp13_2_switch') | lower}}
+      {% endif %}
+    entity_id: switch.bw_shp13_2_switch
