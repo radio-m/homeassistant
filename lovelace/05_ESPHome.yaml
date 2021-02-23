@@ -77,19 +77,6 @@ cards:
       - switch.restart_bme280
 
   - type: entities
-    title: 'Wireless relay'
-    show_header_toggle: false
-    state_color: true
-    entities:
-      - binary_sensor.diy_wireless_relay
-      - sensor.ip_diy_wireless_relay
-      - sensor.status_diy_wireless_relay
-      - type: divider
-      - binary_sensor.diy_wireless_relay_button
-      - switch.diy_wireless_relay
-      - switch.restart_diy_wireless_relay
-      
-  - type: entities
     title: 'Magic Light'
     show_header_toggle: false
     state_color: true
