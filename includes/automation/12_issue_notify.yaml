@@ -1,0 +1,72 @@
+#Отчёт о отключении устройств
+- id: Notify unavailable devices
+  alias: Notify unavailable devices
+  initial_state: true
+  mode: parallel
+  trigger:
+  - platform: state
+    to: unavailable
+    for: 00:01:00
+    entity_id:
+# Switches
+      - switch.basement_vent #Basement vent
+      - switch.diy_wireless_relay
+      - switch.gas_heater_relay
+#light
+      - switch.coridor_night_light_relay
+      - switch.relay_wall_switch_bedroom
+      - switch.bathroom_single_switch #Bath
+      - switch.bathroom_double_switch_right #Boiler room
+      - light.magic_light
+#Sensors
+      - sensor.bme280_temperature
+      - sensor.m_bedroom_temperature #M bedroom
+      - sensor.c_bedroom_temperature #C bedroom
+      - sensor.g_bedroom_temperature #G bedroom
+      - sensor.basement_temp_temperature #Basement
+      - sensor.lumber_temp_temperature #Lumber room
+
+  condition:
+
+  action:
+    - service: notify.telegram
+      data:
+         message: | 
+             {{"\U0001F6A8"}}{{"\U0001F6A8"}}{{"\U0001F6A8"}}{{"\U0001F6A8"}}{{"\U0001F6A8"}}{{"\U0001F6A8"}}{{"\U0001F6A8"}}{{"\U0001F6A8"}}{{"\U0001F6A8"}}{{"\U0001F6A8"}}{{"\U0001F6A8"}}{{"\U0001F6A8"}}
+             {{ now() }} Внимание! Устройтсво {{state_attr(trigger.entity_id, 'friendly_name') }} Offline
+
+#Уведомление о низком заряде батареи
+- id: Notify low battery devices
+  alias: Notify low battery devices
+  initial_state: true
+  mode: parallel
+  trigger:
+  - platform: numeric_state
+    below: 5
+    for: 00:01:00
+    entity_id:
+      - sensor.m_bedroom_battery
+      - sensor.c_bedroom_battery
+      - sensor.g_bedroom_battery
+      - sensor.mi_round_button_battery
+      - sensor.basement_temp_battery
+      - sensor.lumber_temp_battery
+      - sensor.motion_sensor_battery
+      - sensor.c_bedroom_double_switch_battery
+      - sensor.ble_battery_e72e017314c7
+      - sensor.ble_battery_582d3434ca5b
+      - sensor.ble_battery_e4aaec350373
+
+  condition:
+
+  action:
+    - service: notify.telegram
+      data:
+         message: | 
+             {{"\U0001F198"}}{{"\U0001F198"}}{{"\U0001F198"}}
+             {{ now() }} Внимание! {{state_attr(trigger.entity_id, 'friendly_name') }} упал до 5%, замените батарейку ({{state_attr(trigger.entity_id, 'battery_type') }})!
+
+
+
+
+

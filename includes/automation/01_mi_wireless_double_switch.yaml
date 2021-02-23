@@ -1,8 +1,8 @@
 - alias: roof_light_toggle
   trigger:
     - platform: state
-      entity_id: sensor.0x00158d0003faaada_action
-      to: "left"
+      entity_id: sensor.c_bedroom_double_switch_action
+      to: "single_left"
   action:
     - service: switch.toggle
       entity_id: switch.relay_wall_switch_bedroom
@@ -10,8 +10,8 @@
 - alias: underbed_light_10
   trigger:
     - platform: state
-      entity_id: sensor.0x00158d0003faaada_action
-      to: "right"
+      entity_id: sensor.c_bedroom_double_switch_action
+      to: "single_right"
   action:
     - service: light.turn_on
       data:
@@ -23,8 +23,8 @@
 - alias: underbed_light_100
   trigger:
     - platform: state
-      entity_id: sensor.0x00158d0003faaada_action
-      to: "right_double"
+      entity_id: sensor.c_bedroom_double_switch_action
+      to: "double_right"
   action:
     - service: light.turn_on
       data:
@@ -34,8 +34,8 @@
 - alias: underbed_light_off
   trigger:
     - platform: state
-      entity_id: sensor.0x00158d0003faaada_action
-      to: "right_long"
+      entity_id: sensor.c_bedroom_double_switch_action
+      to: "hold_right"
   action:
     - service: light.turn_off
       data:
@@ -44,8 +44,8 @@
 - alias: light_off
   trigger:
     - platform: state
-      entity_id: sensor.0x00158d0003faaada_action
-      to: "both"
+      entity_id: sensor.c_bedroom_double_switch_action
+      to: "single_both"
   action:
     - service: switch.turn_off
       entity_id: switch.relay_wall_switch_bedroom

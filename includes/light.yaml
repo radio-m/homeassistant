@@ -8,11 +8,11 @@
     
   - platform: switch
     name: Bath
-    entity_id: switch.0x00158d000421fd0c_switch
+    entity_id: switch.bathroom_single_switch
 
   - platform: switch
     name: "Boiler room"
-    entity_id: switch.0x00158d00041b19c6_switch_right
+    entity_id: switch.bathroom_double_switch_right
     
   - platform: mqtt
     name: gateway_led

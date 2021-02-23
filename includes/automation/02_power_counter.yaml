@@ -32,46 +32,7 @@
         payload: '{{(states.sensor.mqtt_power_month_total_energy.state | float +
                     (states.sensor.load_total_energy.state | float /120000))|round(5)}}'
         retain: true  
-##### ZigBee #1
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003a58131/today"
-        payload: '{{(states.sensor.mqtt_power_today_158d0003a58131.state | float +
-                    (states.sensor.load_158d0003a58131.state | float /120000))|round(5)}}'
-        retain: true
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003a58131/month"
-        payload: '{{(states.sensor.mqtt_power_month_158d0003a58131.state | float +
-                    (states.sensor.load_158d0003a58131.state | float /120000))|round(5)}}'
-        retain: true
-##### ZigBee #2
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003a52e45/today"
-        payload: '{{(states.sensor.mqtt_power_today_158d0003a52e45.state | float +
-                    (states.sensor.load_158d0003a52e45.state | float /120000))|round(5)}}'
-        retain: true
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003a52e45/month"
-        payload: '{{(states.sensor.mqtt_power_month_158d0003a52e45.state | float +
-                    (states.sensor.load_158d0003a52e45.state | float /120000))|round(5)}}'
-        retain: true
-##### ZigBee #3
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003535c2f/today"
-        payload: '{{(states.sensor.mqtt_power_today_158d0003535c2f.state | float +
-                    (states.sensor.load_158d0003535c2f.state | float /120000))|round(5)}}'
-        retain: true
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003535c2f/month"
-        payload: '{{(states.sensor.mqtt_power_month_158d0003535c2f.state | float +
-                    (states.sensor.load_158d0003535c2f.state | float /120000))|round(5)}}'
-        retain: true
-        
+
 ##### Wi-Fi 3+3
     - service: mqtt.publish
       data_template:
@@ -177,24 +138,6 @@
         topic: "power/total_energy/yesterday"
         payload: '{{(states.sensor.mqtt_power_today_total_energy.state | float )|round(5)}}'
         retain: true 
-##### ZigBee #1
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003a58131/yesterday"
-        payload: '{{(states.sensor.mqtt_power_today_158d0003a58131.state | float )|round(5)}}'
-        retain: true 
-##### ZigBee #2
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003a52e45/yesterday"
-        payload: '{{(states.sensor.mqtt_power_today_158d0003a52e45.state | float )|round(5)}}'
-        retain: true 
-##### ZigBee #3
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003535c2f/yesterday"
-        payload: '{{(states.sensor.mqtt_power_today_158d0003535c2f.state | float )|round(5)}}'
-        retain: true 
 ##### Удлинитель 3+3        
     - service: mqtt.publish
       data_template:
@@ -245,24 +188,6 @@
     - service: mqtt.publish
       data_template:
         topic: "power/total_energy/today"
-        payload: '{{ 0.0 }}'
-        retain: true
-##### ZigBee #1
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003a58131/today"
-        payload: '{{ 0.0 }}'
-        retain: true
-##### ZigBee #2
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003a52e45/today"
-        payload: '{{ 0.0 }}'
-        retain: true
-##### ZigBee #3
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003535c2f/today"
         payload: '{{ 0.0 }}'
         retain: true
 ##### Удлинитель 3+3 
@@ -327,30 +252,6 @@
         topic: "power/total_energy/lastmonth"
         payload: '{{(states.sensor.mqtt_power_month_total_energy.state | float )|round(5)}}'
         retain: true 
-##### ZigBee #1
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003a58131/lastmonth"
-        payload: '{{(states.sensor.mqtt_power_month_158d0003a58131.state | float )|round(5)}}'
-        retain: true 
-##### ZigBee #2
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003a52e45/lastmonth"
-        payload: '{{(states.sensor.mqtt_power_month_158d0003a52e45.state | float )|round(5)}}'
-        retain: true 
-##### ZigBee #3
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003535c2f/lastmonth"
-        payload: '{{(states.sensor.mqtt_power_month_158d0003535c2f.state | float )|round(5)}}'
-        retain: true 
-##### Удлинитель 3+3 
-    - service: mqtt.publish
-      data_template:
-        topic: "power/xiaomi_power_strip/lastmonth"
-        payload: '{{(states.sensor.mqtt_power_month_xiaomi_power_strip.state | float )|round(5)}}'
-        retain: true
 ##### Broadlink 1
     - service: mqtt.publish
       data_template:
@@ -395,24 +296,6 @@
     - service: mqtt.publish
       data_template:
         topic: "power/total_energy/month"
-        payload: '{{ 0.0 }}'
-        retain: true
-##### ZigBee #1
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003a58131/month"
-        payload: '{{ 0.0 }}'
-        retain: true
-##### ZigBee #2
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003a52e45/month"
-        payload: '{{ 0.0 }}'
-        retain: true
-##### ZigBee #3
-    - service: mqtt.publish
-      data_template:
-        topic: "power/158d0003535c2f/month"
         payload: '{{ 0.0 }}'
         retain: true
 ##### Удлинитель 3+3 

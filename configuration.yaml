@@ -26,6 +26,9 @@ homeassistant:
 
 default_config:
 
+zeroconf:
+  default_interface: true
+
 recorder: !include includes/recorder.yaml
 
 logger:
@@ -80,17 +83,22 @@ lovelace:
       type: module
     - url: /hacsfiles/button-card/button-card.js
       type: module
+    - url: /hacsfiles/lovelace-multiple-entity-row/multiple-entity-row.js
+      type: module
+    - url: /hacsfiles/battery-state-card/battery-state-card.js
+      type: module
+
 
 frontend:
   themes: !include_dir_merge_named themes/
   extra_module_url:
     - /hacsfiles/custom-ui/custom-ui.js
 
-panel_iframe:
-  gateway:
-    title: 'SLS gateway'
-    icon: mdi:access-point-network
-    url: /slsgateway/
+# panel_iframe:
+#   gateway:
+#     title: 'SLS gateway'
+#     icon: mdi:access-point-network
+#     url: /slsgateway/
 
 # Text to speech
 tts:
@@ -106,7 +114,7 @@ telegram_bot:
     api_key: !secret telegram_api_key 
     allowed_chat_ids:
       - !secret my_chat
-    #   - CHAT_ID_2
+      - !secret olga_chat
     
 # Router
 asuswrt:

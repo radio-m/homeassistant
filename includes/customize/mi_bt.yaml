@@ -1,11 +1,11 @@
 sensor.ble_temperature_living_room:
- friendly_name: Living room temperature
+ friendly_name: Температура в гостинной
  
 sensor.ble_humidity_living_room:
- friendly_name: Living room humidity
+ friendly_name: Влажность в гостинной
  
 sensor.ble_humidity_c_bedroom_bt:
- friendly_name: C bedroom BT humidity
+ friendly_name: ВТ влажность в детской
  
 sensor.ble_temperature_c_bedroom_bt:
- friendly_name: C bedroom BT temperature
+ friendly_name: ВТ температура в детской

@@ -32,19 +32,19 @@
 
 #zigbee sensors
 #Mi
-      - sensor.0x00158d00041d6e0b_temperature
-      - sensor.0x00158d00044afff0_temperature
-      - sensor.0x00158d0003ce7f8d_temperature
+      - sensor.m_bedroom_temperature
+      - sensor.c_bedroom_temperature
+      - sensor.g_bedroom_temperature
 
-      - sensor.0x00158d00041d6e0b_humidity
-      - sensor.0x00158d00044afff0_humidity
-      - sensor.0x00158d0003ce7f8d_humidity
+      - sensor.m_bedroom_humidity
+      - sensor.c_bedroom_humidity
+      - sensor.g_bedroom_humidity
 #SONOff
-      - sensor.0x00124b0022417252_temperature
-      - sensor.0x00124b001c4b2d3c_temperature
+      - sensor.basement_temp_temperature
+      - sensor.lumber_temp_temperature
       
-      - sensor.0x00124b0022417252_humidity
-      - sensor.0x00124b001c4b2d3c_humidity
+      - sensor.basement_temp_humidity
+      - sensor.lumber_temp_humidity
 
 #BT sensors
       - sensor.ble_humidity_c_bedroom_bt
@@ -53,9 +53,6 @@
       - sensor.ble_temperature_living_room
 
 #Power current
-      - sensor.load_158d0003535c2f
-      - sensor.load_158d0003a52e45
-      - sensor.load_158d0003a58131
       - sensor.load_broadlink_1
       - sensor.load_broadlink_2
       - sensor.load_bw_shp8
@@ -64,10 +61,6 @@
       - sensor.load_total_energy
       - sensor.load_xiaomi_power_strip
       - sensor.load_input_energy
-
-      - sensor.0x00158d0003535c2f_power
-      - sensor.0x00158d0003a52e45_power
-      - sensor.0x00158d0003a58131_power
 
       - sensor.bw_shp8_power
       - sensor.bw_shp8_current

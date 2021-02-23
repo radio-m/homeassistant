@@ -12,16 +12,23 @@ cards:
           show_header_toggle: false
           entities:
             - entity: input_boolean.heater_automation_active
+            - entity: timer.westen
             - entity: climate.westen
               name: "Котел Westen"
-            - entity: sensor.ble_temperature_living_room # sensor.0x00158d00044afff0_temperature
-              name: "Температура в домі"
             - entity: sensor.bme280_temperature
-              name: "Температура на вулиці"
-            - entity: sensor.water_system
-              name: "Температура води в системі"
+              type: custom:multiple-entity-row
+              name: Температура повітря
+              state_header: надворі
+              entities:
+                - entity: sensor.ble_temperature_living_room
+                  name: вдома
             - entity: sensor.water_out
-              name: "Температура води на виході з котла"
+              type: custom:multiple-entity-row
+              name: Температура води
+              state_header: вихід
+              entities:
+                - entity: sensor.water_system
+                  name: система
             - entity: binary_sensor.gas_heater_relay
               name: "Реле котла"
               secondary_info: >-
@@ -33,11 +40,24 @@ cards:
             - entity: input_select.heater_automode_heater
               name: "Режим"
             - entity: switch.gas_heater_relay
-              name: "Реле котла"
+              type: custom:multiple-entity-row
+              name: Вимикачі
               secondary_info: last-changed
-            - entity: switch.water_pump_switch
-              name: "Помпа"
-              secondary_info: last-changed
+              state_header: Котел
+              show_state: false
+              state_color: true
+              entities:
+                - entity: switch.water_pump_switch
+                  name: Насос
+                  toggle: true
+                  icon: mdi:pump
+                  state_color: true
+                - entity: switch.gas_heater_relay
+                  name: Котел
+                  toggle: true
+                  icon: mdi:fire
+                  state_color: true
+
             - entity: input_boolean.heater_day_night_automode
               name: "Окрема t° для Дня/Ночі"
             - entity: input_number.heater_set_day_temp
@@ -59,9 +79,7 @@ cards:
             #     secondary_info: entity-id
             - entity: automation.gas_heater_notify
 
-#  - type: custom:vertical-stack-in-card
   - type: vertical-stack
-    # title: Температура
     cards:
       - type: weather-forecast
         entity: weather.home_assistant
@@ -90,8 +108,8 @@ cards:
       - type: custom:mini-graph-card
         entities:
           - sensor.ble_temperature_living_room
-          - sensor.0x00158d00044afff0_temperature
-          - sensor.0x00158d00041d6e0b_temperature
+          - sensor.c_bedroom_temperature
+          - sensor.m_bedroom_temperature
           - sensor.ble_temperature_c_bedroom_bt
         name: In temp
         show:
@@ -108,94 +126,107 @@ cards:
         lower_bound: 15
         upper_bound: 25
 
-  - type: horizontal-stack
-    title: "Out"
+  - type: vertical-stack
     cards:
-      - type: sensor
-        entity: sensor.bme280_temperature
-        graph: line
-        name: Temperature
-      - type: sensor
-        entity: sensor.bme280_humidity
-        graph: line
-        name: Humidity
-      - type: sensor
-        entity: sensor.bme280_pressure_in_mmhg
-        graph: line
-        name: Pressure
-  
-  - type: horizontal-stack
-    title: "Living room"
+      - type: entities
+        state_color: true
+        entities:
+          - entity: switch.bw_shp13_2_switch
+            secondary_info: last-changed
+          - entity: climate.uvlazhnitel_v_detskoi
+            name: "Увлажнитель в детской"
+          - entity: binary_sensor.ble_opening_door_sensor
+            secondary_info: last-changed
+            name: Дверь в детскую
+
+  - type: vertical-stack
     cards:
-      - type: sensor
-        entity: sensor.ble_temperature_living_room
-        graph: line
-        name: Temperature
-      - type: sensor
-        entity: sensor.ble_humidity_living_room
-        graph: line
-        name: Humidity
-        
-  - type: horizontal-stack
-    title: "M bedroom"
-    cards:
-      - type: sensor
-        entity: sensor.0x00158d00041d6e0b_temperature
-        graph: line
-        name: Temperature
-      - type: sensor
-        entity: sensor.0x00158d00041d6e0b_humidity
-        graph: line
-        name: Humidity
-        
-  - type: horizontal-stack
-    title: "C bedroom"
-    cards:
-      - type: sensor
-        entity: sensor.0x00158d00044afff0_temperature
-        graph: line
-        name: Temperature
-      - type: sensor
-        entity: sensor.0x00158d00044afff0_humidity
-        graph: line
-        name: Humidity
-        
-  - type: horizontal-stack
-    title: "G bedroom"
-    cards:
-      - type: sensor
-        entity: sensor.0x00158d0003ce7f8d_temperature
-        graph: line
-        name: Temperature
-      - type: sensor
-        entity: sensor.0x00158d0003ce7f8d_humidity
-        graph: line
-        name: Humidity
-        
-  - type: horizontal-stack
-    title: "Basement"
-    cards:
-      - type: sensor
-        entity: sensor.0x00124b001c4b2d3c_temperature
-        graph: line
-        name: Temperature
-      - type: sensor
-        entity: sensor.0x00124b001c4b2d3c_humidity
-        graph: line
-        name: Humidity    
-        
-  - type: horizontal-stack
-    title: "Lumber room"
-    cards:
-      - type: sensor
-        entity: sensor.0x00124b0022417252_temperature
-        graph: line
-        name: Temperature
-      - type: sensor
-        entity: sensor.0x00124b0022417252_humidity
-        graph: line
-        name: Humidity    
-          
+      - type: entities
+        entities:
+          - entity: sensor.bme280_temperature
+            type: custom:multiple-entity-row
+            name: На улице
+            show_state: false
+            entities:
+              - entity: sensor.bme280_temperature
+                name: Температура
+              - entity: sensor.bme280_humidity
+                name: Влажность
+              - entity: sensor.bme280_pressure_in_mmhg
+                name: Давление
+
+          - entity: sensor.ble_temperature_living_room
+            type: custom:multiple-entity-row
+            name: В зале
+            show_state: false
+            entities:
+              - entity: sensor.ble_temperature_living_room
+                name: Температура
+              - entity: sensor.ble_humidity_living_room
+                name: Влажность
+              - entity: sensor.ble_battery_582d3434ca5b
+                name: Заряд
+
+          - entity: sensor.m_bedroom_temperature
+            type: custom:multiple-entity-row
+            name: У родителей
+            show_state: false
+            entities:
+              - entity: sensor.m_bedroom_temperature
+                name: Температура
+              - entity: sensor.m_bedroom_humidity
+                name: Влажность
+              - entity: sensor.m_bedroom_battery
+                name: Заряд
+
+          - entity: sensor.c_bedroom_temperature
+            type: custom:multiple-entity-row
+            name: В детской
+            show_state: false
+            entities:
+              - entity: sensor.c_bedroom_temperature
+                name: Температура
+              - entity: sensor.c_bedroom_humidity
+                name: Влажность
+              - entity: sensor.c_bedroom_battery
+                name: Заряд
+
+          - entity: sensor.g_bedroom_temperature
+            type: custom:multiple-entity-row
+            name: У бабушки
+            show_state: false
+            entities:
+              - entity: sensor.g_bedroom_temperature
+                name: Температура
+              - entity: sensor.g_bedroom_humidity
+                name: Влажность
+              - entity: sensor.g_bedroom_battery
+                name: Заряд
+
+          - entity: sensor.basement_temp_temperature
+            type: custom:multiple-entity-row
+            name: В подвале
+            show_state: false
+            entities:
+              - entity: sensor.basement_temp_temperature
+                name: Температура
+              - entity: sensor.basement_temp_humidity
+                name: Влажность
+              - entity: sensor.basement_temp_battery
+                name: Заряд
+
+          - entity: sensor.lumber_temp_temperature
+            type: custom:multiple-entity-row
+            name: В чулане
+            show_state: false
+            entities:
+              - entity: sensor.lumber_temp_temperature
+                name: Температура
+              - entity: sensor.lumber_temp_humidity
+                name: Влажность
+              - entity: sensor.lumber_temp_battery
+                name: Заряд
+
   - type: horizontal-stack
     cards:
         - type: entities
@@ -204,14 +235,22 @@ cards:
             - entity: input_boolean.cooler_automation_active
             - entity: climate.basement
               name: "Вентилятор в подвале"
-            - entity: sensor.0x00124b001c4b2d3c_temperature #mi_t_582d3434ca5b
-              name: "Температура в подвале"
             - entity: sensor.bme280_temperature
-              name: "Температура на улице"
+              type: custom:multiple-entity-row
+              name: Температура воздуха
+              state_header: на улице
+              entities:
+                - entity: sensor.basement_temp_temperature
+                  name: в подвале
+
+            # - entity: sensor.basement_temp_temperature #mi_t_582d3434ca5b
+            #   name: "Температура в подвале"
+            # - entity: sensor.bme280_temperature
+            #   name: "Температура на улице"
             - type: divider
             - entity: input_select.basement_automode_cooler
               name: "Режим"
-            - entity: switch.0x00124b0022254e4d_switch
+            - entity: switch.basement_vent
               name: "Реле вентилятора"
               secondary_info: last-changed
             - entity: input_number.basement_set_outdoor_temp

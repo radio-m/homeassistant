@@ -1,0 +1,33 @@
+sensor.m_bedroom_battery:
+  friendly_name: Заряд НТ у родителей
+  battery_type: CR2032
+sensor.c_bedroom_battery:
+  friendly_name: Заряд НТ в детской
+  battery_type: CR2032
+sensor.g_bedroom_battery:
+  friendly_name: Заряд НТ у бабушки
+  battery_type: CR2032
+sensor.c_bedroom_double_switch_battery:
+  friendly_name: Заряд двойной в детской
+  battery_type: CR2032
+sensor.basement_temp_battery:
+  friendly_name: Заряд НТ в подвале
+  battery_type: CR2450
+sensor.lumber_temp_battery:
+  friendly_name: Заряд НТ в чулане
+  battery_type: CR2450
+sensor.motion_sensor_battery:
+  friendly_name: Заряд датчика движения
+  battery_type: CR2450
+sensor.mi_round_button_battery:
+  friendly_name: Заряд круглой кнопки
+  battery_type: CR2032
+sensor.ble_battery_e72e017314c7:
+  friendly_name: Заряд ВТ в детской
+  battery_type: CR2032x2
+sensor.ble_battery_582d3434ca5b:
+  friendly_name: Заряд ВТ в зале
+  battery_type: AAA
+sensor.ble_battery_e4aaec350373:
+  friendly_name: Заряд дтчика двери
+  battery_type: CR2032

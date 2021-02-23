@@ -21,3 +21,8 @@ boiler_low_voltage:
     - automation.boiler_low_voltage_off
     - automation.boiler_low_voltage_timer
     - automation.boiler_low_voltage_on
+    
+# battery:
+#   name: Battery
+#   entity_globs:
+#     - sensor.*battery

@@ -9,11 +9,19 @@ switch.gas_heater_relay:
   friendly_name: Реле котла
   templates:
     icon_color: >
-      if (state === 'on') return 'rgb(0, 153, 255)';
+      if (state === 'on') return 'rgb(255, 195, 0)';
+      if (state === 'off') return 'rgb(0, 153, 255)';
       else return 'rgb(189, 189, 189)';
     icon: >
       if (state === 'on') return 'mdi:toggle-switch';
       else return 'mdi:toggle-switch-off-outline';
+switch.water_pump_switch:
+  friendly_name: Насос
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(255, 0, 0)';
+      if (state === 'off') return 'rgb(0, 153, 255)';
+      else return 'rgb(189, 189, 189)';
 input_number.heater_set_day_temp:
   friendly_name: Температура вдень (котел)
   templates:

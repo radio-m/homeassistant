@@ -1,7 +1,7 @@
 - alias: motion_light_automations_on
   trigger:
     - platform: state
-      entity_id: sensor.0x00158d000359b03a_action
+      entity_id: sensor.mi_round_button_action
       to: "single"
   action:
     - service: homeassistant.turn_on
@@ -10,7 +10,7 @@
 - alias: motion_light_automations_off
   trigger:
     - platform: state
-      entity_id: sensor.0x00158d000359b03a_action
+      entity_id: sensor.mi_round_button_action
       to: "double"
   action:
     - service: homeassistant.turn_off

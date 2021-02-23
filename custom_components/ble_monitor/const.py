@@ -1,6 +1,7 @@
 """Constants for the Passive BLE monitor integration."""
 
 DOMAIN = "ble_monitor"
+PLATFORMS = ["binary_sensor", "sensor"]
 
 # Configuration options
 CONF_ROUNDING = "rounding"
@@ -14,6 +15,9 @@ CONF_BATT_ENTITIES = "batt_entities"
 CONF_REPORT_UNKNOWN = "report_unknown"
 CONF_RESTORE_STATE = "restore_state"
 CONF_ENCRYPTION_KEY = "encryption_key"
+CONF_DEVICE_DECIMALS = "decimals"
+CONF_DEVICE_USE_MEDIAN = "use_median"
+CONF_DEVICE_RESTORE_STATE = "restore_state"
 CONF_DEVICE_RESET_TIMER = "reset_timer"
 CONFIG_IS_FLOW = "is_flow"
 
@@ -31,6 +35,9 @@ DEFAULT_BATT_ENTITIES = False
 DEFAULT_REPORT_UNKNOWN = False
 DEFAULT_DISCOVERY = True
 DEFAULT_RESTORE_STATE = False
+DEFAULT_DEVICE_DECIMALS = "default"
+DEFAULT_DEVICE_USE_MEDIAN = "default"
+DEFAULT_DEVICE_RESTORE_STATE = "default"
 DEFAULT_DEVICE_RESET_TIMER = 30
 
 # regex constants for configuration schema
@@ -68,6 +75,15 @@ XIAOMI_TYPE_DICT = {
     b'\x5C\x04': ("V-SK152", True),
     b'\x63\x08': ("SJWS01LM", True),
     b'\xF6\x07': ("MJYD02YL", True),
+    b'\xDB\x00': ("MMC-T201-1", False),
+    b'\xDD\x03': ("MUE4094RT", True),
+    b'\xBF\x07': ("YLAI003", False),
+}
+
+QINGPING_TYPE_DICT = {
+    b'\x08\x07': ("CGG1", False),
+    b'\x08\x09': ("CGP1W", False),
+    b'\x08\x0C': ("CGD1", False),
 }
 
 ATC_TYPE_DICT = {
@@ -75,32 +91,36 @@ ATC_TYPE_DICT = {
 }
 
 # Sensor type indexes dictionary for sensor platform
-# Sensor:         Temperature, Humidity, Moisture, Conductivity, Illuminance,
-#                 Formaldehyde, Consumable, Voltage, Battery
+# Sensor:         Temperature, Humidity, Moisture, Pressure, Conductivity,
+#                 Illuminance, Formaldehyde, Consumable, Button, Voltage, Battery
 # Binary_sensor:  Switch, Opening, Light, Moisture, Motion, Battery
 #                            sensor                       binary
-# Measurement type      [T  H  M  C  I  F  Cn V  B]  [Sw Op L  Mo Mn B]     (start from 0, 9 - no data)
+# Measurement type      [T  H  M  P  C  I  F  Cn Bu V  B]  [Sw Op L  Mo Mn B]     (start from 0, 9 - no data)
 MMTS_DICT = {
-    'LYWSDCGQ'       : [[0, 1, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
-    'CGG1'           : [[0, 1, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
-    'CGG1-ENCRYPTED' : [[0, 1, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
-    'CGDK2'          : [[0, 1, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
-    'LYWSD02'        : [[0, 1, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
-    'LYWSD03MMC'     : [[0, 1, 9, 9, 9, 9, 9, 3, 2], [9, 9, 9, 9, 9, 9]],
-    'CGD1'           : [[0, 1, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
-    'MHO-C401'       : [[0, 1, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
-    'MHO-C303'       : [[0, 1, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
-    'JQJCY01YM'      : [[0, 1, 9, 9, 9, 2, 9, 9, 3], [9, 9, 9, 9, 9, 9]],
-    'HHCCJCY01'      : [[0, 9, 1, 2, 3, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9]],
-    'GCLS002'        : [[0, 9, 1, 2, 3, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9]],
-    'HHCCPOT002'     : [[9, 9, 0, 1, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9]],
-    'WX08ZM'         : [[9, 9, 9, 9, 9, 9, 0, 9, 1], [0, 9, 9, 9, 9, 1]],
-    'MCCGQ02HL'      : [[9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 0, 1, 9, 9, 2]],
-    'YM-K1501'       : [[0, 9, 9, 9, 9, 9, 9, 9, 9], [0, 9, 9, 9, 9, 9]],
-    'YM-K1501EU'     : [[0, 9, 9, 9, 9, 9, 9, 9, 9], [0, 9, 9, 9, 9, 9]],
-    'V-SK152'        : [[0, 9, 9, 9, 9, 9, 9, 9, 9], [0, 9, 9, 9, 9, 9]],
-    'SJWS01LM'       : [[9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 9, 9, 0, 9, 1]],
-    'MJYD02YL'       : [[9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 9, 0, 9, 1, 2]],
+    'LYWSDCGQ'       : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
+    'CGG1'           : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
+    'CGG1-ENCRYPTED' : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
+    'CGDK2'          : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
+    'LYWSD02'        : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
+    'LYWSD03MMC'     : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 3, 2], [9, 9, 9, 9, 9, 9]],
+    'CGD1'           : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
+    'CGP1W'          : [[0, 1, 9, 2, 9, 9, 9, 9, 9, 9, 3], [9, 9, 9, 9, 9, 9]],
+    'MHO-C401'       : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
+    'MHO-C303'       : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9]],
+    'JQJCY01YM'      : [[0, 1, 9, 9, 9, 9, 2, 9, 9, 9, 3], [9, 9, 9, 9, 9, 9]],
+    'HHCCJCY01'      : [[0, 9, 1, 9, 2, 3, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9]],
+    'GCLS002'        : [[0, 9, 1, 9, 2, 3, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9]],
+    'HHCCPOT002'     : [[9, 9, 0, 9, 1, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9]],
+    'WX08ZM'         : [[9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 1], [0, 9, 9, 9, 9, 1]],
+    'MCCGQ02HL'      : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 0, 1, 9, 9, 2]],
+    'YM-K1501'       : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [0, 9, 9, 9, 9, 9]],
+    'YM-K1501EU'     : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [0, 9, 9, 9, 9, 9]],
+    'V-SK152'        : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [0, 9, 9, 9, 9, 9]],
+    'SJWS01LM'       : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 9, 9, 0, 9, 1]],
+    'MJYD02YL'       : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 9, 0, 9, 1, 2]],
+    'MMC-T201-1'     : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1], [9, 9, 9, 9, 9, 9]],
+    'MUE4094RT'      : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 0, 9]],
+    'YLAI003'        : [[9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 1], [9, 9, 9, 9, 9, 9]],
 }
 
 KETTLES = ('YM-K1501', 'YM-K1501EU', 'V-SK152')
@@ -113,7 +133,8 @@ MANUFACTURER_DICT = {
     'CGDK2'          : 'Qingping',
     'LYWSD02'        : 'Xiaomi',
     'LYWSD03MMC'     : 'Xiaomi',
-    'CGD1'           : 'ClearGrass',
+    'CGD1'           : 'Qingping',
+    'CGP1W'          : 'Qingping',
     'MHO-C401'       : 'Miaomiaoce',
     'MHO-C303'       : 'Miaomiaoce',
     'JQJCY01YM'      : 'Honeywell',
@@ -127,6 +148,9 @@ MANUFACTURER_DICT = {
     'V-SK152'        : 'Viomi',
     'SJWS01LM'       : 'Xiaomi',
     'MJYD02YL'       : 'Xiaomi',
+    'MMC-T201-1'     : 'Xiaomi',
+    'MUE4094RT'      : 'Xiaomi',
+    'YLAI003'        : 'Yeelight',
 }
 
 # The use of the following dictionaries is lost when changing the sensor naming system

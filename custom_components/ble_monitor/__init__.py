@@ -3,6 +3,7 @@ import asyncio
 import copy
 import json
 import logging
+import math
 import struct
 from threading import Thread
 import janus
@@ -43,6 +44,9 @@ from .const import (
     DEFAULT_DISCOVERY,
     DEFAULT_RESTORE_STATE,
     DEFAULT_HCI_INTERFACE,
+    DEFAULT_DEVICE_DECIMALS,
+    DEFAULT_DEVICE_USE_MEDIAN,
+    DEFAULT_DEVICE_RESTORE_STATE,
     DEFAULT_DEVICE_RESET_TIMER,
     CONF_ROUNDING,
     CONF_DECIMALS,
@@ -55,12 +59,17 @@ from .const import (
     CONF_REPORT_UNKNOWN,
     CONF_RESTORE_STATE,
     CONF_ENCRYPTION_KEY,
+    CONF_DEVICE_DECIMALS,
+    CONF_DEVICE_USE_MEDIAN,
+    CONF_DEVICE_RESTORE_STATE,
     CONF_DEVICE_RESET_TIMER,
     CONFIG_IS_FLOW,
     DOMAIN,
+    PLATFORMS,
     MAC_REGEX,
     AES128KEY_REGEX,
     ATC_TYPE_DICT,
+    QINGPING_TYPE_DICT,
     XIAOMI_TYPE_DICT,
     SERVICE_CLEANUP_ENTRIES,
 )
@@ -71,6 +80,7 @@ _LOGGER = logging.getLogger(__name__)
 TH_STRUCT = struct.Struct("<hH")
 H_STRUCT = struct.Struct("<H")
 T_STRUCT = struct.Struct("<h")
+TTB_STRUCT = struct.Struct("<hhB")
 CND_STRUCT = struct.Struct("<H")
 ILL_STRUCT = struct.Struct("<I")
 LIGHT_STRUCT = struct.Struct("<I")
@@ -78,8 +88,7 @@ FMDH_STRUCT = struct.Struct("<H")
 THBV_STRUCT = struct.Struct(">hBBH")
 THVB_STRUCT = struct.Struct("<hHHB")
 M_STRUCT = struct.Struct("<L")
-
-PLATFORMS = ["binary_sensor", "sensor"]
+P_STRUCT = struct.Struct("<H")
 
 CONFIG_YAML = {}
 UPDATE_UNLISTENER = None
@@ -90,35 +99,49 @@ DEVICE_SCHEMA = vol.Schema(
         vol.Optional(CONF_NAME): cv.string,
         vol.Optional(CONF_ENCRYPTION_KEY): cv.matches_regex(AES128KEY_REGEX),
         vol.Optional(CONF_TEMPERATURE_UNIT): cv.temperature_unit,
-        vol.Optional(CONF_DEVICE_RESET_TIMER, default=DEFAULT_DEVICE_RESET_TIMER): cv.positive_int,
+        vol.Optional(
+            CONF_DEVICE_DECIMALS, default=DEFAULT_DEVICE_DECIMALS
+        ): vol.In([DEFAULT_DEVICE_DECIMALS, 0, 1, 2, 3, 4]),
+        vol.Optional(
+            CONF_DEVICE_USE_MEDIAN, default=DEFAULT_DEVICE_USE_MEDIAN
+        ): vol.In([DEFAULT_DEVICE_USE_MEDIAN, True, False]),
+        vol.Optional(
+            CONF_DEVICE_RESTORE_STATE, default=DEFAULT_DEVICE_RESTORE_STATE
+        ): vol.In([DEFAULT_DEVICE_RESTORE_STATE, True, False]),
+        vol.Optional(
+            CONF_DEVICE_RESET_TIMER, default=DEFAULT_DEVICE_RESET_TIMER
+        ): cv.positive_int,
     }
 )
 
 CONFIG_SCHEMA = vol.Schema(
     {
-        DOMAIN: vol.Schema(
-            {
-                vol.Optional(CONF_ROUNDING, default=DEFAULT_ROUNDING): cv.boolean,
-                vol.Optional(CONF_DECIMALS, default=DEFAULT_DECIMALS): cv.positive_int,
-                vol.Optional(CONF_PERIOD, default=DEFAULT_PERIOD): cv.positive_int,
-                vol.Optional(CONF_LOG_SPIKES, default=DEFAULT_LOG_SPIKES): cv.boolean,
-                vol.Optional(CONF_USE_MEDIAN, default=DEFAULT_USE_MEDIAN): cv.boolean,
-                vol.Optional(CONF_ACTIVE_SCAN, default=DEFAULT_ACTIVE_SCAN): cv.boolean,
-                vol.Optional(
-                    CONF_HCI_INTERFACE, default=[DEFAULT_HCI_INTERFACE]
-                ): vol.All(cv.ensure_list, [cv.positive_int]),
-                vol.Optional(
-                    CONF_BATT_ENTITIES, default=DEFAULT_BATT_ENTITIES
-                ): cv.boolean,
-                vol.Optional(
-                    CONF_REPORT_UNKNOWN, default=DEFAULT_REPORT_UNKNOWN
-                ): cv.boolean,
-                vol.Optional(CONF_DISCOVERY, default=DEFAULT_DISCOVERY): cv.boolean,
-                vol.Optional(CONF_RESTORE_STATE, default=DEFAULT_RESTORE_STATE): cv.boolean,
-                vol.Optional(CONF_DEVICES, default=[]): vol.All(
-                    cv.ensure_list, [DEVICE_SCHEMA]
-                ),
-            }
+        DOMAIN: vol.All(
+            cv.deprecated(CONF_ROUNDING),
+            vol.Schema(
+                {
+                    vol.Optional(CONF_ROUNDING, default=DEFAULT_ROUNDING): cv.positive_int,
+                    vol.Optional(CONF_DECIMALS, default=DEFAULT_DECIMALS): cv.positive_int,
+                    vol.Optional(CONF_PERIOD, default=DEFAULT_PERIOD): cv.positive_int,
+                    vol.Optional(CONF_LOG_SPIKES, default=DEFAULT_LOG_SPIKES): cv.boolean,
+                    vol.Optional(CONF_USE_MEDIAN, default=DEFAULT_USE_MEDIAN): cv.boolean,
+                    vol.Optional(CONF_ACTIVE_SCAN, default=DEFAULT_ACTIVE_SCAN): cv.boolean,
+                    vol.Optional(
+                        CONF_HCI_INTERFACE, default=[DEFAULT_HCI_INTERFACE]
+                    ): vol.All(cv.ensure_list, [cv.positive_int]),
+                    vol.Optional(
+                        CONF_BATT_ENTITIES, default=DEFAULT_BATT_ENTITIES
+                    ): cv.boolean,
+                    vol.Optional(
+                        CONF_REPORT_UNKNOWN, default=DEFAULT_REPORT_UNKNOWN
+                    ): cv.boolean,
+                    vol.Optional(CONF_DISCOVERY, default=DEFAULT_DISCOVERY): cv.boolean,
+                    vol.Optional(CONF_RESTORE_STATE, default=DEFAULT_RESTORE_STATE): cv.boolean,
+                    vol.Optional(CONF_DEVICES, default=[]): vol.All(
+                        cv.ensure_list, [DEVICE_SCHEMA]
+                    ),
+                }
+            )
         )
     },
     extra=vol.ALLOW_EXTRA,
@@ -131,7 +154,6 @@ async def async_setup(hass: HomeAssistant, config):
     """Set up integration."""
 
     async def service_cleanup_entries(service_call):
-        # service = service_call.service
         service_data = service_call.data
 
         await async_cleanup_entries_service(hass, service_data)
@@ -350,6 +372,26 @@ class HCIdump(Thread):
     def __init__(self, config, dataqueue):
         """Initiate HCIdump thread."""
 
+        # Xiaomi MiBeacon BLE advertisements
+        # https://iot.mi.com/new/doc/embedded-development/ble/object-definition
+        def obj0300(xobj):
+            return {"motion": xobj[0], "motion timer": xobj[0]}
+
+        def obj0f00(xobj):
+            (light,) = LIGHT_STRUCT.unpack(xobj + b'\x00')
+            return {"motion": 1, "motion timer": 1, "light": 1 if light == 100 else 0}
+
+        def obj0110(xobj):
+            if xobj[2] == 0:
+                press = "single press"
+            elif xobj[2] == 1:
+                press = "double press"
+            elif xobj[2] == 2:
+                press = "long press"
+            else:
+                press = "no press"
+            return {"button": press}
+
         def obj0410(xobj):
             (temp,) = T_STRUCT.unpack(xobj)
             return {"temperature": temp / 10}
@@ -402,10 +444,30 @@ class HCIdump(Thread):
             (temp, humi) = TH_STRUCT.unpack(xobj)
             return {"temperature": temp / 10, "humidity": humi / 10}
 
-        def obj0f00(xobj):
-            (light,) = LIGHT_STRUCT.unpack(xobj + b'\x00')
-            return {"motion": 1, "motion timer": 1, "light": 1 if light == 100 else 0}
+        def obj0020(xobj):
+            (temp1, temp2, bat) = TTB_STRUCT.unpack(xobj)
+            # Body temperature is calculated from the two measured temperatures.
+            # Formula is based on approximation based on values inthe app in the range 36.5 - 37.8.
+            body_temp = (
+                3.71934 * pow(10, -11) * math.exp(0.69314 * temp1 / 100)
+                - 1.02801 * pow(10, -8) * math.exp(0.53871 * temp2 / 100)
+                + 36.413
+            )
+            return {"temperature": body_temp, "battery": bat}
 
+        # Qingping BLE advertisements
+        def obj0104(xobj):
+            (temp, humi) = TH_STRUCT.unpack(xobj)
+            return {"temperature": temp / 10, "humidity": humi / 10}
+
+        def obj0201(xobj):
+            return {"battery": xobj[0]}
+
+        def obj0702(xobj):
+            (pres,) = P_STRUCT.unpack(xobj)
+            return {"pressure": pres / 10}
+
+        # ATC BLE advertisements
         def objATC_short(xobj):
             (temp, humi, batt, volt) = THBV_STRUCT.unpack(xobj)
             return {"temperature": temp / 10, "humidity": humi, "voltage": volt / 1000, "battery": batt}
@@ -467,6 +529,9 @@ class HCIdump(Thread):
         # dataobject dictionary to implement switch-case statement
         # dataObject id  (converter, binary, measuring)
         self._dataobject_dict = {
+            b'\x03\x00': (obj0300, True, False),
+            b'\x0F\x00': (obj0f00, True, False),
+            b'\x01\x10': (obj0110, False, True),
             b'\x04\x10': (obj0410, False, True),
             b'\x05\x10': (obj0510, True, True),
             b'\x06\x10': (obj0610, False, True),
@@ -482,7 +547,10 @@ class HCIdump(Thread):
             b'\x19\x10': (obj1910, True, False),
             b'\x0A\x10': (obj0a10, True, True),
             b'\x0D\x10': (obj0d10, False, True),
-            b'\x0F\x00': (obj0f00, True, False),
+            b'\x00\x20': (obj0020, False, True),
+            b'\x01\x04': (obj0104, False, True),
+            b'\x02\x01': (obj0201, False, True),
+            b'\x07\x02': (obj0702, False, True),
             b'\x10\x16': (objATC_short, False, True),
             b'\x12\x16': (objATC_long, False, True),
         }
@@ -529,7 +597,9 @@ class HCIdump(Thread):
                     try:
                         self._event_loop.run_until_complete(btctrl[hci].send_scan_request(self._active))
                     except RuntimeError as error:
-                        _LOGGER.error("HCIdump thread: Runtime error while sending scan request on hci%i: %s", hci, error)
+                        _LOGGER.error(
+                            "HCIdump thread: Runtime error while sending scan request on hci%i: %s", hci, error
+                        )
             _LOGGER.debug("HCIdump thread: start main event_loop")
             try:
                 self._event_loop.run_forever()
@@ -578,11 +648,12 @@ class HCIdump(Thread):
         """Parse the raw data."""
         # check if packet is Extended scan result
         is_ext_packet = True if data[3] == 0x0d else False
-        # check for Xiaomi or ATC service data
+        # check for service data (Xiaomi, qingping or ATC)
         xiaomi_index = data.find(b'\x16\x95\xFE', 15 + 15 if is_ext_packet else 0)
+        qingping_index = data.find(b'\x16\xCD\xFD', 15 + 15 if is_ext_packet else 0)
         atc_index = data.find(b'\x16\x1A\x18', 15 + 15 if is_ext_packet else 0)
 
-        if xiaomi_index == -1 and atc_index == -1:
+        if xiaomi_index == -1 and atc_index == -1 and qingping_index == -1:
             return None, None, None
 
         if xiaomi_index != -1:
@@ -607,8 +678,11 @@ class HCIdump(Thread):
             framectrl_data = data[xiaomi_index + 3:xiaomi_index + 5]
             framectrl, = struct.unpack('>H', framectrl_data)
             # flag advertisements without mac address in service data
-            # MJYD02YL (F6 07) has no mac address in the motion (48 59) advertisements
             if device_type == b'\xF6\x07' and framectrl_data == b'\x48\x59':
+                # MJYD02YL does not have a MAC address in the service data of some advertisements
+                mac_in_service_data = False
+            if device_type == b'\xDD\x03' and framectrl_data == b'\x40\x30':
+                # MUE4094RT does not have a MAC address in the service data
                 mac_in_service_data = False
             else:
                 mac_in_service_data = True
@@ -784,6 +858,118 @@ class HCIdump(Thread):
             binary = binary and binary_data
             return result, binary, measuring
 
+        if qingping_index != -1:
+            # parse BLE message in Qingping format
+            firmware = "Qingping"
+
+            # check for no BR/EDR + LE General discoverable mode flags
+            advert_start = 29 if is_ext_packet else 14
+            adv_index = data.find(b"\x02\x01\x06", advert_start, 3 + advert_start)
+            if adv_index == -1:
+                return None, None, None
+            # check for BTLE msg size
+            msg_length = data[2] + 3
+            if msg_length != len(data):
+                return None, None, None
+            # extract device type
+            device_type = data[qingping_index + 3:qingping_index + 5]
+
+            # check for MAC presence in message and in service data
+            mac_index = adv_index - 14 if is_ext_packet else adv_index
+            qingping_mac_reversed = data[qingping_index + 5:qingping_index + 11]
+            source_mac_reversed = data[mac_index - 7:mac_index - 1]
+            if qingping_mac_reversed != source_mac_reversed:
+                return None, None, None
+
+            # check for MAC presence in whitelist, if needed
+            if self.discovery is False:
+                if qingping_mac_reversed not in self.whitelist:
+                    return None, None, None
+            packet_id = "no packed id"
+
+            # extract RSSI byte
+            rssi_index = 18 if is_ext_packet else msg_length - 1
+            (rssi,) = struct.unpack("<b", data[rssi_index:rssi_index + 1])
+            # strange positive RSSI workaround
+            if rssi > 0:
+                rssi = -rssi
+            try:
+                sensor_type, binary_data = QINGPING_TYPE_DICT[device_type]
+            except KeyError:
+                if self.report_unknown:
+                    _LOGGER.info(
+                        "BLE ADV from UNKNOWN: RSSI: %s, MAC: %s, ADV: %s",
+                        rssi,
+                        ''.join('{:02X}'.format(x) for x in qingping_mac_reversed[::-1]),
+                        data.hex()
+                    )
+                return None, None, None
+
+            xdata_length = 0
+            xdata_point = 0
+
+            # qingping data length = message length
+            #     -all bytes before Qingping UUID
+            #     -3 bytes Qingping UUID + ADtype
+            #     -1 byte rssi
+            #     -2 bytes sensor type
+            #     -6 bytes MAC
+            xdata_length += msg_length - qingping_index - 12
+            if xdata_length < 3:
+                return None, None, None
+            xdata_point += qingping_index + 11
+            # check if qingping data start and length is valid
+            if xdata_length != len(data[xdata_point:-1]):
+                return None, None, None
+            result = {
+                "rssi": rssi,
+                "mac": ''.join('{:02X}'.format(x) for x in qingping_mac_reversed[::-1]),
+                "type": sensor_type,
+                "packet": packet_id,
+                "firmware": firmware,
+                "data": True,
+            }
+            binary = False
+            measuring = False
+            # loop through qingping payload
+            # assume that the data may have several values of different types
+            while True:
+                xvalue_typecode = data[xdata_point:xdata_point + 2]
+                try:
+                    xvalue_length = data[xdata_point + 1]
+                except ValueError as error:
+                    _LOGGER.error("xvalue_length conv. error: %s", error)
+                    _LOGGER.error("xdata_point: %s", xdata_point)
+                    _LOGGER.error("data: %s", data.hex())
+                    result = {}
+                    break
+                except IndexError as error:
+                    _LOGGER.error("Wrong xdata_point: %s", error)
+                    _LOGGER.error("xdata_point: %s", xdata_point)
+                    _LOGGER.error("data: %s", data.hex())
+                    result = {}
+                    break
+                xnext_point = xdata_point + 2 + xvalue_length
+                xvalue = data[xdata_point + 2:xnext_point]
+                resfunc, tbinary, tmeasuring = self._dataobject_dict.get(xvalue_typecode, (None, None, None))
+                if resfunc:
+                    binary = binary or tbinary
+                    measuring = measuring or tmeasuring
+                    result.update(resfunc(xvalue))
+                else:
+                    if self.report_unknown:
+                        _LOGGER.info(
+                            "UNKNOWN dataobject from DEVICE: %s, MAC: %s, ADV: %s",
+                            sensor_type,
+                            ''.join('{:02X}'.format(x) for x in qingping_mac_reversed[::-1]),
+                            data.hex()
+                        )
+                if xnext_point > msg_length - 3:
+                    break
+                xdata_point = xnext_point
+            binary = binary and binary_data
+            return result, binary, measuring
+
         if atc_index != -1:
             # parse BLE message in ATC format
 
@@ -811,7 +997,7 @@ class HCIdump(Thread):
                 return None, None, None
             # check for MAC presence in whitelist, if needed
             if self.discovery is False:
-                if atc_mac not in self.whitelist:
+                if source_mac_reversed not in self.whitelist:
                     return None, None, None
             packet_id = data[atc_index + 16 if is_custom_adv else atc_index + 15]
             try:

@@ -28,14 +28,12 @@
   action:
   - service: switch.turn_on
     entity_id: switch.undertabble_mi_wifi_socket
-#   - delay:
-#       seconds: 5
-#   - service: remote.send_command
-#     data:
-#       command:
-#         - tv_on
-#         - audio_power
-#     entity_id: remote.xiaomi_ir_remote
+  - service: switch.turn_on
+    entity_id: switch.tv
+  - delay: 
+      seconds: 2
+  - service: switch.turn_on
+    entity_id: switch.audio1
 
 - alias: pc_accessories_off
   trigger:
@@ -46,14 +44,12 @@
     for:
       seconds: 30
   action:
-#   - service: remote.send_command
-#     data:
-#       command:
-#         - tv_on
-#         - audio_power
-#     entity_id: remote.xiaomi_ir_remote
-#   - delay:
-#       seconds: 3
+  - service: switch.turn_on
+    entity_id: switch.audio1
+  - delay:
+      seconds: 3
+  - service: switch.turn_on
+    entity_id: switch.tv
   - service: switch.turn_off
     entity_id: switch.undertabble_mi_wifi_socket
       

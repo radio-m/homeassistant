@@ -26,40 +26,6 @@
         cards:
         - type: entities
           entities:
-            - entity: sensor.0x00158d0003a58131_linkquality
-              name: "Бойлер"
-            - entity: sensor.0x00158d0003a52e45_linkquality
-              name: "Холодильник"
-            - entity: sensor.0x00158d0003535c2f_linkquality
-              name: "Посудомойка"
-            - entity: sensor.0x00158d000359b03a_linkquality
-              name: "Кнопка"
-            - entity: sensor.0x00158d00044afff0_linkquality
-              name: "Датчик в детской"
-            - entity: sensor.0x00158d00041d6e0b_linkquality
-              name: "Датчик в спальне"
-            - entity: sensor.0x00158d0003ce7f8d_linkquality
-              name: "Датчик у бабушки"
-            - entity: sensor.0x00158d0003faaada_linkquality
-              name: "Выключатель двойной в детской"
-            - entity: sensor.0x00158d000421fd0c_linkquality
-              name: "Выключатель одинарный в ванной"
-            - entity: sensor.0x00158d00041b19c6_linkquality
-              name: "Выключатель двойной в ванной"
-            - entity: sensor.0x00124b001c4b2d3c_linkquality
-              name: "Датчик температуры в подвале"
-            - entity: sensor.0x00124b0022417252_linkquality
-              name: "Датчик температуры в чулане"
-            - entity: sensor.0x00124b0022254e4d_linkquality
-              name: "Реле вытяжки в подвале"
-            - entity: sensor.0x00124b002135564f_linkquality
-              name: "Датчик движения"
-
-
-      - type: vertical-stack
-        cards:
-        - type: entities
-          entities:
             - entity: input_number.timer_minutes
               name: minutes
             - type: call-service
@@ -75,20 +41,24 @@
       - type: media-control
         entity: media_player.raspberrypi
 
-      - type: entities
+      - type: custom:battery-state-card
+        title: "Заряд батареейк в датчиках"
+        sort_by_level: "asc"
+        collapse: 3
         entities:
-          - entity: sensor.0x00158d00044afff0_humidity
-          - entity: input_number.c_bedroom_humidity
-          - entity: switch.bw_shp13_2_switch
-          - entity: automation.uvlazhnitel_v_detskoi
-          
-      - type: entities
-        entities:
-          - entity: climate.uvlazhnitel_v_detskoi
-            name: "Увлажнитель в детской"
-          
-          
-          
+          - sensor.m_bedroom_battery
+          - sensor.c_bedroom_battery
+          - sensor.g_bedroom_battery
+          - sensor.mi_round_button_battery
+          - sensor.basement_temp_battery
+          - sensor.lumber_temp_battery
+          - sensor.motion_sensor_battery
+          - sensor.c_bedroom_double_switch_battery
+          - sensor.ble_battery_e72e017314c7
+          - sensor.ble_battery_582d3434ca5b
+          - sensor.ble_battery_e4aaec350373
+
+
           
           
           

@@ -1,0 +1,6 @@
+binary_sensor.ble_opening_door_sensor:
+  templates:
+    icon: >
+      if (state === 'on') return 'mdi:door-open';
+      if (state === 'off') return 'mdi:door-closed';
+      else return 'mdi:door';

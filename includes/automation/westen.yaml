@@ -27,3 +27,45 @@
     data_template:
       entity_id: climate.westen
       temperature: "{{(state_attr('climate.westen' , 'temperature')|round(1)) - 0.5 }}"
+
+
+- alias: westen_off_with_1h_timer
+  description: 'Выключение котла на 1 час'
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: esphome.btn_pwr_action
+      event_data:
+        title: single_click
+  condition:
+  action:
+  - choose:
+      - conditions:
+          - "{{ is_state('climate.westen', 'heat') }}"
+        sequence:
+          - service: climate.set_hvac_mode
+            data:
+              entity_id: climate.westen
+              hvac_mode: "off"
+          - service: timer.start
+            entity_id: timer.westen
+    default:
+      - service: timer.cancel
+        entity_id: timer.westen
+      - service: climate.set_hvac_mode
+        data:
+          entity_id: climate.westen
+          hvac_mode: "heat"
+
+- alias: westen_on_by_timer
+  trigger:
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.westen
+  condition:
+  action:
+  - service: climate.set_hvac_mode
+    data:
+      entity_id: climate.westen
+      hvac_mode: "heat"

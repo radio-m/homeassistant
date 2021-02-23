@@ -3,8 +3,8 @@ basement:
   climate:
     - platform: generic_thermostat
       name: Basement
-      heater: switch.0x00124b0022254e4d_switch
-      target_sensor: sensor.0x00124b001c4b2d3c_temperature #sensor.mi_t_582d3434ca5b # temp sensor in room
+      heater: switch.basement_vent
+      target_sensor: sensor.basement_temp_temperature #sensor.mi_t_582d3434ca5b # temp sensor in room
       ac_mode: True
       target_temp: 10
       min_temp: 0

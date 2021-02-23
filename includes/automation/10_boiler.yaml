@@ -156,9 +156,9 @@
     entity_id: sensor.input_voltage
     below: '185'
   condition:
-  - condition: state
-    entity_id: switch.bw_shp8_relay
-    state: 'on'
+#   - condition: state
+#     entity_id: switch.bw_shp8_relay
+#     state: 'on'
   action:
   - choose:
       - conditions:

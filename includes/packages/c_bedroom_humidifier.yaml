@@ -3,7 +3,7 @@ c_bedroom_humidifier:
     - platform: generic_hygrostat
       name: "Увлажнитель в детской"
       dryer: switch.bw_shp13_2_switch
-      target_sensor: sensor.0x00158d00044afff0_humidity
+      target_sensor: sensor.c_bedroom_humidity
       min_humidity: 40
       max_humidity: 65
       moist_mode: true
@@ -12,3 +12,56 @@ c_bedroom_humidifier:
       moist_tolerance: 5
       min_cycle_duration:
         minutes: 10
+        
+  automation:
+    - alias: humidifier_issue
+      description: 'Notify when humidifier low water'
+      trigger:
+      - platform: numeric_state
+        entity_id: sensor.bw_shp13_2_power
+        below: '5'
+        for: 00:01
+      condition:
+      - condition: state
+        entity_id: switch.bw_shp13_2_switch
+        state: 'on'
+      action:
+      - service: notify.telegram
+        data:
+          message: "Увлажнитель не работает! Выключен или кончилась вода. {{now()}}"
+      - service: notify.telegram_olga
+        data:
+          message: "Увлажнитель не работает! Выключен или кончилась вода. {{now()}}"
+      mode: single
+
+    - alias: "humidifier off when door open"
+      trigger:
+        platform: state
+        entity_id: binary_sensor.ble_opening_door_sensor
+        to: 'on'
+        for: 00:03:00
+      condition:
+    #   - condition: state
+    #     entity_id: switch.bw_shp13_2_switch
+    #     state: 'on'
+      action:
+        - service: climate.set_hvac_mode
+          data:
+            entity_id: climate.uvlazhnitel_v_detskoi
+            hvac_mode: "off"
+            
+    - alias: "humidifier on when door closed"
+      trigger:
+        platform: state
+        entity_id: binary_sensor.ble_opening_door_sensor
+        to: 'off'
+        for: 00:03:00
+      condition:
+    #   - condition: state
+    #     entity_id: switch.bw_shp13_2_switch
+    #     state: 'off'
+      action:
+        - service: climate.set_hvac_mode
+          data:
+            entity_id: climate.uvlazhnitel_v_detskoi
+            hvac_mode: "dry"

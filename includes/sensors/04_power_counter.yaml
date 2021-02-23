@@ -45,145 +45,6 @@
 
 ################################################################################
 
-- platform: template
-  sensors:
-    load_158d0003a58131:
-      friendly_name: 'Бойлер'
-      value_template: "{{ states('sensor.0x00158d0003a58131_power') }}"
-      icon_template: mdi:water-boiler
-      unit_of_measurement: 'Вт'
-    #   entity_id: sensor.0x00158d0003a58131_power
-
-- platform: mqtt
-  state_topic: "power/158d0003a58131/yesterday"
-  name: 'mqtt_power_yesterday_158d0003a58131'
-  unit_of_measurement: 'кВт⋅ч'
-        
-- platform: mqtt
-  state_topic: "power/158d0003a58131/today"
-  name: 'mqtt_power_today_158d0003a58131'
-  unit_of_measurement: 'кВт⋅ч'
-
-- platform: mqtt
-  state_topic: "power/158d0003a58131/month"
-  name: 'mqtt_power_month_158d0003a58131'
-  unit_of_measurement: 'кВт⋅ч'
-    
-- platform: mqtt
-  state_topic: "power/158d0003a58131/lastmonth"
-  name: 'mqtt_power_lastmonth_158d0003a58131'
-  unit_of_measurement: 'кВт⋅ч'
-
-- platform: template
-  sensors:
-    money_month_158d0003a58131:
-      friendly_name: "Стоимость за текущий месяц"
-      unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_158d0003a58131.state | float * 1.68)|round(2) }}"
-      icon_template: mdi:square-inc-cash 
-    
-- platform: template
-  sensors:
-    money_lastmonth_158d0003a58131:
-      friendly_name: "Стоимость за прошлый месяц"
-      unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_158d0003a58131.state | float * 1.68)|round(2) }}"
-      icon_template: mdi:square-inc-cash 
-
-################################################################################
-
-- platform: template
-  sensors:
-    load_158d0003a52e45:
-      friendly_name: 'Холодильник'
-      value_template: "{{ states('sensor.0x00158d0003a52e45_power') }}"
-      icon_template: mdi:fridge
-      unit_of_measurement: 'Вт'
-    #   entity_id: sensor.0x00158d0003a52e45_power
-
-- platform: mqtt
-  state_topic: "power/158d0003a52e45/yesterday"
-  name: 'mqtt_power_yesterday_158d0003a52e45'
-  unit_of_measurement: 'кВт⋅ч'
-        
-- platform: mqtt
-  state_topic: "power/158d0003a52e45/today"
-  name: 'mqtt_power_today_158d0003a52e45'
-  unit_of_measurement: 'кВт⋅ч'
-
-- platform: mqtt
-  state_topic: "power/158d0003a52e45/month"
-  name: 'mqtt_power_month_158d0003a52e45'
-  unit_of_measurement: 'кВт⋅ч'
-    
-- platform: mqtt
-  state_topic: "power/158d0003a52e45/lastmonth"
-  name: 'mqtt_power_lastmonth_158d0003a52e45'
-  unit_of_measurement: 'кВт⋅ч'
-
-- platform: template
-  sensors:
-    money_month_158d0003a52e45:
-      friendly_name: "Стоимость за текущий месяц"
-      unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_158d0003a52e45.state | float * 1.68)|round(2) }}"
-      icon_template: mdi:square-inc-cash 
-    
-- platform: template
-  sensors:
-    money_lastmonth_158d0003a52e45:
-      friendly_name: "Стоимость за прошлый месяц"
-      unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_158d0003a52e45.state | float * 1.68)|round(2) }}"
-      icon_template: mdi:square-inc-cash 
-
-################################################################################
-
-- platform: template
-  sensors:
-    load_158d0003535c2f:
-      friendly_name: 'Посудомойка'
-      value_template: "{{ states('sensor.0x00158d0003535c2f_power') }}"
-      icon_template: mdi:dishwasher
-      unit_of_measurement: 'Вт'
-    #   entity_id: sensor.0x00158d0003535c2f_power
-
-- platform: mqtt
-  state_topic: "power/158d0003535c2f/yesterday"
-  name: 'mqtt_power_yesterday_158d0003535c2f'
-  unit_of_measurement: 'кВт⋅ч'
-        
-- platform: mqtt
-  state_topic: "power/158d0003535c2f/today"
-  name: 'mqtt_power_today_158d0003535c2f'
-  unit_of_measurement: 'кВт⋅ч'
-
-- platform: mqtt
-  state_topic: "power/158d0003535c2f/month"
-  name: 'mqtt_power_month_158d0003535c2f'
-  unit_of_measurement: 'кВт⋅ч'
-    
-- platform: mqtt
-  state_topic: "power/158d0003535c2f/lastmonth"
-  name: 'mqtt_power_lastmonth_158d0003535c2f'
-  unit_of_measurement: 'кВт⋅ч'
-
-- platform: template
-  sensors:
-    money_month_158d0003535c2f:
-      friendly_name: "Стоимость за текущий месяц"
-      unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_158d0003535c2f.state | float * 1.68)|round(2) }}"
-      icon_template: mdi:square-inc-cash 
-    
-- platform: template
-  sensors:
-    money_lastmonth_158d0003535c2f:
-      friendly_name: "Стоимость за прошлый месяц"
-      unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_158d0003535c2f.state | float * 1.68)|round(2) }}"
-      icon_template: mdi:square-inc-cash 
-
 ################################################################################
 
 #  wi-fi 3 + 3 port power strip       
@@ -430,9 +291,9 @@
 - platform: template
   sensors:
     load_bw_shp13_2:
-      friendly_name: ''
+      friendly_name: 'Увлажнитель'
       value_template: "{{ states('sensor.bw_shp13_2_power') }}"
-      icon_template: mdi:dishwasher
+      icon_template: mdi:air-humidifier
       unit_of_measurement: 'Вт'
     #   entity_id: sensor.0x00158d0003535c2f_power
 
@@ -481,10 +342,7 @@
       unit_of_measurement: "Вт"
       icon_template: mdi:sigma
       value_template: 
-       "{{ ((states.sensor.load_158d0003a58131.state | float) +
-            (states.sensor.load_158d0003a52e45.state | float) +
-            (states.sensor.load_158d0003535c2f.state | float) +
-            (states.sensor.load_xiaomi_power_strip.state | float) +
+       "{{ ((states.sensor.load_xiaomi_power_strip.state | float) +
             (states.sensor.load_broadlink_1.state | float) +
             (states.sensor.load_broadlink_2.state | float) +
             (states.sensor.load_bw_shp8.state | float) +

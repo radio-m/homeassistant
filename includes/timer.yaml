@@ -21,3 +21,7 @@
   boiler_low_voltage:
     name: 'boiler low voltage'
     duration: '00:10:00'
+
+  westen:
+    name: 'westen timer'
+    duration: '01:00:00'

@@ -41,12 +41,12 @@ cards:
       name: Home Assistant в онлайне
       icon: mdi:clock
     - type: divider
-    - entity: sensor.current_ha
-      name: Установлен Home Assistant
-      icon: mdi:alpha-v-circle
     - entity: sensor.version
-      name: Последний Home Assistant
-      icon: mdi:alpha-v-circle-outline
+      type: custom:multiple-entity-row
+      name: Версия НА текущая/последняя
+      entities:
+        - entity: sensor.current_ha
+          name: false
     - entity: sensor.hacs
       name: Community updates avaliable
       icon: mdi:update
@@ -177,30 +177,6 @@ cards:
       id: graph2
       url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=2
       aspect_ratio: 75%
-
-    - type: glance
-      show_icon: true
-      show_name: true
-      show_state: true
-      style: |
-        ha-card {
-          --ha-card-background: rgba(0, 0, 0, 0.6);
-          color: white
-          }
-      title: Coronavirus in Ukraine
-      entities:
-        - entity: sensor.ukraine_coronavirus_confirmed
-          icon: 'mdi:emoticon-neutral-outline'
-          name: Confirmed
-        - entity: sensor.ukraine_coronavirus_current
-          icon: 'mdi:emoticon-frown-outline'
-          name: Current
-        - entity: sensor.ukraine_coronavirus_recovered
-          icon: 'mdi:emoticon-happy-outline'
-          name: Recovered
-        - entity: sensor.ukraine_coronavirus_deaths
-          icon: 'mdi:emoticon-dead-outline'
-          name: Deaths
 
   - type: glance
     title: '-- Component Count --'

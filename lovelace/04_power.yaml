@@ -88,21 +88,21 @@ cards:
     - type: entities
       show_header_toggle: false
       entities:
-      - entity: sensor.load_158d0003a52e45
+      - entity: sensor.load_bw_shp13_2
         secondary_info: >-
           сегодня: <b>[[
-          sensor.mqtt_power_today_158d0003a52e45.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_today_bw_shp13_2.state ]]</b> кВт⋅ч<br>
           этот месяц: <b>[[
-          sensor.mqtt_power_month_158d0003a52e45.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_month_bw_shp13_2.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_month_158d0003a52e45.state
+          sensor.money_month_bw_shp13_2.state
           ]]</b> грн<br>
           вчера: <b>[[
-          sensor.mqtt_power_yesterday_158d0003a52e45.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_yesterday_bw_shp13_2.state ]]</b> кВт⋅ч<br>
           прошлый месяц: <b>[[
-          sensor.mqtt_power_lastmonth_158d0003a52e45.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_lastmonth_bw_shp13_2.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_lastmonth_158d0003a52e45.state ]]</b> грн
+          sensor.money_lastmonth_bw_shp13_2.state ]]</b> грн
         type: 'custom:secondaryinfo-entity-row'
 # Посудомойка
     - type: entities
@@ -575,7 +575,6 @@ cards:
           attribute: value
         - entity: sensor.bw_shp8_voltage
           name: "Напряжение на розетке бойлера"
-        - entity: switch.0x00158d0003a52e45_switch
         - entity: switch.bw_shp13_1_switch
         - entity: sensor.bw_shp13_1_voltage
           name: "Напряжение на розетке посудомойки"
@@ -587,7 +586,8 @@ cards:
           entities:
             - automation.boiler_low_voltage_off
             - automation.boiler_low_voltage_on
-            - timer.boiler_low_voltage
+            - entity: timer.boiler_low_voltage
+              secondary_info: last-changed
           group_config: 
             secondary_info: last-triggered
 

@@ -1,0 +1,11 @@
+- alias: bathroom_swithes_toggle
+  trigger:
+    - platform: state
+      entity_id: sensor.bathroom_double_switch_action
+      to: "single_left"
+    - platform: state
+      entity_id: sensor.bathroom_double_switch_action
+      to: "single_both"
+  action:
+    - service: switch.toggle
+      entity_id: switch.bathroom_single_switch
