@@ -95,6 +95,8 @@
       - sensor.mqtt_power_yesterday_input_energy
       - sensor.mqtt_power_lastmonth_input_energy
       
+      - sensor.c_bedroom_temperature_median
+      - sensor.c_bedroom_humidity_median
   component_config:
     counter.hotw:
       override_measurement: lt

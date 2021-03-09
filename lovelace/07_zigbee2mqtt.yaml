@@ -42,7 +42,7 @@
         entity: media_player.raspberrypi
 
       - type: custom:battery-state-card
-        title: "Заряд батареейк в датчиках"
+        title: "Заряд батареек в датчиках"
         sort_by_level: "asc"
         collapse: 3
         entities:
@@ -58,10 +58,84 @@
           - sensor.ble_battery_582d3434ca5b
           - sensor.ble_battery_e4aaec350373
 
+      - type: vertical-stack
+        cards:
+        - type: custom:mini-graph-card
+          entities:
+            - sensor.c_bedroom_temperature_median
+            - sensor.c_bedroom_temperature
+            - sensor.ble_temperature_c_bedroom_bt
+          name: In temp
+          show:
+            labels: true
+        #   color_thresholds:
+        #     - value: 17
+        #       color: "#0000ff"
+        #     - value: 20
+        #       color: "#00ff55"
+        #     - value: 23
+        #       color: "#ffff00"
+          hours_to_show: 24
+          points_per_hour: 2
+        #   lower_bound: 15
+        #   upper_bound: 25
+          
+        - type: entities
+          entities:
+            - entity: sensor.c_bedroom_temperature
+              type: custom:multiple-entity-row
+              name: В детской
+              show_state: false
+              entities:
+                - entity: sensor.c_bedroom_temperature
+                  name: false
+                - entity: sensor.c_bedroom_temperature_median
+                  name: false
+                - entity: sensor.ble_temperature_c_bedroom_bt
+                  name: false
 
+      - type: vertical-stack
+        cards:
+        - type: custom:mini-graph-card
+          entities:
+            - sensor.c_bedroom_humidity_median
+            - sensor.c_bedroom_humidity
+            - sensor.ble_humidity_c_bedroom_bt
+          name: In hum
+          show:
+            labels: true
+        #   color_thresholds:
+        #     - value: 17
+        #       color: "#0000ff"
+        #     - value: 20
+        #       color: "#00ff55"
+        #     - value: 23
+        #       color: "#ffff00"
+          hours_to_show: 24
+          points_per_hour: 2
+        #   lower_bound: 15
+        #   upper_bound: 25
           
-          
-          
+        - type: entities
+          entities:
+            - entity: sensor.c_bedroom_humidity
+              type: custom:multiple-entity-row
+              name: В детской
+              show_state: false
+              entities:
+                - entity: sensor.c_bedroom_humidity
+                  name: false
+                - entity: sensor.c_bedroom_humidity_median
+                  name: false
+                - entity: sensor.ble_humidity_c_bedroom_bt
+                  name: false
+
+
+
+
+
+
+
           
           
         

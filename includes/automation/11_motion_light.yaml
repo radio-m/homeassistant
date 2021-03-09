@@ -3,7 +3,7 @@
   initial_state: false
   trigger:
     - platform: state
-      entity_id: binary_sensor.0x00124b002135564f_occupancy
+      entity_id: binary_sensor.motion_sensor_occupancy
       to: 'on'
   condition:
     - condition: state

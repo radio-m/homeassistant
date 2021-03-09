@@ -5,23 +5,19 @@ cards:
     cards:
 
     - type: light
-      entity: light.wall_switch
+      entity: light.c_bedroom
       name: "Свет в детской"
       icon: mdi:ceiling-light
+
     - type: light
-      entity: light.coridor_light
-      name: "Свет в коридоре"
-      icon: mdi:coach-lamp
-    - type: light
-      entity: light.magic_light
+      entity: light.underbed_high
       name: "Свет под кроватью"
-      icon: mdi:led-strip-variant
-      double_tap_action:
-        action: call-service
-        service: light.turn_on
-        service_data:
-          entity_id: light.magic_light
-          brightness_pct: 10
+      icon: mdi:lightbulb-on
+
+    - type: light
+      entity: light.underbed_low
+      name: "Свет под кроватью"
+      icon: mdi:lightbulb
 
 
   - type: horizontal-stack
@@ -37,9 +33,41 @@ cards:
       icon: mdi:ceiling-light
 
     - type: light
+      entity: light.coridor_light
+      name: "Ночник в коридоре"
+      icon: mdi:coach-lamp
+
+
+  - type: horizontal-stack
+    cards:
+
+    - type: light
+      entity: light.coridor
+      name: "Свет в коридоре"
+      icon: mdi:ceiling-light
+
+    - type: light
+      entity: light.coridor_floor
+      name: "Подсветка в коридоре"
+      icon: mdi:wall-sconce-flat-variant
+
+    - type: light
+      entity: light.kitchen
+      icon: mdi:ceiling-light
+      name: "Свет в кухне" 
+
+  - type: horizontal-stack
+    cards:
+
+    - type: light
       entity: light.gateway_led
       icon: mdi:alarm-light
       name: "Светодиод шлюза" 
+
+    - type: light
+      entity: light.magic_light
+      name: "Свет под кроватью"
+      icon: mdi:led-strip-variant
 
   - type: vertical-stack
     cards:

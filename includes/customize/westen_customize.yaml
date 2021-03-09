@@ -62,7 +62,7 @@ input_boolean.heater_outdoor_temp_mode:
   friendly_name: "Враховувати темп. на вулиці"
   templates:
     icon_color: "if (state === 'on') return 'rgb(0, 153, 255)'; else return 'rgb(189, 189, 189)';"
-    icon: "if (state === 'on') return 'mdi:weather-partlycloudy'; else return 'mdi:home-outline';"
+    icon: "if (state === 'on') return 'mdi:weather-partly-cloudy'; else return 'mdi:home-outline';"
 input_boolean.heater_day_night_automode:
   friendly_name: "Режим День/Ніч"
   templates:

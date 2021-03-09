@@ -14,7 +14,7 @@
       - switch.gas_heater_relay
 #light
       - switch.coridor_night_light_relay
-      - switch.relay_wall_switch_bedroom
+    #   - switch.relay_wall_switch_bedroom
       - switch.bathroom_single_switch #Bath
       - switch.bathroom_double_switch_right #Boiler room
       - light.magic_light

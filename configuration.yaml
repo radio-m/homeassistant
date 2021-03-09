@@ -117,12 +117,12 @@ telegram_bot:
       - !secret olga_chat
     
 # Router
-asuswrt:
-  host: 192.168.31.2
-  username: !secret router_usr
-  password: !secret router_pwd
-#   interface: "ra0"
-  mode: ap
+# asuswrt:
+#   host: 192.168.31.2
+#   username: !secret router_usr
+#   password: !secret router_pwd
+# #   interface: "ra0"
+#   mode: ap
 #   sensors:
 #     - devices
 #     - upload
@@ -153,6 +153,7 @@ binary_sensor: !include_dir_merge_list includes/bin_sensor
 automation: !include_dir_merge_list includes/automation
 script: !include_dir_merge_named includes/scripts
 switch: !include_dir_merge_list includes/switches
+python_script:
 
 #Files
 light: !include includes/light.yaml

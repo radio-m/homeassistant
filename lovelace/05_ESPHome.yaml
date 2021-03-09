@@ -34,18 +34,18 @@ cards:
       - switch.gas_heater_relay
       - switch.restart_gas_heater_control
       
-  - type: entities
-    title: 'Wall switch'
-    show_header_toggle: false
-    state_color: true
-    entities:
-      - binary_sensor.wall_switch_bedroom
-      - sensor.ip_wall_switch_bedroom
-      - sensor.status_wall_switch_bedroom
-      - type: divider
-      - binary_sensor.button_wall_switch_bedroom
-      - switch.relay_wall_switch_bedroom
-      - switch.restart_wall_switch_bedroom
+#   - type: entities
+#     title: 'Wall switch'
+#     show_header_toggle: false
+#     state_color: true
+#     entities:
+#       - binary_sensor.wall_switch_bedroom
+#       - sensor.ip_wall_switch_bedroom
+#       - sensor.status_wall_switch_bedroom
+#       - type: divider
+#       - binary_sensor.button_wall_switch_bedroom
+#       - switch.relay_wall_switch_bedroom
+#       - switch.restart_wall_switch_bedroom
 
   - type: entities
     title: 'Coridor light'

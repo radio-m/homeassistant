@@ -13,7 +13,31 @@
   - platform: switch
     name: "Boiler room"
     entity_id: switch.bathroom_double_switch_right
-    
+
+  - platform: switch
+    name: Coridor
+    entity_id: switch.wall_switch_coridor_left
+
+  - platform: switch
+    name: Coridor floor
+    entity_id: switch.wall_switch_coridor_center
+
+  - platform: switch
+    name: Kitchen
+    entity_id: switch.wall_switch_coridor_right
+
+  - platform: switch
+    name: c bedroom
+    entity_id: switch.wall_switch_c_bedroom_left
+
+  - platform: switch
+    name: Underbed high
+    entity_id: switch.wall_switch_c_bedroom_center
+
+  - platform: switch
+    name: Underbed low
+    entity_id: switch.wall_switch_c_bedroom_right
+
   - platform: mqtt
     name: gateway_led
     availability_topic: "Zigbee4A18/bridge/state"

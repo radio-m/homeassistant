@@ -38,7 +38,7 @@ DEFAULT_RESTORE_STATE = False
 DEFAULT_DEVICE_DECIMALS = "default"
 DEFAULT_DEVICE_USE_MEDIAN = "default"
 DEFAULT_DEVICE_RESTORE_STATE = "default"
-DEFAULT_DEVICE_RESET_TIMER = 30
+DEFAULT_DEVICE_RESET_TIMER = 35
 
 # regex constants for configuration schema
 MAC_REGEX = "(?i)^(?:[0-9A-F]{2}[:]){5}(?:[0-9A-F]{2})$"
@@ -70,13 +70,16 @@ XIAOMI_TYPE_DICT = {
     b'\x5D\x01': ("HHCCPOT002", False),
     b'\x0A\x04': ("WX08ZM", True),
     b'\x8B\x09': ("MCCGQ02HL", True),
+    b'\xD6\x03': ("CGH1", True),
     b'\x83\x00': ("YM-K1501", True),
     b'\x13\x01': ("YM-K1501EU", True),
     b'\x5C\x04': ("V-SK152", True),
     b'\x63\x08': ("SJWS01LM", True),
     b'\xF6\x07': ("MJYD02YL", True),
-    b'\xDB\x00': ("MMC-T201-1", False),
     b'\xDD\x03': ("MUE4094RT", True),
+    b'\x8D\x0A': ("RTCGQ02LM", True),
+    b'\x83\x0A': ("CGPR1", True),
+    b'\xDB\x00': ("MMC-T201-1", False),
     b'\xBF\x07': ("YLAI003", False),
 }
 
@@ -113,13 +116,16 @@ MMTS_DICT = {
     'HHCCPOT002'     : [[9, 9, 0, 9, 1, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9]],
     'WX08ZM'         : [[9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 1], [0, 9, 9, 9, 9, 1]],
     'MCCGQ02HL'      : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 0, 1, 9, 9, 2]],
+    'CGH1'           : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 0, 9, 9, 9, 1]],
     'YM-K1501'       : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [0, 9, 9, 9, 9, 9]],
     'YM-K1501EU'     : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [0, 9, 9, 9, 9, 9]],
     'V-SK152'        : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [0, 9, 9, 9, 9, 9]],
     'SJWS01LM'       : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 9, 9, 0, 9, 1]],
     'MJYD02YL'       : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 9, 0, 9, 1, 2]],
-    'MMC-T201-1'     : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1], [9, 9, 9, 9, 9, 9]],
     'MUE4094RT'      : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 0, 9]],
+    'RTCGQ02LM'      : [[9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 1], [9, 9, 0, 9, 1, 2]],
+    'CGPR1'          : [[9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 1], [9, 9, 9, 9, 0, 1]],
+    'MMC-T201-1'     : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1], [9, 9, 9, 9, 9, 9]],
     'YLAI003'        : [[9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 1], [9, 9, 9, 9, 9, 9]],
 }
 
@@ -143,13 +149,16 @@ MANUFACTURER_DICT = {
     'HHCCPOT002'     : 'Xiaomi',
     'WX08ZM'         : 'Xiaomi',
     'MCCGQ02HL'      : 'Xiaomi',
+    'CGH1'           : 'Qingping',
     'YM-K1501'       : 'Xiaomi',
     'YM-K1501EU'     : 'Xiaomi',
     'V-SK152'        : 'Viomi',
     'SJWS01LM'       : 'Xiaomi',
     'MJYD02YL'       : 'Xiaomi',
-    'MMC-T201-1'     : 'Xiaomi',
     'MUE4094RT'      : 'Xiaomi',
+    'RTCGQ02LM'      : 'Xiaomi',
+    'CGPR1'          : 'Qingping',
+    'MMC-T201-1'     : 'Xiaomi',
     'YLAI003'        : 'Yeelight',
 }
 

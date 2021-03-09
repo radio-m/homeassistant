@@ -98,7 +98,8 @@
       - person.svetlana
 
       - binary_sensor.boiler_on
-
+      - sensor.c_bedroom_temperature_median
+      - sensor.c_bedroom_humidity_median
 
   exclude:
     entities:

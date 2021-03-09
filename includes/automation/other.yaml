@@ -1,33 +1,9 @@
-# - id: automations_day
-#   alias: Утро
-#   initial_state: true  
-#   description: Режим работы Утро
-#   trigger:
-#   - at: 06:30:00
-#     platform: time
-#   condition: []
-#   action:
-#   - data:
-#       payload_template: 15
-#       topic: mqttbroker/ESP-01/matrix/light
-#     service: mqtt.publish
-#   - data:
-#       payload_template: 15
-#       topic: mqttbroker/ESP-02/matrix/light
-#     service: mqtt.publish
-#   - data:
-#       payload_template: 15
-#       topic: mqttbroker/ESP-03/matrix/light
-#     service: mqtt.publish
-#   - data: {}
-#     service: shell_command.request_day
-#   mode: single
 - id: motion light on
   alias: motion light on
   trigger:
     - platform: state
       to: "on"
-      entity_id: binary_sensor.0x00124b002135564f_occupancy
+      entity_id: binary_sensor.motion_sensor_occupancy
   condition:
     # - condition: time
     #   after: 00:00:00
@@ -48,7 +24,7 @@
   trigger:
     - platform: state
       to: "off"
-      entity_id: binary_sensor.0x00124b002135564f_occupancy
+      entity_id: binary_sensor.motion_sensor_occupancy
   condition:
     - condition: state
       entity_id: light.gateway_led
@@ -60,3 +36,21 @@
     - service: light.turn_off
       data:
         entity_id: light.coridor_rgb
+
+- alias: wall switch coridor center button
+  trigger: 
+    - platform: state
+      entity_id: light.coridor_floor
+  action:
+    - choose:
+        - conditions: "{{ trigger.to_state.state == 'on' }}"
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.coridor_rgb
+                brightness_pct: 2
+        - conditions: "{{ trigger.to_state.state == 'off' }}"
+          sequence:
+            - service: light.turn_off
+              data:
+                entity_id: light.coridor_rgb

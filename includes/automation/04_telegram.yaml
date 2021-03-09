@@ -270,7 +270,7 @@
   action:
     - service: notify.telegram
       data:
-        message: "Реле котла отработало"
+        message: "Автоматика отработала. Газовый котел {{ trigger.to_state.state }}"
 
 
 

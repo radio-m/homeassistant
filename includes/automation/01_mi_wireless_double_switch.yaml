@@ -5,10 +5,13 @@
       to: "single_left"
   action:
     - service: switch.toggle
-      entity_id: switch.relay_wall_switch_bedroom
+      entity_id: switch.wall_switch_c_bedroom_left
       
 - alias: underbed_light_10
   trigger:
+    - platform: state
+      entity_id: switch.wall_switch_c_bedroom_right
+      to: 'on'
     - platform: state
       entity_id: sensor.c_bedroom_double_switch_action
       to: "single_right"
@@ -17,11 +20,27 @@
       data:
         entity_id: light.magic_light
         brightness_pct: 10
-    # - service: light.toggle
-    #   entity_id: light.magic_light
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: switch.wall_switch_c_bedroom_right
+              state: "off"
+          sequence:
+            - service: switch.turn_on
+              entity_id: switch.wall_switch_c_bedroom_right
+        - conditions:
+            - condition: state
+              entity_id: switch.wall_switch_c_bedroom_center
+              state: "on"
+          sequence:
+            - service: switch.turn_off
+              entity_id: switch.wall_switch_c_bedroom_center
 
 - alias: underbed_light_100
   trigger:
+    - platform: state
+      entity_id: switch.wall_switch_c_bedroom_center
+      to: 'on'
     - platform: state
       entity_id: sensor.c_bedroom_double_switch_action
       to: "double_right"
@@ -30,17 +49,63 @@
       data:
         entity_id: light.magic_light
         brightness_pct: 100
-        
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: switch.wall_switch_c_bedroom_center
+              state: "off"
+          sequence:
+            - service: switch.turn_on
+              entity_id: switch.wall_switch_c_bedroom_center
+        - conditions:
+            - condition: state
+              entity_id: switch.wall_switch_c_bedroom_right
+              state: "on"
+          sequence:
+            - service: switch.turn_off
+              entity_id: switch.wall_switch_c_bedroom_right
+
+
 - alias: underbed_light_off
   trigger:
     - platform: state
       entity_id: sensor.c_bedroom_double_switch_action
       to: "hold_right"
+    - platform: state
+      entity_id: switch.wall_switch_c_bedroom_right
+      to: 'off'
+    - platform: state
+      entity_id: switch.wall_switch_c_bedroom_center
+      to: 'off'
+
   action:
-    - service: light.turn_off
-      data:
-        entity_id: light.magic_light
-      
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.from_state.state == 'on' }}"
+            - condition: state
+              entity_id:
+                - switch.wall_switch_c_bedroom_right
+                - switch.wall_switch_c_bedroom_center
+              state: "off"
+            # - condition: state
+            #   entity_id: switch.wall_switch_c_bedroom_right
+            #   state: "off"
+          sequence:
+            - service: light.turn_off
+              data:
+                entity_id: light.magic_light
+
+        - conditions: "{{ trigger.to_state.state == 'hold_right' }}"
+          sequence:
+            - service: light.turn_off
+              data:
+                entity_id: light.magic_light
+            - service: switch.turn_off
+              entity_id: 
+                - switch.wall_switch_c_bedroom_right
+                - switch.wall_switch_c_bedroom_center
+
 - alias: light_off
   trigger:
     - platform: state
@@ -48,17 +113,11 @@
       to: "single_both"
   action:
     - service: switch.turn_off
-      entity_id: switch.relay_wall_switch_bedroom
+      entity_id: switch.wall_switch_c_bedroom_left
+    - service: switch.turn_off
+      entity_id: switch.wall_switch_c_bedroom_right
+    - service: switch.turn_off
+      entity_id: switch.wall_switch_c_bedroom_center
     - service: light.turn_off
-      entity_id: light.magic_light  
-      
-- alias: underbed_light_toggle
-  trigger:
-    - platform: event
-      event_type: esphome.wall_switch_action
-      event_data:
-        title: dbl_click
-  action:
-    - service: light.toggle
       data:
         entity_id: light.magic_light
