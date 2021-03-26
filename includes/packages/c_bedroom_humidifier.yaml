@@ -2,7 +2,7 @@ c_bedroom_humidifier:
   climate:
     - platform: generic_hygrostat
       name: "Увлажнитель в детской"
-      dryer: switch.bw_shp13_2_switch
+      dryer: switch.humidifier
       target_sensor: sensor.c_bedroom_humidity
       min_humidity: 40
       max_humidity: 65
@@ -18,12 +18,12 @@ c_bedroom_humidifier:
       description: 'Notify when humidifier low water'
       trigger:
       - platform: numeric_state
-        entity_id: sensor.bw_shp13_2_power
+        entity_id: sensor.humidifier_power
         below: '5'
         for: 00:01
       condition:
       - condition: state
-        entity_id: switch.bw_shp13_2_switch
+        entity_id: switch.humidifier
         state: 'on'
       action:
       - service: notify.telegram
@@ -42,7 +42,7 @@ c_bedroom_humidifier:
         for: 00:03:00
       condition:
     #   - condition: state
-    #     entity_id: switch.bw_shp13_2_switch
+    #     entity_id: switch.humidifier_switch
     #     state: 'on'
       action:
         - service: climate.set_hvac_mode
@@ -58,7 +58,7 @@ c_bedroom_humidifier:
         for: 00:03:00
       condition:
     #   - condition: state
-    #     entity_id: switch.bw_shp13_2_switch
+    #     entity_id: switch.humidifier_switch
     #     state: 'off'
       action:
         - service: climate.set_hvac_mode

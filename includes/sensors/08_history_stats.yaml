@@ -1,6 +1,6 @@
   - platform: history_stats
     name: Boiler ON today
-    entity_id: binary_sensor.boiler_on # switch.bw_shp8_relay
+    entity_id: binary_sensor.boiler # switch.bw_shp8_relay
     state: 'on'
     type: time
     start: '{{ now().replace(hour=0, minute=0, second=0) }}'

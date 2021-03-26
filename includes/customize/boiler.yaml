@@ -1,0 +1,31 @@
+binary_sensor.boiler:
+  icon: mdi:water-boiler
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(255, 180, 0)';
+      else return 'rgb(255, 0, 0)';
+      sensor.bw_shp8_power
+binary_sensor.dishwasher:
+  icon: mdi:dishwasher
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';
+binary_sensor.washing_machine:
+  icon: mdi:washing-machine
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';
+binary_sensor.boiler_time:
+  icon: mdi:clock-time-three
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';
+binary_sensor.boiler_timer:
+  icon: mdi:timer
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';

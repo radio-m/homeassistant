@@ -56,8 +56,8 @@
       - sensor.load_broadlink_1
       - sensor.load_broadlink_2
       - sensor.load_bw_shp8
-      - sensor.load_bw_shp13_1
-      - sensor.load_bw_shp13_2
+      - sensor.load_dishwasher
+      - sensor.load_humidifier
       - sensor.load_total_energy
       - sensor.load_xiaomi_power_strip
       - sensor.load_input_energy
@@ -66,13 +66,13 @@
       - sensor.bw_shp8_current
       - sensor.bw_shp8_voltage
 
-      - sensor.bw_shp13_1_power
-      - sensor.bw_shp13_1_current
-      - sensor.bw_shp13_1_voltage
+      - sensor.dishwasher_power
+      - sensor.dishwasher_current
+      - sensor.dishwasher_voltage
 
-      - sensor.bw_shp13_2_power
-      - sensor.bw_shp13_2_current
-      - sensor.bw_shp13_2_voltage
+      - sensor.humidifier_power
+      - sensor.humidifier_current
+      - sensor.humidifier_voltage
 
 #ASUSwrt
       - sensor.asuswrt_download_speed
@@ -97,7 +97,7 @@
       - person.sergei
       - person.svetlana
 
-      - binary_sensor.boiler_on
+      - binary_sensor.boiler
       - sensor.c_bedroom_temperature_median
       - sensor.c_bedroom_humidity_median
 

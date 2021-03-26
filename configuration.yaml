@@ -94,12 +94,6 @@ frontend:
   extra_module_url:
     - /hacsfiles/custom-ui/custom-ui.js
 
-# panel_iframe:
-#   gateway:
-#     title: 'SLS gateway'
-#     icon: mdi:access-point-network
-#     url: /slsgateway/
-
 # Text to speech
 tts:
   - platform: google_translate
@@ -117,19 +111,6 @@ telegram_bot:
       - !secret olga_chat
     
 # Router
-# asuswrt:
-#   host: 192.168.31.2
-#   username: !secret router_usr
-#   password: !secret router_pwd
-# #   interface: "ra0"
-#   mode: ap
-#   sensors:
-#     - devices
-#     - upload
-#     - download
-#     - upload_speed
-#     - download_speed
-
 device_tracker:
 #   - platform: asuswrt
 #     consider_home: 600

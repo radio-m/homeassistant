@@ -12,7 +12,7 @@
     entity_id: switch.gas_heater_relay
     state: 'off'
   - condition: state
-    entity_id: switch.water_pump_switch
+    entity_id: switch.water_pump
     state: 'off'
   - condition: numeric_state
     entity_id: sensor.water_system
@@ -20,7 +20,7 @@
 
   action:
   - service: switch.turn_on # 
-    entity_id: switch.water_pump_switch
+    entity_id: switch.water_pump
     
 - alias: water_pump_off
   trigger:
@@ -38,4 +38,4 @@
 
   action:
   - service: switch.turn_off # 
-    entity_id: switch.water_pump_switch
+    entity_id: switch.water_pump

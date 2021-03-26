@@ -37,6 +37,20 @@
       data:
         entity_id: light.coridor_rgb
 
+- alias: entrance light no motion off
+  trigger:
+    - platform: state
+      to: "off"
+      entity_id: binary_sensor.bath_motion_sensor_occupancy
+  condition:
+    - condition: state
+      entity_id: light.entrance
+      state: 'on'
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.entrance
+
 - alias: wall switch coridor center button
   trigger: 
     - platform: state

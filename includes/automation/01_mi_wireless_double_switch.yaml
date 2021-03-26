@@ -113,11 +113,11 @@
       to: "single_both"
   action:
     - service: switch.turn_off
-      entity_id: switch.wall_switch_c_bedroom_left
-    - service: switch.turn_off
-      entity_id: switch.wall_switch_c_bedroom_right
-    - service: switch.turn_off
-      entity_id: switch.wall_switch_c_bedroom_center
+      entity_id:
+        - switch.wall_switch_c_bedroom_left
+        - switch.wall_switch_c_bedroom_center
+        - switch.wall_switch_c_bedroom_right
+
     - service: light.turn_off
       data:
         entity_id: light.magic_light

@@ -88,41 +88,41 @@ cards:
     - type: entities
       show_header_toggle: false
       entities:
-      - entity: sensor.load_bw_shp13_2
+      - entity: sensor.load_humidifier
         secondary_info: >-
           сегодня: <b>[[
-          sensor.mqtt_power_today_bw_shp13_2.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_today_humidifier.state ]]</b> кВт⋅ч<br>
           этот месяц: <b>[[
-          sensor.mqtt_power_month_bw_shp13_2.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_month_humidifier.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_month_bw_shp13_2.state
+          sensor.money_month_humidifier.state
           ]]</b> грн<br>
           вчера: <b>[[
-          sensor.mqtt_power_yesterday_bw_shp13_2.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_yesterday_humidifier.state ]]</b> кВт⋅ч<br>
           прошлый месяц: <b>[[
-          sensor.mqtt_power_lastmonth_bw_shp13_2.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_lastmonth_humidifier.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_lastmonth_bw_shp13_2.state ]]</b> грн
+          sensor.money_lastmonth_humidifier.state ]]</b> грн
         type: 'custom:secondaryinfo-entity-row'
 # Посудомойка
     - type: entities
       show_header_toggle: false
       entities:
-      - entity: sensor.load_bw_shp13_1
+      - entity: sensor.load_dishwasher
         secondary_info: >-
           сегодня: <b>[[
-          sensor.mqtt_power_today_bw_shp13_1.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_today_dishwasher.state ]]</b> кВт⋅ч<br>
           этот месяц: <b>[[
-          sensor.mqtt_power_month_bw_shp13_1.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_month_dishwasher.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_month_bw_shp13_1.state
+          sensor.money_month_dishwasher.state
           ]]</b> грн<br>
           вчера: <b>[[
-          sensor.mqtt_power_yesterday_bw_shp13_1.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_yesterday_dishwasher.state ]]</b> кВт⋅ч<br>
           прошлый месяц: <b>[[
-          sensor.mqtt_power_lastmonth_bw_shp13_1.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_lastmonth_dishwasher.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_lastmonth_bw_shp13_1.state ]]</b> грн
+          sensor.money_lastmonth_dishwasher.state ]]</b> грн
         type: 'custom:secondaryinfo-entity-row'
 # Удлинитель 3+3
     - type: entities
@@ -563,6 +563,22 @@ cards:
     #          icon: mdi:cash
     - type: vertical-stack
       cards:
+
+      - type: glance
+        show_name: false
+        show_state: false
+        entities:
+          - entity: binary_sensor.boiler
+            name: Бойлер
+          - entity: binary_sensor.dishwasher
+            name: Посудомойка
+          - entity: binary_sensor.washing_machine
+            name: Стиралка
+          - entity: binary_sensor.boiler_time
+            name: 23-12
+          - entity: binary_sensor.boiler_timer
+            name: Таймер
+
       - type: entities
         show_header_toggle: false
         entities:
@@ -575,8 +591,8 @@ cards:
           attribute: value
         - entity: sensor.bw_shp8_voltage
           name: "Напряжение на розетке бойлера"
-        - entity: switch.bw_shp13_1_switch
-        - entity: sensor.bw_shp13_1_voltage
+        - entity: switch.dishwasher
+        - entity: sensor.dishwasher_voltage
           name: "Напряжение на розетке посудомойки"
 
         - type: custom:fold-entity-row

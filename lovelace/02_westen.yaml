@@ -47,7 +47,7 @@ cards:
               show_state: false
               state_color: true
               entities:
-                - entity: switch.water_pump_switch
+                - entity: switch.water_pump
                   name: Насос
                   toggle: true
                   icon: mdi:pump
@@ -131,7 +131,7 @@ cards:
       - type: entities
         state_color: true
         entities:
-          - entity: switch.bw_shp13_2_switch
+          - entity: switch.humidifier
             secondary_info: last-changed
           - entity: climate.uvlazhnitel_v_detskoi
             name: "Увлажнитель в детской"

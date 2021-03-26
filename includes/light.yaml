@@ -2,9 +2,9 @@
     name: Coridor light
     entity_id: switch.coridor_night_light_relay
     
-  - platform: switch
-    name: Wall switch
-    entity_id: switch.relay_wall_switch_bedroom
+#   - platform: switch
+#     name: Wall switch
+#     entity_id: switch.relay_wall_switch_bedroom
     
   - platform: switch
     name: Bath
@@ -37,6 +37,18 @@
   - platform: switch
     name: Underbed low
     entity_id: switch.wall_switch_c_bedroom_right
+
+  - platform: switch
+    name: Yard
+    entity_id: switch.yard_switch
+
+  - platform: switch
+    name: Entrance
+    entity_id: switch.wall_switch_entrance_center
+
+  - platform: switch
+    name: Patio
+    entity_id: switch.patio_switch
 
   - platform: mqtt
     name: gateway_led

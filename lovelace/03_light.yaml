@@ -49,12 +49,30 @@ cards:
     - type: light
       entity: light.coridor_floor
       name: "Подсветка в коридоре"
-      icon: mdi:wall-sconce-flat-variant
+      icon: mdi:led-strip-variant
 
     - type: light
       entity: light.kitchen
       icon: mdi:ceiling-light
       name: "Свет в кухне" 
+
+  - type: horizontal-stack
+    cards:
+
+    - type: light
+      entity: light.yard
+      name: "Свет во дворе"
+      icon: mdi:outdoor-lamp
+
+    - type: light
+      entity: light.entrance
+      name: "Свет в прихожей"
+      icon: mdi:ceiling-light
+
+    - type: light
+      entity: light.patio
+      icon: mdi:track-light
+      name: "Свет в дворике" 
 
   - type: horizontal-stack
     cards:
@@ -68,6 +86,15 @@ cards:
       entity: light.magic_light
       name: "Свет под кроватью"
       icon: mdi:led-strip-variant
+
+  - type: horizontal-stack
+    cards:
+    - type: button
+      entity: binary_sensor.bath_motion_sensor_occupancy
+      name: Прихожая
+    - type: button
+      entity: binary_sensor.motion_sensor_occupancy
+      name: Коридор
 
   - type: vertical-stack
     cards:

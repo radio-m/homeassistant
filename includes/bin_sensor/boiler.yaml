@@ -1,5 +1,31 @@
   - platform: template
     sensors:
-      boiler_on:
-        friendly_name: boiler_on
-        value_template: "{{ states('sensor.bw_shp8_power') | float > 1 }}"
+      boiler:
+        friendly_name: boiler_state
+        value_template: "{{ states('sensor.bw_shp8_power') | float > 5 }}"
+        
+  - platform: template
+    sensors:
+      dishwasher:
+        friendly_name: dishwasher_state
+        value_template: "{{ states('sensor.load_dishwasher') | float > 5 }}"
+
+  - platform: template
+    sensors:
+      washing_machine:
+        friendly_name: washing_machine_state
+        value_template: "{{ states('sensor.load_broadlink_1') | float > 5 }}"
+
+  - platform: tod
+    name: boiler_time
+    after: '23:00'
+    before: '12:00'
+
+  - platform: template
+    sensors:
+      boiler_timer:
+        friendly_name: boiler_timer
+        value_template: "{{ states('timer.boiler_low_voltage') != 'idle' }}"
+
+
+

@@ -1,14 +1,14 @@
-- platform: template
-  sensors:
-    thermostat_status:
-      friendly_name: 'HVAC Status'
-      value_template: "{{ states.climate.westen.attributes.hvac_action }}"
+  - platform: template
+    sensors:
+      thermostat_status:
+        friendly_name: 'HVAC Status'
+        value_template: "{{ states.climate.westen.attributes.hvac_action }}"
 
-- platform: template
-  sensors:
-    thermostat_set_temp:
-      friendly_name: 'Set temperature'
-      value_template: "{{(state_attr('climate.westen' , 'temperature')|round(1))}}"
+  - platform: template
+    sensors:
+      thermostat_set_temp:
+        friendly_name: 'Set temperature'
+        value_template: "{{(state_attr('climate.westen' , 'temperature')|round(1))}}"
 
 # - platform: template
 #   sensors:      
@@ -19,3 +19,35 @@
 #       attribute_templates:
 #         entities: >
 #           {{ states | selectattr('state', 'in', ['unavailable', 'unknown', 'none']) | map(attribute='entity_id') | list | join('\n') }}
+
+  - platform: influxdb
+    host: a0d7b954-influxdb
+    port: 8086
+    username: !secret influx_usr
+    password: !secret influx_pwd
+    scan_interval: 3600
+    queries:
+      - name: InfluxDB _internal DB size
+        unit_of_measurement: MB
+        value_template: "{{ (value|float / 1024 /1024)|round(1) }}"
+        group_function: sum
+        measurement: '"monitor"."shard"'
+        database: _internal
+        where: "time > now() - 10s"
+        field: diskBytes
+
+  - platform: influxdb
+    host: a0d7b954-influxdb
+    port: 8086
+    username: !secret influx_usr
+    password: !secret influx_pwd
+    scan_interval: 3600
+    queries:
+      - name: InfluxDB home_assistant DB size
+        unit_of_measurement: MB
+        value_template: '{{ (value | float / 1024 /1024) | round(1) }}'
+        group_function: mean
+        measurement: '"monitor"."shard"'
+        database: _internal
+        where: 'time > now() - 1m AND "database"=''home_assistant'''
+        field: diskBytes 

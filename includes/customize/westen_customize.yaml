@@ -15,7 +15,7 @@ switch.gas_heater_relay:
     icon: >
       if (state === 'on') return 'mdi:toggle-switch';
       else return 'mdi:toggle-switch-off-outline';
-switch.water_pump_switch:
+switch.water_pump:
   friendly_name: Насос
   templates:
     icon_color: >

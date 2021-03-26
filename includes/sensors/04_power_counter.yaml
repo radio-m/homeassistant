@@ -242,47 +242,47 @@
 #BlitzWolf BW-SHP13_1
 - platform: template
   sensors:
-    load_bw_shp13_1:
+    load_dishwasher:
       friendly_name: 'Посудомойка'
-      value_template: "{{ states('sensor.bw_shp13_1_power') }}"
+      value_template: "{{ states('sensor.dishwasher_power') }}"
       icon_template: mdi:dishwasher
       unit_of_measurement: 'Вт'
     #   entity_id: sensor.0x00158d0003535c2f_power
 
 - platform: mqtt
-  state_topic: "power/bw_shp13_1/yesterday"
-  name: 'mqtt_power_yesterday_bw_shp13_1'
+  state_topic: "power/dishwasher/yesterday"
+  name: 'mqtt_power_yesterday_dishwasher'
   unit_of_measurement: 'кВт⋅ч'
         
 - platform: mqtt
-  state_topic: "power/bw_shp13_1/today"
-  name: 'mqtt_power_today_bw_shp13_1'
+  state_topic: "power/dishwasher/today"
+  name: 'mqtt_power_today_dishwasher'
   unit_of_measurement: 'кВт⋅ч'
 
 - platform: mqtt
-  state_topic: "power/bw_shp13_1/month"
-  name: 'mqtt_power_month_bw_shp13_1'
+  state_topic: "power/dishwasher/month"
+  name: 'mqtt_power_month_dishwasher'
   unit_of_measurement: 'кВт⋅ч'
     
 - platform: mqtt
-  state_topic: "power/bw_shp13_1/lastmonth"
-  name: 'mqtt_power_lastmonth_bw_shp13_1'
+  state_topic: "power/dishwasher/lastmonth"
+  name: 'mqtt_power_lastmonth_dishwasher'
   unit_of_measurement: 'кВт⋅ч'
 
 - platform: template
   sensors:
-    money_month_bw_shp13_1:
+    money_month_dishwasher:
       friendly_name: "Стоимость за текущий месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_bw_shp13_1.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_month_dishwasher.state | float * 1.68)|round(2) }}"
       icon_template: mdi:square-inc-cash 
     
 - platform: template
   sensors:
-    money_lastmonth_bw_shp13_1:
+    money_lastmonth_dishwasher:
       friendly_name: "Стоимость за прошлый месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_bw_shp13_1.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_dishwasher.state | float * 1.68)|round(2) }}"
       icon_template: mdi:square-inc-cash
       
 ################################################################################
@@ -290,47 +290,47 @@
 #BlitzWolf BW-SHP13_2
 - platform: template
   sensors:
-    load_bw_shp13_2:
+    load_humidifier:
       friendly_name: 'Увлажнитель'
-      value_template: "{{ states('sensor.bw_shp13_2_power') }}"
+      value_template: "{{ states('sensor.humidifier_power') }}"
       icon_template: mdi:air-humidifier
       unit_of_measurement: 'Вт'
     #   entity_id: sensor.0x00158d0003535c2f_power
 
 - platform: mqtt
-  state_topic: "power/bw_shp13_2/yesterday"
-  name: 'mqtt_power_yesterday_bw_shp13_2'
+  state_topic: "power/humidifier/yesterday"
+  name: 'mqtt_power_yesterday_humidifier'
   unit_of_measurement: 'кВт⋅ч'
         
 - platform: mqtt
-  state_topic: "power/bw_shp13_2/today"
-  name: 'mqtt_power_today_bw_shp13_2'
+  state_topic: "power/humidifier/today"
+  name: 'mqtt_power_today_humidifier'
   unit_of_measurement: 'кВт⋅ч'
 
 - platform: mqtt
-  state_topic: "power/bw_shp13_2/month"
-  name: 'mqtt_power_month_bw_shp13_2'
+  state_topic: "power/humidifier/month"
+  name: 'mqtt_power_month_humidifier'
   unit_of_measurement: 'кВт⋅ч'
     
 - platform: mqtt
-  state_topic: "power/bw_shp13_2/lastmonth"
-  name: 'mqtt_power_lastmonth_bw_shp13_2'
+  state_topic: "power/humidifier/lastmonth"
+  name: 'mqtt_power_lastmonth_humidifier'
   unit_of_measurement: 'кВт⋅ч'
 
 - platform: template
   sensors:
-    money_month_bw_shp13_2:
+    money_month_humidifier:
       friendly_name: "Стоимость за текущий месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_bw_shp13_2.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_month_humidifier.state | float * 1.68)|round(2) }}"
       icon_template: mdi:square-inc-cash 
     
 - platform: template
   sensors:
-    money_lastmonth_bw_shp13_2:
+    money_lastmonth_humidifier:
       friendly_name: "Стоимость за прошлый месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_bw_shp13_2.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_humidifier.state | float * 1.68)|round(2) }}"
       icon_template: mdi:square-inc-cash 
 
 ################################################################################
@@ -346,8 +346,8 @@
             (states.sensor.load_broadlink_1.state | float) +
             (states.sensor.load_broadlink_2.state | float) +
             (states.sensor.load_bw_shp8.state | float) +
-            (states.sensor.load_bw_shp13_1.state | float) + 
-            (states.sensor.load_bw_shp13_2.state | float)) | round(3) }}"
+            (states.sensor.load_dishwasher.state | float) + 
+            (states.sensor.load_humidifier.state | float)) | round(3) }}"
             # (states.sensor.load_158d0001d35bc0.state | float) + 
             # (states.sensor.load_158d0001fa2934.state | float) + 
             # (states.sensor.load_158d00030a6e78.state | float) + 

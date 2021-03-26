@@ -9,15 +9,15 @@
     state: 'off'
   - condition: numeric_state
     below: '15'
-    entity_id: sensor.load_bw_shp13_1 # розетка посудомойки
+    entity_id: sensor.load_dishwasher # розетка посудомойки
   action:
   - service: switch.turn_on
     entity_id: switch.bw_shp8_relay
     
-- alias: boiler_06_50_turn_off
-  description: 'выключить розетку бойлера в 06:50'
+- alias: boiler_12_00_turn_off
+  description: 'выключить розетку бойлера в 12:00'
   trigger:
-  - at: '06:50'
+  - at: '12:00'
     platform: time
   condition:
   - condition: state
@@ -28,36 +28,36 @@
     entity_id: switch.bw_shp8_relay
 
 - alias: boiler_turn_on_after_start
-  description: 'включить розетку бойлера после старта системы в период с 23:05 по 06:50, если нагрузка на розетке посудомойки меньше 15 Вт'
+  description: 'включить розетку бойлера после старта системы в период с 23:05 по 12:00, если нагрузка на розетке посудомойки меньше 15 Вт'
   trigger:
   - event: start
     platform: homeassistant
   condition:
-#   - condition: time
-#     after: '23:05'
-#     before: '06:50'
-#   - condition: state
-#     entity_id: switch.bw_shp8_relay
-#     state: 'off'
+  - condition: time
+    after: '23:05'
+    before: '12:00'
+  - condition: state
+    entity_id: switch.bw_shp8_relay
+    state: 'off'
   - condition: numeric_state
     below: '15'
-    entity_id: sensor.load_bw_shp13_1
+    entity_id: sensor.load_dishwasher
   action:
   - service: switch.turn_on # 
     entity_id: switch.bw_shp8_relay
 
 - alias: boiler_turn_off_after_start
-  description: 'выключить розетку бойлера после старта системы в период с 06:50 по 23:05'
+  description: 'выключить розетку бойлера после старта системы в период с 12:00 по 23:05'
   trigger:
   - event: start
     platform: homeassistant
   condition:
-#   - condition: time
-#     after: '06:50'
-#     before: '23:05'
-#   - condition: state
-#     entity_id: switch.bw_shp8_relay
-#     state: 'on'
+  - condition: time
+    after: '12:00'
+    before: '23:05'
+  - condition: state
+    entity_id: switch.bw_shp8_relay
+    state: 'on'
   action:
   - service: switch.turn_off # 
     entity_id: switch.bw_shp8_relay
@@ -66,7 +66,7 @@
   description: 'выключить розетку бойлера, когда нагрузка на розетке посудомойки больше 15 Вт'
   trigger:
   - above: '15'
-    entity_id: sensor.load_bw_shp13_1
+    entity_id: sensor.load_dishwasher
     platform: numeric_state
   condition:
 #   - after: '23:05'
@@ -83,13 +83,13 @@
   description: 'включить розетку бойлера, когда нагрузка на розетке посудомойки меньше 15 Вт в течение 15 минут'
   trigger:
   - below: '15'
-    entity_id: sensor.load_bw_shp13_1
+    entity_id: sensor.load_dishwasher
     for: 00:15
     platform: numeric_state
   condition:
-#   - after: '23:05'
-#     before: '06:50'
-#     condition: time
+  - after: '23:05'
+    before: '12:00'
+    condition: time
   - condition: state
     entity_id: switch.bw_shp8_relay
     state: 'off'
@@ -121,6 +121,9 @@
     entity_id: sensor.load_broadlink_1
     platform: numeric_state
   condition:
+  - after: '23:05'
+    before: '12:00'
+    condition: time
   - condition: state
     entity_id: switch.bw_shp8_relay
     state: 'off'
@@ -156,6 +159,9 @@
     entity_id: sensor.input_voltage
     below: '185'
   condition:
+  - after: '23:05'
+    before: '12:00'
+    condition: time
 #   - condition: state
 #     entity_id: switch.bw_shp8_relay
 #     state: 'on'
@@ -184,6 +190,9 @@
     event_data:
       entity_id: timer.boiler_low_voltage
   condition:
+  - after: '23:05'
+    before: '12:00'
+    condition: time
   - condition: state
     entity_id: switch.bw_shp8_relay
     state: 'off'

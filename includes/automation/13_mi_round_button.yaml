@@ -17,3 +17,12 @@
       entity_id: group.motion_light
     - service: timer.cancel
       entity_id: timer.bath_light
+
+- alias: switch pc toggle
+  trigger:
+    - platform: state
+      entity_id: sensor.mi_round_button_action
+      to: "hold"
+  action:
+    - service: switch.toggle
+      entity_id: switch.my_pc

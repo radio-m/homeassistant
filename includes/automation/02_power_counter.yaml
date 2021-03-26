@@ -1,4 +1,4 @@
-############################################################################################################ 158d0003a58131
+############################################################################################################
 ##### 30 сек расчет
 - alias: 00_power_counter
   initial_state: true
@@ -92,29 +92,29 @@
 #BlitzWolf BW-SHP13_1
     - service: mqtt.publish
       data_template:
-        topic: "power/bw_shp13_1/today"
-        payload: '{{(states.sensor.mqtt_power_today_bw_shp13_1.state | float +
-                    (states.sensor.load_bw_shp13_1.state | float /120000))|round(5)}}'
+        topic: "power/dishwasher/today"
+        payload: '{{(states.sensor.mqtt_power_today_dishwasher.state | float +
+                    (states.sensor.load_dishwasher.state | float /120000))|round(5)}}'
         retain: true
     - service: mqtt.publish
       data_template:
-        topic: "power/bw_shp13_1/month"
-        payload: '{{(states.sensor.mqtt_power_month_bw_shp13_1.state | float +
-                    (states.sensor.load_bw_shp13_1.state | float /120000))|round(5)}}'
+        topic: "power/dishwasher/month"
+        payload: '{{(states.sensor.mqtt_power_month_dishwasher.state | float +
+                    (states.sensor.load_dishwasher.state | float /120000))|round(5)}}'
         retain: true
 
 #BlitzWolf BW-SHP13_2
     - service: mqtt.publish
       data_template:
-        topic: "power/bw_shp13_2/today"
-        payload: '{{(states.sensor.mqtt_power_today_bw_shp13_2.state | float +
-                    (states.sensor.load_bw_shp13_2.state | float /120000))|round(5)}}'
+        topic: "power/humidifier/today"
+        payload: '{{(states.sensor.mqtt_power_today_humidifier.state | float +
+                    (states.sensor.load_humidifier.state | float /120000))|round(5)}}'
         retain: true
     - service: mqtt.publish
       data_template:
-        topic: "power/bw_shp13_2/month"
-        payload: '{{(states.sensor.mqtt_power_month_bw_shp13_2.state | float +
-                    (states.sensor.load_bw_shp13_2.state | float /120000))|round(5)}}'
+        topic: "power/humidifier/month"
+        payload: '{{(states.sensor.mqtt_power_month_humidifier.state | float +
+                    (states.sensor.load_humidifier.state | float /120000))|round(5)}}'
         retain: true
 
 ############################################################################################################
@@ -165,14 +165,14 @@
 #BlitzWolf BW-SHP13_1      
     - service: mqtt.publish
       data_template:
-        topic: "power/bw_shp13_1/yesterday"
-        payload: '{{(states.sensor.mqtt_power_today_bw_shp13_1.state | float )|round(5)}}'
+        topic: "power/dishwasher/yesterday"
+        payload: '{{(states.sensor.mqtt_power_today_dishwasher.state | float )|round(5)}}'
         retain: true
 #BlitzWolf BW-SHP13_2    
     - service: mqtt.publish
       data_template:
-        topic: "power/bw_shp13_2/yesterday"
-        payload: '{{(states.sensor.mqtt_power_today_bw_shp13_2.state | float )|round(5)}}'
+        topic: "power/humidifier/yesterday"
+        payload: '{{(states.sensor.mqtt_power_today_humidifier.state | float )|round(5)}}'
         retain: true
 
     - delay: 00:00:05
@@ -217,13 +217,13 @@
 #BlitzWolf BW-SHP13_1
     - service: mqtt.publish
       data_template:
-        topic: "power/bw_shp13_1/today"
+        topic: "power/dishwasher/today"
         payload: '{{ 0.0 }}'
         retain: true
 #BlitzWolf BW-SHP13_2
     - service: mqtt.publish
       data_template:
-        topic: "power/bw_shp13_2/today"
+        topic: "power/humidifier/today"
         payload: '{{ 0.0 }}'
         retain: true
 
@@ -273,14 +273,14 @@
 #BlitzWolf BW-SHP13_1
     - service: mqtt.publish
       data_template:
-        topic: "power/bw_shp13_1/lastmonth"
-        payload: '{{(states.sensor.mqtt_power_month_bw_shp13_1.state | float )|round(5)}}'
+        topic: "power/dishwasher/lastmonth"
+        payload: '{{(states.sensor.mqtt_power_month_dishwasher.state | float )|round(5)}}'
         retain: true
 #BlitzWolf BW-SHP13_2
     - service: mqtt.publish
       data_template:
-        topic: "power/bw_shp13_2/lastmonth"
-        payload: '{{(states.sensor.mqtt_power_month_bw_shp13_2.state | float )|round(5)}}'
+        topic: "power/humidifier/lastmonth"
+        payload: '{{(states.sensor.mqtt_power_month_humidifier.state | float )|round(5)}}'
         retain: true
 
     - delay: 00:00:05
@@ -325,12 +325,12 @@
 #BlitzWolf BW-SHP13_1
     - service: mqtt.publish
       data_template:
-        topic: "power/bw_shp13_1/month"
+        topic: "power/dishwasher/month"
         payload: '{{ 0.0 }}'
         retain: true
 #BlitzWolf BW-SHP13_2
     - service: mqtt.publish
       data_template:
-        topic: "power/bw_shp13_2/month"
+        topic: "power/humidifier/month"
         payload: '{{ 0.0 }}'
         retain: true
