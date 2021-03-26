@@ -43,7 +43,7 @@
     money_2_tarif_month_input_energy:
       friendly_name: "Стоимость за текущий месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_day_input_energy.state | float * 0.84 + states.sensor.mqtt_power_month_night_input_energy.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_month_day_input_energy.state | float * 1.68 + states.sensor.mqtt_power_month_night_input_energy.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
     
 - platform: template
@@ -51,7 +51,7 @@
     money_2_tarif_lastmonth_input_energy:
       friendly_name: "Стоимость за прошлый месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_input_energy.state | float * 0.84 + states.sensor.mqtt_power_lastmonth_night_input_energy.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_input_energy.state | float * 1.68 + states.sensor.mqtt_power_lastmonth_night_input_energy.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
 
 ################################################################################
@@ -105,7 +105,7 @@
     money_2_tarif_month_xiaomi_power_strip:
       friendly_name: "Стоимость за текущий месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_day_xiaomi_power_strip.state | float * 0.84 + states.sensor.mqtt_power_month_night_xiaomi_power_strip.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_month_day_xiaomi_power_strip.state | float * 1.68 + states.sensor.mqtt_power_month_night_xiaomi_power_strip.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
     
 - platform: template
@@ -113,7 +113,7 @@
     money_2_tarif_lastmonth_xiaomi_power_strip:
       friendly_name: "Стоимость за прошлый месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_xiaomi_power_strip.state | float * 0.84 + states.sensor.mqtt_power_lastmonth_night_xiaomi_power_strip.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_xiaomi_power_strip.state | float * 1.68 + states.sensor.mqtt_power_lastmonth_night_xiaomi_power_strip.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
 
 ################################################################################
@@ -165,7 +165,7 @@
     money_2_tarif_month_broadlink_1:
       friendly_name: "Стоимость за текущий месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_day_broadlink_1.state | float * 0.84 + states.sensor.mqtt_power_month_night_broadlink_1.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_month_day_broadlink_1.state | float * 1.68 + states.sensor.mqtt_power_month_night_broadlink_1.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
     
 - platform: template
@@ -173,7 +173,7 @@
     money_2_tarif_lastmonth_broadlink_1:
       friendly_name: "Стоимость за прошлый месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_broadlink_1.state | float * 0.84 + states.sensor.mqtt_power_lastmonth_night_broadlink_1.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_broadlink_1.state | float * 1.68 + states.sensor.mqtt_power_lastmonth_night_broadlink_1.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
 
 ################################################################################
@@ -225,7 +225,7 @@
     money_2_tarif_month_broadlink_2:
       friendly_name: "Стоимость за текущий месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_day_broadlink_2.state | float * 0.84 + states.sensor.mqtt_power_month_night_broadlink_2.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_month_day_broadlink_2.state | float * 1.68 + states.sensor.mqtt_power_month_night_broadlink_2.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
     
 - platform: template
@@ -233,7 +233,7 @@
     money_2_tarif_lastmonth_broadlink_2:
       friendly_name: "Стоимость за прошлый месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_broadlink_2.state | float * 0.84 + states.sensor.mqtt_power_lastmonth_night_broadlink_2.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_broadlink_2.state | float * 1.68 + states.sensor.mqtt_power_lastmonth_night_broadlink_2.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
 
 ################################################################################
@@ -285,7 +285,7 @@
     money_2_tarif_month_bw_shp8:
       friendly_name: "Стоимость за текущий месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_day_bw_shp8.state | float * 0.84 + states.sensor.mqtt_power_month_night_bw_shp8.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_month_day_bw_shp8.state | float * 1.68 + states.sensor.mqtt_power_month_night_bw_shp8.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
     
 - platform: template
@@ -293,7 +293,7 @@
     money_2_tarif_lastmonth_bw_shp8:
       friendly_name: "Стоимость за прошлый месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_bw_shp8.state | float * 0.84 + states.sensor.mqtt_power_lastmonth_night_bw_shp8.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_bw_shp8.state | float * 1.68 + states.sensor.mqtt_power_lastmonth_night_bw_shp8.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
 
 ################################################################################
@@ -345,7 +345,7 @@
     money_2_tarif_month_dishwasher:
       friendly_name: "Стоимость за текущий месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_day_dishwasher.state | float * 0.84 + states.sensor.mqtt_power_month_night_dishwasher.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_month_day_dishwasher.state | float * 1.68 + states.sensor.mqtt_power_month_night_dishwasher.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
     
 - platform: template
@@ -353,7 +353,7 @@
     money_2_tarif_lastmonth_dishwasher:
       friendly_name: "Стоимость за прошлый месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_dishwasher.state | float * 0.84 + states.sensor.mqtt_power_lastmonth_night_dishwasher.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_dishwasher.state | float * 1.68 + states.sensor.mqtt_power_lastmonth_night_dishwasher.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash  
       
 ################################################################################
@@ -405,7 +405,7 @@
     money_2_tarif_month_humidifier:
       friendly_name: "Стоимость за текущий месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_day_humidifier.state | float * 0.84 + states.sensor.mqtt_power_month_night_humidifier.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_month_day_humidifier.state | float * 1.68 + states.sensor.mqtt_power_month_night_humidifier.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
     
 - platform: template
@@ -413,7 +413,7 @@
     money_2_tarif_lastmonth_humidifier:
       friendly_name: "Стоимость за прошлый месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_humidifier.state | float * 0.84 + states.sensor.mqtt_power_lastmonth_night_humidifier.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_humidifier.state | float * 1.68 + states.sensor.mqtt_power_lastmonth_night_humidifier.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash  
 
 ################################################################################
@@ -464,7 +464,7 @@
     money_2_tarif_month_total_energy:
       friendly_name: "Стоимость за текущий месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_day_total_energy.state | float * 0.84 + states.sensor.mqtt_power_month_night_total_energy.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_month_day_total_energy.state | float * 1.68 + states.sensor.mqtt_power_month_night_total_energy.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash 
     
 - platform: template
@@ -472,5 +472,5 @@
     money_2_tarif_lastmonth_total_energy:
       friendly_name: "Стоимость за прошлый месяц"
       unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_total_energy.state | float * 0.84 + states.sensor.mqtt_power_lastmonth_night_total_energy.state | float * 1.68)|round(2) }}"
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_total_energy.state | float * 1.68 + states.sensor.mqtt_power_lastmonth_night_total_energy.state | float * 0.84)|round(2) }}"
       icon_template: mdi:square-inc-cash  

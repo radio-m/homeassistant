@@ -614,5 +614,23 @@ cards:
         - entity: switch.xiaomi_power_strip
         - entity: switch.broadlink_1
 
+    - type: entities
+      show_header_toggle: false
+      entities:
+# Общее по входу
+      - entity: sensor.mqtt_power_today_day_input_energy
+      - entity: sensor.mqtt_power_today_night_input_energy
+      - entity: sensor.mqtt_power_month_day_input_energy
+      - entity: sensor.mqtt_power_month_night_input_energy
+      - entity: sensor.money_2_tarif_month_input_energy
+
+
+
+
+
+
+
+
+
 
 
