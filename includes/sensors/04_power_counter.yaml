@@ -335,6 +335,54 @@
 
 ################################################################################
 
+#BlitzWolf BW-SHP13_3
+- platform: template
+  sensors:
+    load_my_pc:
+      friendly_name: 'Компьютер'
+      value_template: "{{ states('sensor.my_pc_power') }}"
+      icon_template: mdi:desktop-classic
+      unit_of_measurement: 'Вт'
+    #   entity_id: sensor.0x00158d0003535c2f_power
+
+- platform: mqtt
+  state_topic: "power/my_pc/yesterday"
+  name: 'mqtt_power_yesterday_my_pc'
+  unit_of_measurement: 'кВт⋅ч'
+        
+- platform: mqtt
+  state_topic: "power/my_pc/today"
+  name: 'mqtt_power_today_my_pc'
+  unit_of_measurement: 'кВт⋅ч'
+
+- platform: mqtt
+  state_topic: "power/my_pc/month"
+  name: 'mqtt_power_month_my_pc'
+  unit_of_measurement: 'кВт⋅ч'
+    
+- platform: mqtt
+  state_topic: "power/my_pc/lastmonth"
+  name: 'mqtt_power_lastmonth_my_pc'
+  unit_of_measurement: 'кВт⋅ч'
+
+- platform: template
+  sensors:
+    money_month_my_pc:
+      friendly_name: "Стоимость за текущий месяц"
+      unit_of_measurement: 'грн'
+      value_template: "{{ (states.sensor.mqtt_power_month_my_pc.state | float * 1.68)|round(2) }}"
+      icon_template: mdi:square-inc-cash 
+    
+- platform: template
+  sensors:
+    money_lastmonth_my_pc:
+      friendly_name: "Стоимость за прошлый месяц"
+      unit_of_measurement: 'грн'
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_my_pc.state | float * 1.68)|round(2) }}"
+      icon_template: mdi:square-inc-cash 
+      
+################################################################################
+
 - platform: template
   sensors:
     load_total_energy:
@@ -347,7 +395,8 @@
             (states.sensor.load_broadlink_2.state | float) +
             (states.sensor.load_bw_shp8.state | float) +
             (states.sensor.load_dishwasher.state | float) + 
-            (states.sensor.load_humidifier.state | float)) | round(3) }}"
+            (states.sensor.load_humidifier.state | float) + 
+            (states.sensor.load_my_pc.state | float)) | round(3) }}"
             # (states.sensor.load_158d0001d35bc0.state | float) + 
             # (states.sensor.load_158d0001fa2934.state | float) + 
             # (states.sensor.load_158d00030a6e78.state | float) + 

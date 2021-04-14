@@ -9,19 +9,34 @@ cards:
         url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=4
         aspect_ratio: 35%
 
+    #   - type: iframe
+    #     id: graph1
+    #     url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=6
+    #     aspect_ratio: 35%
+
       - type: iframe
         id: graph1
-        url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=6
+        url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=9
+        aspect_ratio: 35%
+
+    #   - type: iframe
+    #     id: graph1
+    #     url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=8
+    #     aspect_ratio: 35%
+
+    #   - type: iframe
+    #     id: graph1
+    #     url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=2
+    #     aspect_ratio: 35%
+
+      - type: iframe
+        id: graph1
+        url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=10
         aspect_ratio: 35%
 
       - type: iframe
         id: graph1
-        url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=8
-        aspect_ratio: 35%
-
-      - type: iframe
-        id: graph1
-        url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=2
+        url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=11
         aspect_ratio: 35%
 
     - type: entities
@@ -30,19 +45,17 @@ cards:
 # Общее по входу
       - entity: sensor.load_input_energy
         secondary_info: >-
-          сегодня: <b>[[
-          sensor.mqtt_power_today_input_energy.state ]]</b> кВт⋅ч<br>
-          этот месяц: <b>[[
-          sensor.mqtt_power_month_input_energy.state ]]</b> кВт⋅ч<br>
-          сумма: <b>[[ 
-          sensor.money_month_input_energy.state
-          ]]</b> грн<br>
-          вчера: <b>[[
-          sensor.mqtt_power_yesterday_input_energy.state ]]</b> кВт⋅ч<br>
-          прошлый месяц: <b>[[
-          sensor.mqtt_power_lastmonth_input_energy.state ]]</b> кВт⋅ч<br>
-          сумма: <b>[[ 
-          sensor.money_lastmonth_input_energy.state ]]</b> грн
+          сегодня: ☀️: <b>[[
+          sensor.mqtt_power_today_day_input_energy.state ]]</b> кВт⋅ч 🌙: <b>[[
+          sensor.mqtt_power_today_night_input_energy.state ]]</b> кВт⋅ч<br> этот месяц: ☀️: <b>[[
+          sensor.mqtt_power_month_day_input_energy.state ]]</b> кВт⋅ч 🌙️: <b>[[
+          sensor.mqtt_power_month_night_input_energy.state ]]</b> кВт⋅ч<br> сумма: <b>[[ 
+          sensor.money_2_tarif_month_input_energy.state ]]</b> грн<br> вчера: ☀️: <b>[[
+          sensor.mqtt_power_yesterday_day_input_energy.state ]]</b> кВт⋅ч 🌙: <b>[[
+          sensor.mqtt_power_yesterday_night_input_energy.state ]]</b> кВт⋅ч<br> прошлый месяц: ☀️: <b>[[
+          sensor.mqtt_power_lastmonth_day_input_energy.state ]]</b> кВт⋅ч 🌙️: <b>[[
+          sensor.mqtt_power_lastmonth_night_input_energy.state ]]</b> кВт⋅ч<br> сумма: <b>[[ 
+          sensor.money_2_tarif_lastmonth_input_energy.state ]]</b> грн
         type: 'custom:secondaryinfo-entity-row'
 #Общее по сенсорам
     - type: entities
@@ -123,6 +136,26 @@ cards:
           sensor.mqtt_power_lastmonth_dishwasher.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
           sensor.money_lastmonth_dishwasher.state ]]</b> грн
+        type: 'custom:secondaryinfo-entity-row'
+# Компьютер
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - entity: sensor.load_my_pc
+        secondary_info: >-
+          сегодня: <b>[[
+          sensor.mqtt_power_today_my_pc.state ]]</b> кВт⋅ч<br>
+          этот месяц: <b>[[
+          sensor.mqtt_power_month_my_pc.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_month_my_pc.state
+          ]]</b> грн<br>
+          вчера: <b>[[
+          sensor.mqtt_power_yesterday_my_pc.state ]]</b> кВт⋅ч<br>
+          прошлый месяц: <b>[[
+          sensor.mqtt_power_lastmonth_my_pc.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_lastmonth_my_pc.state ]]</b> грн
         type: 'custom:secondaryinfo-entity-row'
 # Удлинитель 3+3
     - type: entities
@@ -568,7 +601,7 @@ cards:
         show_name: false
         show_state: false
         entities:
-          - entity: binary_sensor.boiler
+          - entity: sensor.boiler_power_state
             name: Бойлер
           - entity: binary_sensor.dishwasher
             name: Посудомойка
@@ -619,12 +652,38 @@ cards:
       entities:
 # Общее по входу
       - entity: sensor.mqtt_power_today_day_input_energy
+        type: custom:multiple-entity-row
+        name: Дневной
+        show_state: false
+        entities:
+          - entity: sensor.mqtt_power_today_day_input_energy
+            name: mqtt
+          - entity: sensor.pzem_energy_daily_day
+            name: pzem
       - entity: sensor.mqtt_power_today_night_input_energy
+        type: custom:multiple-entity-row
+        name: Ночной
+        show_state: false
+        entities:
+          - entity: sensor.mqtt_power_today_night_input_energy
+            name: mqtt
+          - entity: sensor.pzem_energy_daily_night
+            name: pzem
+      - entity: sensor.tariff_difference_month
+        type: custom:multiple-entity-row
+        name: Разница
+        show_state: false
+        entities:
+          - entity: sensor.tariff_difference_month
+            name: месяц
+          - entity: sensor.tariff_difference_day
+            name: день
       - entity: sensor.mqtt_power_month_day_input_energy
+        name: За месяц по дневному тарифу
       - entity: sensor.mqtt_power_month_night_input_energy
+        name: За месяц по ночному тарифу
       - entity: sensor.money_2_tarif_month_input_energy
-
-
+        name: За месяц
 
 
 

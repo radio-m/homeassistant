@@ -1,5 +1,5 @@
 ##### 30 сек расчет
-- alias: 00_power_counter
+- alias: 00_power_counter_2
   initial_state: true
   trigger:
     - platform: time_pattern
@@ -122,6 +122,20 @@
                             (states.sensor.load_humidifier.state | float /120000))|round(5)}}'
                 retain: true
 
+        #BlitzWolf BW-SHP13_3
+            - service: mqtt.publish
+              data_template:
+                topic: "power/my_pc/today_day"
+                payload: '{{(states.sensor.mqtt_power_today_day_my_pc.state | float +
+                            (states.sensor.load_my_pc.state | float /120000))|round(5)}}'
+                retain: true
+            - service: mqtt.publish
+              data_template:
+                topic: "power/my_pc/month_day"
+                payload: '{{(states.sensor.mqtt_power_month_day_my_pc.state | float +
+                            (states.sensor.load_my_pc.state | float /120000))|round(5)}}'
+                retain: true
+
         - conditions:
             - condition: state
               entity_id: binary_sensor.day_tarif
@@ -238,8 +252,22 @@
                             (states.sensor.load_humidifier.state | float /120000))|round(5)}}'
                 retain: true
 
+        #BlitzWolf BW-SHP13_3
+            - service: mqtt.publish
+              data_template:
+                topic: "power/my_pc/today_night"
+                payload: '{{(states.sensor.mqtt_power_today_night_my_pc.state | float +
+                            (states.sensor.load_my_pc.state | float /120000))|round(5)}}'
+                retain: true
+            - service: mqtt.publish
+              data_template:
+                topic: "power/my_pc/month_night"
+                payload: '{{(states.sensor.mqtt_power_month_night_my_pc.state | float +
+                            (states.sensor.load_my_pc.state | float /120000))|round(5)}}'
+                retain: true
+
 ##### Начало дня    
-- alias: 00_power_new_day
+- alias: 00_power_new_day_2
   initial_state: true
   trigger:
     - platform: time
@@ -334,6 +362,17 @@
         topic: "power/humidifier/yesterday_night"
         payload: '{{(states.sensor.mqtt_power_today_night_humidifier.state | float )|round(5)}}'
         retain: true
+#BlitzWolf BW-SHP13_3    
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/yesterday_day"
+        payload: '{{(states.sensor.mqtt_power_today_day_my_pc.state | float )|round(5)}}'
+        retain: true
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/yesterday_night"
+        payload: '{{(states.sensor.mqtt_power_today_night_my_pc.state | float )|round(5)}}'
+        retain: true
 
     - delay: 00:00:05
 
@@ -426,9 +465,21 @@
         topic: "power/humidifier/today_night"
         payload: '{{ 0.0 }}'
         retain: true
+#BlitzWolf BW-SHP13_3
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/today_day"
+        payload: '{{ 0.0 }}'
+        retain: true
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/today_night"
+        payload: '{{ 0.0 }}'
+        retain: true
+
 ############################################################################################################
 ##### Начало месяца
-- alias: 00_power_new_month
+- alias: 00_power_new_month_2
   initial_state: true
   trigger:
     - platform: time
@@ -461,6 +512,17 @@
         topic: "power/total_energy/lastmonth_night"
         payload: '{{(states.sensor.mqtt_power_month_night_total_energy.state | float )|round(5)}}'
         retain: true 
+##### Удлинитель 3+3        
+    - service: mqtt.publish
+      data_template:
+        topic: "power/xiaomi_power_strip/lastmonth_day"
+        payload: '{{(states.sensor.mqtt_power_month_day_xiaomi_power_strip.state | float )|round(5)}}'
+        retain: true
+    - service: mqtt.publish
+      data_template:
+        topic: "power/xiaomi_power_strip/lastmonth_night"
+        payload: '{{(states.sensor.mqtt_power_month_night_xiaomi_power_strip.state | float )|round(5)}}'
+        retain: true
 ##### Broadlink 1
     - service: mqtt.publish
       data_template:
@@ -516,6 +578,18 @@
         topic: "power/humidifier/lastmonth_night"
         payload: '{{(states.sensor.mqtt_power_month_night_humidifier.state | float )|round(5)}}'
         retain: true
+#BlitzWolf BW-SHP13_3
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/lastmonth_day"
+        payload: '{{(states.sensor.mqtt_power_month_day_my_pc.state | float )|round(5)}}'
+        retain: true
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/lastmonth_night"
+        payload: '{{(states.sensor.mqtt_power_month_night_my_pc.state | float )|round(5)}}'
+        retain: true
+
 
     - delay: 00:00:05
 
@@ -608,7 +682,17 @@
         topic: "power/humidifier/month_night"
         payload: '{{ 0.0 }}'
         retain: true
-
+#BlitzWolf BW-SHP13_3
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/month_day"
+        payload: '{{ 0.0 }}'
+        retain: true
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/month_night"
+        payload: '{{ 0.0 }}'
+        retain: true
 
 
 

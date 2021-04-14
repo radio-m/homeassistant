@@ -58,24 +58,24 @@ westen:
       sensors:
         heater_away_mode_status:
           value_template: '{{ states.climate.westen.attributes.preset_mode }}'
-        heater_relay_status:
-          value_template: '{{ states.switch.boiler_relay.state }}'
+#         heater_relay_status:
+#           value_template: '{{ states.switch.gas_heater_relay.state }}'
   
-  ### westen gas-heater switch from custom esp8266 relay
-  switch:
-    - platform: template
-      switches:
-        westen:
-          value_template: "{{ is_state('switch.boiler_relay', 'on') }}"
-          turn_on:
-            - service: switch.turn_on
-              data:
-                entity_id: switch.boiler_relay
+#   ### westen gas-heater switch from custom esp8266 relay
+#   switch:
+#     - platform: template
+#       switches:
+#         westen:
+#           value_template: "{{ is_state('switch.gas_heater_relay', 'on') }}"
+#           turn_on:
+#             - service: switch.turn_on
+#               data:
+#                 entity_id: switch.gas_heater_relay
             
-          turn_off:
-            - service: switch.turn_off
-              data:
-                entity_id: switch.boiler_relay
+#           turn_off:
+#             - service: switch.turn_off
+#               data:
+#                 entity_id: switch.gas_heater_relay
   
   input_number:
     heater_set_day_temp:

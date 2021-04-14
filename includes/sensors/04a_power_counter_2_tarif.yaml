@@ -418,6 +418,66 @@
 
 ################################################################################
 
+#BlitzWolf BW-SHP13_3
+
+- platform: mqtt
+  state_topic: "power/my_pc/yesterday_day"
+  name: 'mqtt_power_yesterday_day_my_pc'
+  unit_of_measurement: 'кВт⋅ч'
+        
+- platform: mqtt
+  state_topic: "power/my_pc/today_day"
+  name: 'mqtt_power_today_day_my_pc'
+  unit_of_measurement: 'кВт⋅ч'
+
+- platform: mqtt
+  state_topic: "power/my_pc/month_day"
+  name: 'mqtt_power_month_day_my_pc'
+  unit_of_measurement: 'кВт⋅ч'
+    
+- platform: mqtt
+  state_topic: "power/my_pc/lastmonth_day"
+  name: 'mqtt_power_lastmonth_day_my_pc'
+  unit_of_measurement: 'кВт⋅ч'
+
+- platform: mqtt
+  state_topic: "power/my_pc/yesterday_night"
+  name: 'mqtt_power_yesterday_night_my_pc'
+  unit_of_measurement: 'кВт⋅ч'
+        
+- platform: mqtt
+  state_topic: "power/my_pc/today_night"
+  name: 'mqtt_power_today_night_my_pc'
+  unit_of_measurement: 'кВт⋅ч'
+
+- platform: mqtt
+  state_topic: "power/my_pc/month_night"
+  name: 'mqtt_power_month_night_my_pc'
+  unit_of_measurement: 'кВт⋅ч'
+    
+- platform: mqtt
+  state_topic: "power/my_pc/lastmonth_night"
+  name: 'mqtt_power_lastmonth_night_my_pc'
+  unit_of_measurement: 'кВт⋅ч'
+
+- platform: template
+  sensors:
+    money_2_tarif_month_my_pc:
+      friendly_name: "Стоимость за текущий месяц"
+      unit_of_measurement: 'грн'
+      value_template: "{{ (states.sensor.mqtt_power_month_day_my_pc.state | float * 1.68 + states.sensor.mqtt_power_month_night_my_pc.state | float * 0.84)|round(2) }}"
+      icon_template: mdi:square-inc-cash 
+    
+- platform: template
+  sensors:
+    money_2_tarif_lastmonth_my_pc:
+      friendly_name: "Стоимость за прошлый месяц"
+      unit_of_measurement: 'грн'
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_my_pc.state | float * 1.68 + states.sensor.mqtt_power_lastmonth_night_my_pc.state | float * 0.84)|round(2) }}"
+      icon_template: mdi:square-inc-cash  
+
+################################################################################
+
 #All
 - platform: mqtt
   state_topic: "power/total_energy/yesterday_day"

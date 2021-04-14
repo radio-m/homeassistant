@@ -1,0 +1,10 @@
+sensor.mqtt_power_today_day_input_energy:
+  icon: mdi:weather-sunny
+sensor.mqtt_power_today_night_input_energy:
+  icon: mdi:weather-night
+sensor.tariff_difference_month:
+  icon: mdi:vector-difference
+
+# sensor.load_input_energy:
+#   day_tariff: {{ states.sensor.mqtt_power_today_day_input_energy.state }}
+#   night_tariff: {{ states.sensor.mqtt_power_today_night_input_energy.state }}

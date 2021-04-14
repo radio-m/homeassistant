@@ -43,7 +43,6 @@ from .const import (
     DEFAULT_REPORT_UNKNOWN,
     DEFAULT_DISCOVERY,
     DEFAULT_RESTORE_STATE,
-    DEFAULT_HCI_INTERFACE,
     DEFAULT_DEVICE_DECIMALS,
     DEFAULT_DEVICE_USE_MEDIAN,
     DEFAULT_DEVICE_RESTORE_STATE,
@@ -55,6 +54,7 @@ from .const import (
     CONF_USE_MEDIAN,
     CONF_ACTIVE_SCAN,
     CONF_HCI_INTERFACE,
+    CONF_BT_INTERFACE,
     CONF_BATT_ENTITIES,
     CONF_REPORT_UNKNOWN,
     CONF_RESTORE_STATE,
@@ -71,6 +71,7 @@ from .const import (
     ATC_TYPE_DICT,
     QINGPING_TYPE_DICT,
     XIAOMI_TYPE_DICT,
+    MISCALE_TYPE_DICT,
     SERVICE_CLEANUP_ENTRIES,
 )
 
@@ -89,9 +90,23 @@ THBV_STRUCT = struct.Struct(">hBBH")
 THVB_STRUCT = struct.Struct("<hHHB")
 M_STRUCT = struct.Struct("<L")
 P_STRUCT = struct.Struct("<H")
+SCALE_STRUCT = struct.Struct("<BB7xHH")
 
 CONFIG_YAML = {}
 UPDATE_UNLISTENER = None
+
+BT_INTERFACES = aiobs.get_bt_interface_mac([0, 1, 2, 3])
+BT_HCI_INTERFACES = list(BT_INTERFACES.keys())
+BT_MAC_INTERFACES = list(BT_INTERFACES.values())
+try:
+    DEFAULT_BT_INTERFACE = list(BT_INTERFACES.items())[0][1]
+    DEFAULT_HCI_INTERFACE = list(BT_INTERFACES.items())[0][0]
+except IndexError:
+    DEFAULT_BT_INTERFACE = '00:00:00:00:00:00'
+    DEFAULT_HCI_INTERFACE = 0
+    BT_HCI_INTERFACES = [0]
+    BT_MAC_INTERFACES = ['00:00:00:00:00:00']
+    _LOGGER.error("No Bluetooth interface found. Make sure Bluetooth is installed on your system")
 
 DEVICE_SCHEMA = vol.Schema(
     {
@@ -127,8 +142,11 @@ CONFIG_SCHEMA = vol.Schema(
                     vol.Optional(CONF_USE_MEDIAN, default=DEFAULT_USE_MEDIAN): cv.boolean,
                     vol.Optional(CONF_ACTIVE_SCAN, default=DEFAULT_ACTIVE_SCAN): cv.boolean,
                     vol.Optional(
-                        CONF_HCI_INTERFACE, default=[DEFAULT_HCI_INTERFACE]
+                        CONF_HCI_INTERFACE, default=[]
                     ): vol.All(cv.ensure_list, [cv.positive_int]),
+                    vol.Optional(
+                        CONF_BT_INTERFACE, default=DEFAULT_BT_INTERFACE
+                    ): vol.All(cv.ensure_list, [cv.matches_regex(MAC_REGEX)]),
                     vol.Optional(
                         CONF_BATT_ENTITIES, default=DEFAULT_BATT_ENTITIES
                     ): cv.boolean,
@@ -204,8 +222,11 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     _LOGGER.debug("async_setup_entry: domain %s", CONFIG_YAML)
 
     config = {}
+    hci_list = []
+    bt_mac_list = []
 
     if not CONFIG_YAML:
+        # Configuration in UI
         for key, value in config_entry.data.items():
             config[key] = value
 
@@ -224,17 +245,55 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
                     if CONF_NAME in dev_conf:
                         devlist[dev_idx][CONF_UNIQUE_ID] = dev_conf[CONF_NAME]
                 del config["ids_from_name"]
+
+        if not config[CONF_BT_INTERFACE]:
+            default_hci = list(BT_INTERFACES.keys())[list(BT_INTERFACES.values()).index(DEFAULT_BT_INTERFACE)]
+            hci_list.append(int(default_hci))
+            bt_mac_list.append(str(DEFAULT_BT_INTERFACE))
+        else:
+            bt_interface_list = config[CONF_BT_INTERFACE]
+            for bt_mac in bt_interface_list:
+                hci = list(BT_INTERFACES.keys())[list(BT_INTERFACES.values()).index(bt_mac)]
+                hci_list.append(int(hci))
+                bt_mac_list.append(str(bt_mac))
     else:
+        # Configuration in YAML
         for key, value in CONFIG_YAML.items():
             config[key] = value
-        if CONF_HCI_INTERFACE in CONFIG_YAML:
-            hci_list = []
-            if isinstance(CONFIG_YAML[CONF_HCI_INTERFACE], list):
-                for hci in CONFIG_YAML[CONF_HCI_INTERFACE]:
-                    hci_list.append(str(hci))
-            else:
-                hci_list.append(str(CONFIG_YAML[CONF_HCI_INTERFACE]))
-            config[CONF_HCI_INTERFACE] = hci_list
+        _LOGGER.warning("Available Bluetooth interfaces for BLE monitor: %s", BT_MAC_INTERFACES)
+
+        if config[CONF_HCI_INTERFACE]:
+            # Configuration of BT interface with hci number
+            for hci in CONFIG_YAML[CONF_HCI_INTERFACE]:
+                try:
+                    hci_list.append(int(hci))
+                    bt_mac = BT_INTERFACES.get(hci)
+                    if bt_mac:
+                        bt_mac_list.append(str(bt_mac))
+                    else:
+                        _LOGGER.error("Bluetooth interface hci%i is not available", hci)
+                except ValueError:
+                    _LOGGER.error("Bluetooth interface hci%i is not available", hci)
+        else:
+            # Configuration of BT interface with mac address
+            CONF_BT_INTERFACES = [x.upper() for x in CONFIG_YAML[CONF_BT_INTERFACE]]
+            for bt_mac in CONF_BT_INTERFACES:
+                try:
+                    hci = list(BT_INTERFACES.keys())[list(BT_INTERFACES.values()).index(bt_mac)]
+                    hci_list.append(int(hci))
+                    bt_mac_list.append(str(bt_mac))
+                except ValueError:
+                    _LOGGER.error("Bluetooth interface with MAC address %s is not available", bt_mac)
+
+    if not hci_list:
+        # Fall back in case no hci interfaces are added
+        default_hci = list(BT_INTERFACES.keys())[list(BT_INTERFACES.values()).index(DEFAULT_BT_INTERFACE)]
+        hci_list.append(int(default_hci))
+        bt_mac_list.append(str(DEFAULT_BT_INTERFACE))
+        _LOGGER.warning("No configured Bluetooth interfaces was found, using default interface instead")
+
+    config[CONF_HCI_INTERFACE] = hci_list
+    config[CONF_BT_INTERFACE] = bt_mac_list
 
     hass.config_entries.async_update_entry(config_entry, data={}, options=config)
 
@@ -242,13 +301,6 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
 
     UPDATE_UNLISTENER = config_entry.add_update_listener(_async_update_listener)
 
-    if CONF_HCI_INTERFACE not in config:
-        config[CONF_HCI_INTERFACE] = [DEFAULT_HCI_INTERFACE]
-    else:
-        hci_list = config_entry.options.get(CONF_HCI_INTERFACE)
-        for i, hci in enumerate(hci_list):
-            hci_list[i] = int(hci)
-        config[CONF_HCI_INTERFACE] = hci_list
     _LOGGER.debug("HCI interface is %s", config[CONF_HCI_INTERFACE])
 
     blemonitor = BLEmonitor(config)
@@ -284,6 +336,33 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
         blemonitor.stop()
 
     return unload_ok
+
+
+async def async_migrate_entry(hass, config_entry):
+    """Migrate config entry to new version."""
+    if config_entry.version == 1:
+        options = dict(config_entry.options)
+        hci_list = options.get(CONF_HCI_INTERFACE)
+        bt_mac_list = []
+        for hci in hci_list:
+            try:
+                bt_mac = BT_INTERFACES.get(hci)
+                if bt_mac:
+                    bt_mac_list.append(str(bt_mac))
+                else:
+                    _LOGGER.error("hci%i is not migrated, check the BLE monitor options", hci)
+            except ValueError:
+                _LOGGER.error("hci%i is not migrated, check the BLE monitor options", hci)
+        if not bt_mac_list:
+            # Fall back in case no hci interfaces are added
+            bt_mac_list.append(str(DEFAULT_BT_INTERFACE))
+            _LOGGER.warning("Migration of hci interface to Bluetooth mac address failed, using default MAC address")
+        options[CONF_BT_INTERFACE] = bt_mac_list
+
+        config_entry.version = 2
+        hass.config_entries.async_update_entry(config_entry, options=options)
+        _LOGGER.info("Migrated config entry to version %d", config_entry.version)
+    return True
 
 
 async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
@@ -520,6 +599,54 @@ class HCIdump(Thread):
             else:
                 return {}
 
+        # MI Scale V1 BLE advertisements
+        def obj1d18(xobj):
+            return {}
+
+        # MI Scale V2 BLE advertisements
+        def obj1b18(xobj):
+            if len(xobj) == 13:
+                (measunit, condition, impedance, weight) = SCALE_STRUCT.unpack(xobj)
+                hasImpedance = condition & (1 << 1)
+                isStabilized = condition & (1 << 5)
+                loadRemoved = condition & (1 << 7)
+
+                if measunit & (1 << 4):
+                    # measurement in Chinese Catty unit
+                    weight = weight / 100
+                    weight_unit = "jin"
+                elif measunit == 3:
+                    # measurement in lbs
+                    weight = weight / 100
+                    weight_unit = "lbs"
+                elif measunit == 2:
+                    # measurement in kg
+                    weight = weight / 200
+                    weight_unit = "kg"
+                else:
+                    # measurement in unknown unit
+                    weight = weight / 100
+                    weight_unit = None
+
+                if isStabilized:
+                    if hasImpedance:
+                        return {
+                            "weight": weight,
+                            "weight unit": weight_unit,
+                            "impedance": impedance,
+                            "load removed": 0 if loadRemoved == 0 else 1
+                        }
+                    else:
+                        return {
+                            "weight": weight,
+                            "weight unit": weight_unit,
+                            "load removed": 0 if loadRemoved == 0 else 1
+                        }
+                else:
+                    return {}
+            else:
+                return {}
+
         def reverse_mac(rmac):
             """Change LE order to BE."""
             if len(rmac) != 12:
@@ -598,6 +725,8 @@ class HCIdump(Thread):
             b'\x07\x02': (obj0702, False, True),
             b'\x10\x16': (objATC_short, False, True),
             b'\x12\x16': (objATC_long, False, True),
+            b'\x1B\x18': (obj1b18, True, True),
+            b'\x1D\x18': (obj1d18, True, True),
         }
 
     def process_hci_events(self, data):
@@ -699,6 +828,8 @@ class HCIdump(Thread):
         xiaomi_index = data.find(b'\x16\x95\xFE', 15 + 15 if is_ext_packet else 0)
         qingping_index = data.find(b'\x16\xCD\xFD', 15 + 15 if is_ext_packet else 0)
         atc_index = data.find(b'\x16\x1A\x18', 15 + 15 if is_ext_packet else 0)
+        miscale_v1_index = data.find(b'\x16\x1D\x18', 15 + 15 if is_ext_packet else 0)
+        miscale_v2_index = data.find(b'\x16\x1B\x18', 15 + 15 if is_ext_packet else 0)
 
         try:
             if xiaomi_index != -1:
@@ -707,6 +838,10 @@ class HCIdump(Thread):
                 return self.parse_qingping(data, qingping_index, is_ext_packet)
             elif atc_index != -1:
                 return self.parse_atc(data, atc_index, is_ext_packet)
+            elif miscale_v1_index != -1:
+                return self.parse_miscale_v1(data, miscale_v1_index, is_ext_packet)
+            elif miscale_v2_index != -1:
+                return self.parse_miscale_v2(data, miscale_v2_index, is_ext_packet)
 
         except NoValidError as nve:
             _LOGGER.debug("Invalid data: %s", nve)
@@ -1058,7 +1193,12 @@ class HCIdump(Thread):
         # parse BLE message in ATC format
         # Check for the atc1441 or custom format
         is_custom_adv = True if data[atc_index - 1] == 18 else False
-        firmware = "ATC (custom)" if is_custom_adv else "ATC firmware (ATC1441)"
+        if is_custom_adv:
+            firmware = "ATC firmware (custom)"
+        else:
+            firmware = "ATC firmware (ATC1441)"
+        # Check for old format (ATC firmware <= 2.8)
+        old_format = True if data.find(b"\x02\x01\x06", atc_index - 4, atc_index - 1) == -1 else False
 
         # check for BTLE msg size
         msg_length = data[2] + 3
@@ -1072,7 +1212,7 @@ class HCIdump(Thread):
         else:
             atc_mac = data[atc_index + 3:atc_index + 9]
 
-        mac_index = atc_index - (22 if is_ext_packet else 8)
+        mac_index = atc_index - (22 if is_ext_packet else 8) - (0 if old_format else 3)
         source_mac_reversed = data[mac_index:mac_index + 6]
         source_mac = source_mac_reversed[::-1]
         if atc_mac != source_mac:
@@ -1127,7 +1267,8 @@ class HCIdump(Thread):
         xdata_point = atc_index + 9
 
         # check if parse_atc data start and length is valid
-        if xdata_length != len(data[xdata_point:(-3 if (is_custom_adv and not is_ext_packet) else -2)]):
+        xdata_end_offset = (-1 if is_ext_packet else -2) + (-1 if is_custom_adv else 0)
+        if xdata_length != len(data[xdata_point:xdata_end_offset]):
             raise NoValidError("Invalid data length")
 
         result = {
@@ -1154,6 +1295,118 @@ class HCIdump(Thread):
                     "UNKNOWN dataobject from ATC DEVICE: %s, MAC: %s, ADV: %s",
                     sensor_type,
                     ''.join('{:02X}'.format(x) for x in atc_mac[:]),
+                    data.hex()
+                )
+        binary = binary and binary_data
+        return result, binary, measuring
+
+    def parse_miscale_v1(self, data, miscale_v1_index, is_ext_packet):
+        # parse BLE message in MiScale v1 format (NOT IMPLEMENTED YET)
+        if self.report_unknown:
+            _LOGGER.info(
+                "BLE ADV from UNKNOWN Mi SCALE V1 SENSOR: ADV: %s", data.hex()
+            )
+        return None, None, None
+
+    def parse_miscale_v2(self, data, miscale_v2_index, is_ext_packet):
+        # parse BLE message in MiScale v2 format
+        firmware = "MiScale v2"
+
+        # check for no BR/EDR + LE General discoverable mode flags
+        advert_start = 29 if is_ext_packet else 14
+        adv_index = data.find(b"\x02\x01\x06", advert_start, 3 + advert_start)
+        if adv_index == -1:
+            raise NoValidError("Invalid index")
+
+        # check for BTLE msg size
+        msg_length = data[2] + 3
+        if msg_length != len(data):
+            raise NoValidError("Invalid msg size")
+
+        # extract device type
+        device_type = data[miscale_v2_index + 5:miscale_v2_index + 7]
+
+        # check for MAC presence in message and in service data
+        mac_index = adv_index - 14 if is_ext_packet else adv_index
+        miscale_v2_mac_reversed = data[mac_index - 7:mac_index - 1]
+        miscale_v2_mac = miscale_v2_mac_reversed[::-1]
+
+        # check for MAC presence in whitelist, if needed
+        if self.discovery is False and miscale_v2_mac not in self.whitelist:
+            return None, None, None
+
+        packet_id = data[miscale_v2_index + 4]
+        try:
+            prev_packet = self.lpacket_ids[miscale_v2_index]
+        except KeyError:
+            # start with empty first packet
+            prev_packet = None, None, None
+        if prev_packet == packet_id:
+            # only process new messages
+            return None, None, None
+        self.lpacket_ids[miscale_v2_index] = packet_id
+
+        # extract RSSI byte
+        rssi_index = 18 if is_ext_packet else msg_length - 1
+        (rssi,) = struct.unpack("<b", data[rssi_index:rssi_index + 1])
+
+        # strange positive RSSI workaround
+        if rssi > 0:
+            rssi = -rssi
+        device_type = data[miscale_v2_index + 1:miscale_v2_index + 3]
+        try:
+            sensor_type, binary_data = MISCALE_TYPE_DICT[device_type]
+        except KeyError:
+            if self.report_unknown:
+                _LOGGER.info(
+                    "BLE ADV from UNKNOWN MI SCALE V2 SENSOR: RSSI: %s, MAC: %s, ADV: %s",
+                    rssi,
+                    ''.join('{:02X}'.format(x) for x in miscale_v2_mac[:]),
+                    data.hex()
+                )
+            raise NoValidError("Device unkown")
+
+        # Mi Scale V2 data length = message length
+        # -all bytes before Mi Scale V2 UUID
+        # -3 bytes UUID + ADtype
+        # -1 RSSI (normal, not extended packet only)
+        xdata_length = msg_length - miscale_v2_index - 3 - (0 if is_ext_packet else 1)
+        if xdata_length < 13:
+            raise NoValidError("Xdata length invalid")
+
+        xdata_point = miscale_v2_index + 3
+
+        # check if parse_miscale_v2 data start and length is valid
+        xdata_end_offset = (0 if is_ext_packet else -1)
+        if xdata_length != len(data[xdata_point:xdata_end_offset]):
+            raise NoValidError("Invalid data length")
+
+        result = {
+            "rssi": rssi,
+            "mac": ''.join('{:02X}'.format(x) for x in miscale_v2_mac[:]),
+            "type": sensor_type,
+            "packet": packet_id,
+            "firmware": firmware,
+            "data": True,
+        }
+
+        binary = False
+        measuring = False
+        xvalue_typecode = data[miscale_v2_index + 1:miscale_v2_index + 3]
+        xnext_point = xdata_point + xdata_length
+        xvalue = data[xdata_point:xnext_point]
+
+        resfunc, tbinary, tmeasuring = self._dataobject_dict.get(xvalue_typecode, (None, None, None))
+        if resfunc:
+            binary = binary or tbinary
+            measuring = measuring or tmeasuring
+            result.update(resfunc(xvalue))
+        else:
+            if self.report_unknown:
+                _LOGGER.info(
+                    "UNKNOWN dataobject from Mi Scale v2 DEVICE: %s, MAC: %s, ADV: %s",
+                    sensor_type,
+                    ''.join('{:02X}'.format(x) for x in miscale_v2_mac[:]),
                     data.hex()
                 )
         binary = binary and binary_data

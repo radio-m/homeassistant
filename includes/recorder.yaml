@@ -61,6 +61,7 @@
       - sensor.load_total_energy
       - sensor.load_xiaomi_power_strip
       - sensor.load_input_energy
+      - sensor.load_my_pc
 
       - sensor.bw_shp8_power
       - sensor.bw_shp8_current
@@ -100,6 +101,13 @@
       - binary_sensor.boiler
       - sensor.c_bedroom_temperature_median
       - sensor.c_bedroom_humidity_median
+
+#Boiler automation
+      - binary_sensor.boiler
+      - binary_sensor.dishwasher
+      - binary_sensor.washing_machine
+      - binary_sensor.boiler_time
+      - binary_sensor.boiler_timer
 
   exclude:
     entities:

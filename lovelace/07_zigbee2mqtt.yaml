@@ -38,9 +38,6 @@
                 entity_id: script.var_timer
             - entity: timer.variable
 
-      - type: media-control
-        entity: media_player.raspberrypi
-
       - type: custom:battery-state-card
         title: "Заряд батареек в датчиках"
         sort_by_level: "asc"
@@ -133,23 +130,8 @@
 
       - type: vertical-stack
         cards:
+
           - type: entities
             entities:
-              - entity: switch.bw_shp8_relay
-          - type: glance
-            # title: Статус бойлера
-            show_name: false
-            show_state: false
-            entities:
-              - entity: binary_sensor.boiler
-                name: Бойлер
-              - entity: binary_sensor.dishwasher
-                name: Посудомойка
-              - entity: binary_sensor.washing_machine
-                name: Стиралка
-              - entity: binary_sensor.boiler_time
-                name: 23-12
-              - entity: binary_sensor.boiler_timer
-                name: Таймер
-          
-        
+              - entity: sensor.tariff_difference_month
+              - entity: sensor.tariff_difference_day

@@ -9,231 +9,61 @@
       data:
         message: 'pong'
         
-- alias: 'Telegram menu'
+- alias: 'washing machine end washing'
   trigger:
-    platform: event
-    event_type: telegram_command
-    event_data:
-      command: '/menu'
+    platform: state
+    entity_id: binary_sensor.washing_machine
+    from: "on"
+    to: "off"
+  condition:
+    - condition: state
+      entity_id: switch.broadlink_1
+      state: "on"
   action:
     - service: notify.telegram
       data:
-        message: 'Меню умного дома'
+        message: 'Машинка достирала'
+    - service: notify.telegram_olga
+      data:
+        message: 'Машинка достирала'
+
+- alias: 'washing power issue'
+  trigger:
+    platform: state
+    entity_id: switch.broadlink_1
+    from: "on"
+    to: "off"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.washing_machine # switch.broadlink_1
+      state: "on"
+  action:
+    - service: notify.telegram
+      data:
+        message: 'Розетка стиралки отключилась. Включить?'
         data:
           inline_keyboard:
-            - 'Климат:/climate, Освещение:/lights, Котел:/westen'
+            - 'Да:/washing_machine_turn_on, Нет:/washing_machine_turn_off'
 
-- alias: 'Telegram Climate menu'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/climate'
-  action:
-    - service: notify.telegram
+    - service: notify.telegram_olga
       data:
-        message: 'Меню температур'
+        message: 'Розетка стиралки отключилась. Включить?'
         data:
           inline_keyboard:
-            - 't в доме:/in_temp, t на улице:/out_temp' #, Котел:/westen'
+            - 'Да:/washing_machine_turn_on, Нет:/washing_machine_turn_off'
 
-- alias: 'Telegram in temp'
+- alias: 'washing power restore'
   trigger:
     platform: event
     event_type: telegram_callback
     event_data:
-      command: '/in_temp'
+      command: '/washing_machine_turn_on'
   action:
     - service: notify.telegram
       data:
-        message: 'Температура в доме {{ states.climate.westen.attributes.current_temperature }}°C'
-
-- alias: 'Telegram out temp'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/out_temp'
-  action:
-    - service: notify.telegram
-      data:
-        message: 'Температура на улице {{ states("sensor.bme280_temperature") }} °C'
-
-- alias: 'Telegram lights menu'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/lights'
-  action:
-    - service: notify.telegram
-      data:
-        message: 'Свет в коридоре'
-        data:
-          inline_keyboard:
-            - 'Включить:/coridor_light_on, Выключить:/coridor_light_off, Состояние:/coridor_light_state'
-    - service: notify.telegram
-      data:
-        message: 'Свет в спальне'
-        data:
-          inline_keyboard:
-             - 'Включить:/bedroom_light_on, Выключить:/bedroom_light_off, Состояние:/bedroom_light_state'
-            
-- alias: 'Telegram coridor light on'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/coridor_light_on'
-  action:
-    - device_id: 318d1afd827c4fdc86e4fbd1555aad19
-      domain: switch
-      entity_id: switch.corridor_night_light_relay
-      type: turn_on
-    - service: notify.telegram
-      data:
-        message: 'Свет в коридоре включен'
-
-- alias: 'Telegram coridor light off'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/coridor_light_off'
-  action:
-    - device_id: 318d1afd827c4fdc86e4fbd1555aad19
-      domain: switch
-      entity_id: switch.corridor_night_light_relay
-      type: turn_off
-    - service: notify.telegram
-      data:
-        message: 'Свет в коридоре выключен'
-
-- alias: 'Telegram coridor light state'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/coridor_light_state'
-  action:
-    - service: notify.telegram
-      data:
-        message: >
-          {% if is_state('switch.corridor_night_light_relay', "off") %}
-          Свет в коридоре выключен
-          {% elif is_state('switch.corridor_night_light_relay', "on") %}
-          Свет в коридоре включен
-          {% else %}
-          Проверьте подключение, реле не отвечает
-          {% endif %}
-
-- alias: 'Telegram bedroom light on'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/bedroom_light_on'
-  action:
+        message: 'Розетку уже кто-то включил'
     - service: switch.turn_on
-      entity_id: switch.relay_wall_switch_bedroom
-    - service: notify.telegram
-      data:
-        message: 'Свет в спальне включен'
-
-- alias: 'Telegram bedroom light off'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/bedroom_light_off'
-  action:
-    - service: switch.turn_off
-      entity_id: switch.relay_wall_switch_bedroom
-    - service: notify.telegram
-      data:
-        message: 'Свет в спальне выключен'
-
-- alias: 'Telegram bedroom light state'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/bedroom_light_state'
-  action:
-    - service: notify.telegram
-      data:
-        message: >
-          {% if is_state('switch.relay_wall_switch_bedroom', "off") %}
-          Свет в спальне выключен
-          {% elif is_state('switch.relay_wall_switch_bedroom', "on") %}
-          Свет в спальне включен
-          {% else %}
-          Проверьте подключение, реле не отвечает
-          {% endif %}
-
-- alias: 'Telegram Westen menu'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/westen'
-  action:
-    - service: notify.telegram
-      data:
-        message: 'Котел'
-        data:
-          inline_keyboard:
-            - 'Включить:/westen_on, Выключить:/westen_off, Состояние:/westen_state'
-
-- alias: 'Telegram Wetsen on'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/westen_on'
-  action:
-    - service: climate.set_hvac_mode
-      data:
-        entity_id: climate.westen
-        hvac_mode: "heat"
-    - service: notify.telegram
-      data:
-        message: 
-          'Котел включен. Заданная температура {{ states.climate.westen.attributes.temperature }}°C, текущая температура {{ states.climate.westen.attributes.current_temperature }}°C'
-
-- alias: 'Telegram Westen off'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/westen_off'
-  action:
-    - service: climate.set_hvac_mode
-      data:
-        entity_id: climate.westen
-        hvac_mode: "off"
-    - service: notify.telegram
-      data:
-        message: 'Котел выключен, текущая температура {{ states.climate.westen.attributes.current_temperature }}°C'
-
-- alias: 'Telegram Wetsen state'
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/westen_state'
-  action:
-    - service: notify.telegram
-      data:
-        message: >
-          {% if is_state('sensor.thermostat_status', 'heating') %}
-          Автоматика включена Котел горит. Заданная температура {{ states.climate.westen.attributes.temperature }}°C, текущая температура {{ states.climate.westen.attributes.current_temperature }}°C
-          {% elif is_state('sensor.thermostat_status', 'idle') %}
-          Автоматика включена. Котел в режиме ожидания. Заданная температура {{ states.climate.westen.attributes.temperature }}°C, текущая температура {{ states.climate.westen.attributes.current_temperature }}°C
-          {% else %}
-          Автоматика выключена, текущая температура {{ states.climate.westen.attributes.current_temperature }}°C
-          {% endif %}
-#          'Котел включен. Заданная температура {{ states.climate.westen.attributes.temperature }}°C, текущая температура {{ states.climate.westen.attributes.current_temperature }}°C'
+      entity_id: switch.broadlink_1
 
 - alias: 'Telegram Weather'
   trigger:

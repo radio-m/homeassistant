@@ -1,0 +1,29 @@
+  - platform: template
+    sensors:
+      bme280_temperature_wo_errors:
+        value_template: >
+          {% if not states('sensor.bme280_temperature') in ['unavailable', 'unknown', 'none'] %}
+            {{ states('sensor.bme280_temperature') | float }}
+          {% else %}
+            {{ states('sensor.bme280_temperature') | float }}
+          {% endif %}
+
+  - platform: template
+    sensors:
+      bme280_humidity_wo_errors:
+        value_template: >
+          {% if not states('sensor.bme280_humidity') in ['unavailable', 'unknown', 'none'] %}
+            {{ states('sensor.bme280_humidity') | float }}
+          {% else %}
+            {{ states('sensor.bme280_humidity') | float }}
+          {% endif %}
+
+  - platform: template
+    sensors:
+      bme280_pressure_in_mmhg_wo_errors:
+        value_template: >
+          {% if not states('sensor.bme280_pressure_in_mmhg') in ['unavailable', 'unknown', 'none'] %}
+            {{ states('sensor.bme280_pressure_in_mmhg') | float }}
+          {% else %}
+            {{ states('sensor.bme280_pressure_in_mmhg') | float }}
+          {% endif %}

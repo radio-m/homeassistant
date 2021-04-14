@@ -117,6 +117,20 @@
                     (states.sensor.load_humidifier.state | float /120000))|round(5)}}'
         retain: true
 
+#BlitzWolf BW-SHP13_3
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/today"
+        payload: '{{(states.sensor.mqtt_power_today_my_pc.state | float +
+                    (states.sensor.load_my_pc.state | float /120000))|round(5)}}'
+        retain: true
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/month"
+        payload: '{{(states.sensor.mqtt_power_month_my_pc.state | float +
+                    (states.sensor.load_my_pc.state | float /120000))|round(5)}}'
+        retain: true
+
 ############################################################################################################
 ##### Начало дня    
 - alias: 00_power_new_day
@@ -174,6 +188,13 @@
         topic: "power/humidifier/yesterday"
         payload: '{{(states.sensor.mqtt_power_today_humidifier.state | float )|round(5)}}'
         retain: true
+#BlitzWolf BW-SHP13_3    
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/yesterday"
+        payload: '{{(states.sensor.mqtt_power_today_my_pc.state | float )|round(5)}}'
+        retain: true
+
 
     - delay: 00:00:05
 
@@ -224,6 +245,12 @@
     - service: mqtt.publish
       data_template:
         topic: "power/humidifier/today"
+        payload: '{{ 0.0 }}'
+        retain: true
+#BlitzWolf BW-SHP13_3
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/today"
         payload: '{{ 0.0 }}'
         retain: true
 
@@ -282,6 +309,13 @@
         topic: "power/humidifier/lastmonth"
         payload: '{{(states.sensor.mqtt_power_month_humidifier.state | float )|round(5)}}'
         retain: true
+#BlitzWolf BW-SHP13_3
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/lastmonth"
+        payload: '{{(states.sensor.mqtt_power_month_my_pc.state | float )|round(5)}}'
+        retain: true
+
 
     - delay: 00:00:05
 
@@ -334,3 +368,13 @@
         topic: "power/humidifier/month"
         payload: '{{ 0.0 }}'
         retain: true
+#BlitzWolf BW-SHP13_3
+    - service: mqtt.publish
+      data_template:
+        topic: "power/my_pc/month"
+        payload: '{{ 0.0 }}'
+        retain: true
+
+
+
+

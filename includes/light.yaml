@@ -39,6 +39,18 @@
     entity_id: switch.wall_switch_c_bedroom_right
 
   - platform: switch
+    name: LR General
+    entity_id: switch.wall_switch_living_room_left
+
+  - platform: switch
+    name: LR Night light
+    entity_id: switch.wall_switch_living_room_center
+
+  - platform: switch
+    name: LR Point light
+    entity_id: switch.wall_switch_living_room_right
+
+  - platform: switch
     name: Yard
     entity_id: switch.yard_switch
 

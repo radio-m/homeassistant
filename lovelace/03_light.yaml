@@ -78,6 +78,24 @@ cards:
     cards:
 
     - type: light
+      entity: light.lr_point_light
+      name: "Точечный в зале"
+      icon: mdi:wall-sconce-round
+
+    - type: light
+      entity: light.lr_night_light
+      name: "Торшер"
+      icon: mdi:lamp
+
+    - type: light
+      entity: light.lr_general
+      icon: mdi:ceiling-light
+      name: "Основной в зале" 
+
+  - type: horizontal-stack
+    cards:
+
+    - type: light
       entity: light.gateway_led
       icon: mdi:alarm-light
       name: "Светодиод шлюза" 

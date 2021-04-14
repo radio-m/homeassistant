@@ -5,11 +5,10 @@
     platform: time
   condition:
   - condition: state
-    entity_id: switch.bw_shp8_relay # розетка бойлера
+    entity_id:
+      - switch.bw_shp8_relay # розетка бойлера
+      - binary_sensor.dishwasher # розетка посудомойки
     state: 'off'
-  - condition: numeric_state
-    below: '15'
-    entity_id: sensor.load_dishwasher # розетка посудомойки
   action:
   - service: switch.turn_on
     entity_id: switch.bw_shp8_relay
@@ -33,15 +32,15 @@
   - event: start
     platform: homeassistant
   condition:
-  - condition: time
-    after: '23:05'
-    before: '12:00'
   - condition: state
-    entity_id: switch.bw_shp8_relay
+    entity_id: binary_sensor.boiler_time
+    state: 'on'
+  - condition: state
+    entity_id:
+      - switch.bw_shp8_relay
+      - binary_sensor.dishwasher
+      - binary_sensor.washing_machine
     state: 'off'
-  - condition: numeric_state
-    below: '15'
-    entity_id: sensor.load_dishwasher
   action:
   - service: switch.turn_on # 
     entity_id: switch.bw_shp8_relay
@@ -52,9 +51,9 @@
   - event: start
     platform: homeassistant
   condition:
-  - condition: time
-    after: '12:00'
-    before: '23:05'
+  - condition: state
+    entity_id: binary_sensor.boiler_time
+    state: 'off'
   - condition: state
     entity_id: switch.bw_shp8_relay
     state: 'on'
@@ -65,9 +64,9 @@
 - alias: boiler_stop_when_dishwasher
   description: 'выключить розетку бойлера, когда нагрузка на розетке посудомойки больше 15 Вт'
   trigger:
-  - above: '15'
-    entity_id: sensor.load_dishwasher
-    platform: numeric_state
+  - platform: state
+    entity_id: binary_sensor.dishwasher
+    to: 'on'
   condition:
 #   - after: '23:05'
 #     before: '06:50'
@@ -82,20 +81,18 @@
 - alias: boiler_start_when_dishwasher
   description: 'включить розетку бойлера, когда нагрузка на розетке посудомойки меньше 15 Вт в течение 15 минут'
   trigger:
-  - below: '15'
-    entity_id: sensor.load_dishwasher
-    for: 00:15
-    platform: numeric_state
+  - platform: state
+    entity_id: binary_sensor.dishwasher
+    to: 'off'
   condition:
-  - after: '23:05'
-    before: '12:00'
-    condition: time
   - condition: state
-    entity_id: switch.bw_shp8_relay
+    entity_id: binary_sensor.boiler_time
+    state: 'on'
+  - condition: state
+    entity_id:
+      - switch.bw_shp8_relay
+      - binary_sensor.boiler_timer
     state: 'off'
-  - condition: state
-    entity_id: timer.boiler_low_voltage
-    state: 'idle'
   action:
   - service: switch.turn_on
     entity_id: switch.bw_shp8_relay
@@ -103,9 +100,9 @@
 - alias: boiler_stop_when_washing_machine
   description: 'выключить розетку бойлера, когда нагрузка на розетку стиралки больше 5 Вт'
   trigger:
-  - above: '5'
-    entity_id: sensor.load_broadlink_1
-    platform: numeric_state
+  - platform: state
+    entity_id: binary_sensor.washing_machine
+    to: 'on'
   condition:
   - condition: state
     entity_id: switch.bw_shp8_relay
@@ -117,19 +114,18 @@
 - alias: boiler_start_when_washing_machine
   description: 'включить розетку бойлера, когда нагрузка на розетку стиралки меньше 5 Вт'
   trigger:
-  - below: '5'
-    entity_id: sensor.load_broadlink_1
-    platform: numeric_state
+  - platform: state
+    entity_id: binary_sensor.washing_machine
+    to: 'off'
   condition:
-  - after: '23:05'
-    before: '12:00'
-    condition: time
   - condition: state
-    entity_id: switch.bw_shp8_relay
+    entity_id: binary_sensor.boiler_time
+    state: 'on'
+  - condition: state
+    entity_id:
+      - switch.bw_shp8_relay
+      - binary_sensor.boiler_timer
     state: 'off'
-  - condition: state
-    entity_id: timer.boiler_low_voltage
-    state: 'idle'
   action:
   - service: switch.turn_on
     entity_id: switch.bw_shp8_relay
@@ -159,12 +155,11 @@
     entity_id: sensor.input_voltage
     below: '185'
   condition:
-  - after: '23:05'
-    before: '12:00'
-    condition: time
-#   - condition: state
-#     entity_id: switch.bw_shp8_relay
-#     state: 'on'
+  - condition: state
+    entity_id:
+      - binary_sensor.boiler_time
+      - switch.bw_shp8_relay
+    state: 'on'
   action:
   - choose:
       - conditions:
@@ -190,11 +185,14 @@
     event_data:
       entity_id: timer.boiler_low_voltage
   condition:
-  - after: '23:05'
-    before: '12:00'
-    condition: time
   - condition: state
-    entity_id: switch.bw_shp8_relay
+    entity_id: binary_sensor.boiler_time
+    state: 'on'
+  - condition: state
+    entity_id:
+      - switch.bw_shp8_relay
+      - binary_sensor.washing_machine
+      - binary_sensor.dishwasher
     state: 'off'
   action:
   - service: switch.turn_on # 

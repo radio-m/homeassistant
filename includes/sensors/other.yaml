@@ -51,3 +51,34 @@
         database: _internal
         where: 'time > now() - 1m AND "database"=''home_assistant'''
         field: diskBytes 
+        
+  - platform: template
+    sensors:
+      tariff_difference_month:
+        unit_of_measurement: Грн
+        friendly_name: 'Разница тарифов за месяц'
+        value_template: "{{ (states.sensor.mqtt_power_month_input_energy.state | float * 1.68 - (states.sensor.mqtt_power_month_day_input_energy.state | float * 1.68 + states.sensor.mqtt_power_month_night_input_energy.state | float * 0.84))|round(2) }}"
+        
+  - platform: template
+    sensors:
+      tariff_difference_day:
+        unit_of_measurement: Грн
+        friendly_name: 'Разница тарифов за день'
+        value_template: "{{ (states.sensor.mqtt_power_today_input_energy.state | float * 1.68 - (states.sensor.mqtt_power_today_day_input_energy.state | float * 1.68 + states.sensor.mqtt_power_today_night_input_energy.state | float * 0.84))|round(2) }}"
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

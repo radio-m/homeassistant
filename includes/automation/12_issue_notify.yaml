@@ -42,7 +42,7 @@
   mode: parallel
   trigger:
   - platform: numeric_state
-    below: 5
+    below: 10
     for: 00:01:00
     entity_id:
       - sensor.m_bedroom_battery

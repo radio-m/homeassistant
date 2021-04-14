@@ -52,9 +52,17 @@
       - sensor.load_input_energy
 
       - sensor.mqtt_power_today_input_energy
+      - sensor.mqtt_power_today_day_input_energy
+      - sensor.mqtt_power_today_night_input_energy
+
       - sensor.mqtt_power_month_input_energy
+      - sensor.mqtt_power_month_day_input_energy
+      - sensor.mqtt_power_month_night_input_energy
+
       - sensor.mqtt_power_yesterday_input_energy
       - sensor.mqtt_power_lastmonth_input_energy
+
+      - sensor.money_2_tarif_month_input_energy
 
       - sensor.input_power
       - sensor.input_voltage
