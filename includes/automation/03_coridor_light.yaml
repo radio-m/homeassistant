@@ -1,4 +1,4 @@
-- alias: coridor_light_sunset_on
+- alias: Ночник в коридоре - включить с заходом солнца
   description: ''
   trigger:
   - platform: sun
@@ -9,7 +9,7 @@
     entity_id: switch.coridor_night_light_relay
   mode: single
   
-- alias: coridor_light_00_00_off
+- alias: Ночник в коридоре - выключить в полночь
   description: ''
   trigger:
   - platform: time
@@ -20,7 +20,7 @@
     entity_id: switch.coridor_night_light_relay
   mode: single
     
-- alias: coridor_light_online
+- alias: Ночник в коридоре - восстановить после включения
   description: 'Включает свет в коридоре после отключения электричества(по подключению светильника)'
   trigger:
   - platform: state

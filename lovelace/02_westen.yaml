@@ -77,7 +77,8 @@ cards:
               icon: mdi:calendar-text
             #   group_config:
             #     secondary_info: entity-id
-            - entity: automation.gas_heater_notify
+            - entity: automation.telegram_uvedomlenie_gazovyi_kotel
+              name: Уведомление о работе котла
 
   - type: vertical-stack
     cards:
@@ -260,11 +261,16 @@ cards:
                 type: section
                 label: 'Автоматизации'
               entities:
-                - automation.basement_cooler_automode_on
-                - automation.set_auto_when_out_temp_lower
-                - automation.set_off_when_out_temp_higher
-                - automation.basement_cooler_set_auto_mode_when_outdoor_temp_equals_or_lower_temp_changed
-                - automation.basement_cooler_set_off_mode_when_outdoor_temp_equals_or_highter_temp_changed
+                - entity: automation.ventiliatsiia_v_podvale_vkliuchenie_avtomaticheskogo_rezhima
+                  name: Режим "авто"
+                - entity: automation.ventiliatsiia_v_podvale_vkliuchenie_avtomaticheskogo_rezhima_kogda_temperatura_na_ulitse_nizhe_zadannoi
+                  name: Режим "авто", когда t на улице ниже заданной
+                - entity: automation.ventiliatsiia_v_podvale_otkliuchenie_kogda_temperatura_na_ulitse_vyshe_zadannoi
+                  name: Отключение, когда t на улице выше заданной
+                - entity: automation.ventiliatsiia_v_podvale_vkliuchenie_avtomaticheskogo_rezhima_kogda_temperatura_na_ulitse_nizhe_zadannoi_pri_izmenenii
+                  name: Режим "авто", когда заданная t на улице изменилась
+                - entity: automation.ventiliatsiia_v_podvale_otkliuchenie_kogda_temperatura_na_ulitse_vyshe_zadannoi_pri_izmenenii
+                  name: Отключение, когда заданная t на улице изменилась
           
           
           

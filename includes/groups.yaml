@@ -10,17 +10,17 @@ people:
 motion_light:
   name: 'Motion light'
   entities:
-    - automation.vkliuchenie_sveta_v_vannoi_po_datchiku_dvizheniia
-    - automation.vkliuchenie_taimera_osveshcheniia_v_vannoi
-    - automation.avtomaticheskoe_vykliuchenie_sveta_v_vannoi_po_taimeru
-    - automation.sbros_taimera_esli_svet_v_vannoi_vykliuchen
+    - automation.svet_v_vannoi_vkliuchenie_po_datchiku_dvizheniia
+    - automation.svet_v_vannoi_vkliuchenie_taimera_osveshcheniia_v_vannoi
+    - automation.svet_v_vannoi_avtomaticheskoe_vykliuchenie_sveta_po_taimeru
+    - automation.svet_v_vannoi_sbros_taimera_esli_svet_v_vannoi_vykliuchen
 
 boiler_low_voltage:
   name: 'Boiler low voltage'
   entities:
-    - automation.boiler_low_voltage_off
+    - automation.boiler_vykliuchit_kogda_napriazhenie_nizhe_185v
     - automation.boiler_low_voltage_timer
-    - automation.boiler_low_voltage_on
+    - automation.boiler_vkliuchit_kogda_zakonchilsia_taimer
     
 # battery:
 #   name: Battery

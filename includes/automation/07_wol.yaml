@@ -1,5 +1,5 @@
 - id: '1578759248643'
-  alias: wakeup_pc
+  alias: Мой ПК - включить, когда я дома
   description: ''
   trigger:
   - entity_id: person.sergei
@@ -19,7 +19,7 @@
       title: "WOL"
       message: "Magic pockets sent"
 
-- alias: pc_accessories_on
+- alias: Мой ПК - включить пилот
   trigger:
   - entity_id: switch.my_pc
     from: 'off'
@@ -35,7 +35,7 @@
 #   - service: switch.turn_on
 #     entity_id: switch.audio1
 
-- alias: pc_accessories_off
+- alias: Мой ПК - выключить пилот
   trigger:
   - entity_id: switch.my_pc
     from: 'on'
@@ -53,7 +53,7 @@
   - service: switch.turn_off
     entity_id: switch.undertabble_mi_wifi_socket
       
-- alias: pc_off_by_timer
+- alias: Мой ПК - выключение по таймеру
   initial_state: true
   trigger:
 # Таймер

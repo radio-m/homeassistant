@@ -1,5 +1,5 @@
 ##### 30 сек расчет
-- alias: 00_power_counter_2
+- alias: 00 Счетчик электроэнергии - 2х тарифный
   initial_state: true
   trigger:
     - platform: time_pattern
@@ -267,7 +267,7 @@
                 retain: true
 
 ##### Начало дня    
-- alias: 00_power_new_day_2
+- alias: 00 Счетчик электроэнергии - 2х тарифный - новый день
   initial_state: true
   trigger:
     - platform: time
@@ -479,7 +479,7 @@
 
 ############################################################################################################
 ##### Начало месяца
-- alias: 00_power_new_month_2
+- alias: 00 Счетчик электроэнергии - 2х тарифный - новый месяц
   initial_state: true
   trigger:
     - platform: time

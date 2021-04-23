@@ -1,5 +1,5 @@
 - id: '1585439765216'
-  alias: Notify_HA_start
+  alias: Уведомление в приложении - запуск НА
   description: ''
   trigger:
   - event: start
@@ -10,4 +10,3 @@
     data:
       title: "Home Assistant"
       message: "HA start"
-

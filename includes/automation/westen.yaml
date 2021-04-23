@@ -1,5 +1,5 @@
 - id: '1593151953410'
-  alias: 'increase_temp'
+  alias: Газовый котел - блок управления - увеличить температуру
   description: ''
   trigger:
   - device_id: bc22989ac4f244a0bad5d0fe0ded7a37
@@ -14,7 +14,7 @@
       temperature: "{{(state_attr('climate.westen' , 'temperature')|round(1)) + 0.5 }}"
       
 - id: '1593151953411'
-  alias: 'decrease_temp'
+  alias: Газовый котел - блок управления - уменьшить температуру
   description: ''
   trigger:
   - device_id: bc22989ac4f244a0bad5d0fe0ded7a37
@@ -29,7 +29,7 @@
       temperature: "{{(state_attr('climate.westen' , 'temperature')|round(1)) - 0.5 }}"
 
 
-- alias: westen_off_with_1h_timer
+- alias: Газовый котел - блок управления - отключить котел на 1 час
   description: 'Выключение котла на 1 час'
   initial_state: true
   trigger:
@@ -57,7 +57,7 @@
           entity_id: climate.westen
           hvac_mode: "heat"
 
-- alias: westen_on_by_timer
+- alias: Газовый котел - блок управления - включить котел после таймера
   trigger:
   - platform: event
     event_type: timer.finished

@@ -20,11 +20,11 @@ basement:
       cooler_show_automations:
         name: Show Cooler automations
         entities:
-          - automation.basement_cooler_automode_on
-          - automation.set_auto_when_out_temp_lower
-          - automation.set_off_when_out_temp_higher
-          - automation.basement_cooler_set_auto_mode_when_outdoor_temp_equals_or_lower_temp_changed
-          - automation.basement_cooler_set_off_mode_when_outdoor_temp_equals_or_highter_temp_changed
+          - automation.ventiliatsiia_v_podvale_vkliuchenie_avtomaticheskogo_rezhima
+          - automation.ventiliatsiia_v_podvale_vkliuchenie_avtomaticheskogo_rezhima_kogda_temperatura_na_ulitse_nizhe_zadannoi
+          - automation.ventiliatsiia_v_podvale_otkliuchenie_kogda_temperatura_na_ulitse_vyshe_zadannoi
+          - automation.ventiliatsiia_v_podvale_vkliuchenie_avtomaticheskogo_rezhima_kogda_temperatura_na_ulitse_nizhe_zadannoi_pri_izmenenii
+          - automation.ventiliatsiia_v_podvale_otkliuchenie_kogda_temperatura_na_ulitse_vyshe_zadannoi_pri_izmenenii
 
   input_boolean:
     cooler_automation_active:
@@ -49,7 +49,7 @@ basement:
       mode: box
       
   automation:
-    - alias: "Basement cooler off"
+    - alias: Вентиляция в подвале - отключение
       trigger:
         platform: state
         entity_id: input_select.basement_automode_cooler
@@ -64,7 +64,7 @@ basement:
             entity_id: climate.basement
             hvac_mode: "off"
 
-    - alias: "Basement cooler automode on"
+    - alias: Вентиляция в подвале - включение автоматического режима
       trigger:
         platform: state
         entity_id: input_select.basement_automode_cooler
@@ -79,7 +79,7 @@ basement:
             entity_id: climate.basement
             hvac_mode: "cool"
 
-    - alias: "Set auto when out temp lower"
+    - alias: Вентиляция в подвале - включение автоматического режима, когда температура на улице ниже заданной
       trigger:
         - platform: state
           entity_id: sensor.bme280_temperature
@@ -95,11 +95,11 @@ basement:
             entity_id: input_select.basement_automode_cooler
             option: "Auto"
         - service: automation.turn_on
-          entity_id: automation.set_off_when_out_temp_higher
+          entity_id: automation.ventiliatsiia_v_podvale_otkliuchenie_kogda_temperatura_na_ulitse_vyshe_zadannoi
         - service: automation.turn_off
-          entity_id: automation.set_auto_when_out_temp_lower
+          entity_id: automation.ventiliatsiia_v_podvale_vkliuchenie_avtomaticheskogo_rezhima_kogda_temperatura_na_ulitse_nizhe_zadannoi
 
-    - alias: "Set off when out temp higher"
+    - alias: Вентиляция в подвале - отключение, когда температура на улице выше заданной
       trigger:
         - platform: state
           entity_id: sensor.bme280_temperature
@@ -114,11 +114,11 @@ basement:
             entity_id: input_select.basement_automode_cooler
             option: "Off"
         - service: automation.turn_on
-          entity_id: automation.set_auto_when_out_temp_lower
+          entity_id: automation.ventiliatsiia_v_podvale_vkliuchenie_avtomaticheskogo_rezhima_kogda_temperatura_na_ulitse_nizhe_zadannoi
         - service: automation.turn_off
-          entity_id: automation.set_off_when_out_temp_higher
+          entity_id: automation.ventiliatsiia_v_podvale_otkliuchenie_kogda_temperatura_na_ulitse_vyshe_zadannoi
 
-    - alias: "Basement cooler set auto mode when outdoor temp equals or lower temp changed"
+    - alias: Вентиляция в подвале - включение автоматического режима, когда температура на улице ниже заданной при изменении
       trigger:
         - platform: state
           entity_id: input_number.basement_set_outdoor_temp
@@ -137,7 +137,7 @@ basement:
             entity_id: input_select.basement_automode_cooler
             option: "Auto"
 
-    - alias: "Basement cooler set off mode when outdoor temp equals or highter temp changed"
+    - alias: Вентиляция в подвале - отключение, когда температура на улице выше заданной при изменении
       trigger:
         - platform: state
           entity_id: input_number.basement_set_outdoor_temp

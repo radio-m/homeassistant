@@ -1,4 +1,4 @@
-- alias: motion_light_automations_on
+- alias: Круглая кнопка - включение автоматизаций света в ванной
   trigger:
     - platform: state
       entity_id: sensor.mi_round_button_action
@@ -7,7 +7,7 @@
     - service: homeassistant.turn_on
       entity_id: group.motion_light
 
-- alias: motion_light_automations_off
+- alias: Круглая кнопка - выключение автоматизаций света в ванной
   trigger:
     - platform: state
       entity_id: sensor.mi_round_button_action
@@ -18,7 +18,7 @@
     - service: timer.cancel
       entity_id: timer.bath_light
 
-- alias: switch pc toggle
+- alias: Круглая кнопка - выключатель ПК
   trigger:
     - platform: state
       entity_id: sensor.mi_round_button_action

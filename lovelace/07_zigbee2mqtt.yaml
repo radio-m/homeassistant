@@ -22,6 +22,20 @@
           title: SLS Gateway
           state_color: true
 
+        - type: entities
+          title: Добавление Zigbee устройств
+          show_header_toggle: false
+          entities:
+             - entity: input_boolean.main_zigbee_permit_join
+             - entity: sensor.main_bridge_state
+
+        - type: entities
+          title: Добавление Zigbee устройств
+          show_header_toggle: false
+          entities:
+             - entity: input_boolean.second_zigbee_permit_join
+             - entity: sensor.second_bridge_state
+
       - type: vertical-stack
         cards:
         - type: entities

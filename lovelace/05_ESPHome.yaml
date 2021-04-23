@@ -15,8 +15,28 @@ cards:
       - sensor.input_current
       - sensor.input_power
       - sensor.input_power_factor
-      - sensor.input_energy
       - sensor.input_frequency
+
+      - entity: sensor.pzem_energy_daily_day
+        type: custom:multiple-entity-row
+        name: Сутки
+        show_state: false
+        entities:
+          - entity: sensor.pzem_energy_daily_day
+            name: день
+          - entity: sensor.pzem_energy_daily_night
+            name: ночь
+
+      - entity: sensor.pzem_energy_monthly_day
+        type: custom:multiple-entity-row
+        name: Месяц
+        show_state: false
+        entities:
+          - entity: sensor.pzem_energy_monthly_day
+            name: день
+          - entity: sensor.pzem_energy_monthly_night
+            name: ночь
+
       - switch.restart_energy_monitor_input
 
   - type: entities

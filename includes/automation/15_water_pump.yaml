@@ -1,4 +1,4 @@
-- alias: water_pump_on
+- alias: Водяной насос - включение
   mode: restart
   trigger:
   - platform: state
@@ -22,7 +22,7 @@
   - service: switch.turn_on # 
     entity_id: switch.water_pump
     
-- alias: water_pump_off
+- alias: Водяной насос - выключение
   trigger:
   - platform: numeric_state
     below: 30

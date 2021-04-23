@@ -9,7 +9,7 @@
       data:
         message: 'pong'
         
-- alias: 'washing machine end washing'
+- alias: Telegram уведомление - стиральная машина достирала
   trigger:
     platform: state
     entity_id: binary_sensor.washing_machine
@@ -27,7 +27,7 @@
       data:
         message: 'Машинка достирала'
 
-- alias: 'washing power issue'
+- alias: Telegram уведомление - стиральная машина отключилась
   trigger:
     platform: state
     entity_id: switch.broadlink_1
@@ -52,7 +52,7 @@
           inline_keyboard:
             - 'Да:/washing_machine_turn_on, Нет:/washing_machine_turn_off'
 
-- alias: 'washing power restore'
+- alias: Telegram уведомление - стиральная машина питание восстановлено
   trigger:
     platform: event
     event_type: telegram_callback
@@ -65,7 +65,7 @@
     - service: switch.turn_on
       entity_id: switch.broadlink_1
 
-- alias: 'Telegram Weather'
+- alias: Telegram уведомление - погода
   trigger:
     platform: time
     at: 07:30:00
@@ -93,7 +93,7 @@
           Температура {{ state_attr('weather.home_assistant', 'temperature') }} °C
           Ветер {{ state_attr('weather.home_assistant', 'wind_speed') }} км/ч
 
-- alias: 'Gas heater notify'
+- alias: Telegram уведомление - газовый котел
   trigger:
     platform: state
     entity_id: switch.gas_heater_relay

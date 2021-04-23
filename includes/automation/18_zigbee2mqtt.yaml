@@ -1,0 +1,53 @@
+  - id: zigbee2mqtt - Включить добавление Zigbee на основном координаторе
+    alias: zigbee2mqtt - Включить добавление Zigbee на основном координаторе
+    initial_state: true
+    trigger:
+      platform: state
+      entity_id: input_boolean.main_zigbee_permit_join
+      to: 'on'
+    action:
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/bridge/config/permit_join
+        payload: 'true'
+
+        
+  - id: zigbee2mqtt - Выключить добавление Zigbee на основном координаторе
+    alias: zigbee2mqtt - Выключить добавление Zigbee на основном координаторе
+    initial_state: true
+    trigger:
+    - entity_id: input_boolean.main_zigbee_permit_join
+      platform: state
+      to: 'off'
+    action:
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/bridge/config/permit_join
+        payload: 'false'
+
+  - id: zigbee2mqtt - Включить добавление Zigbee на дополнительном координаторе
+    alias: zigbee2mqtt - Включить добавление Zigbee на дополнительном координаторе
+    initial_state: true
+    trigger:
+      platform: state
+      entity_id: input_boolean.second_zigbee_permit_join
+      to: 'on'
+    action:
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt_2nd/bridge/config/permit_join
+        payload: 'true'
+
+        
+  - id: zigbee2mqtt - Выключить добавление Zigbee на дополнительном координаторе
+    alias: zigbee2mqtt - Выключить добавление Zigbee на дополнительном координаторе
+    initial_state: true
+    trigger:
+    - entity_id: input_boolean.second_zigbee_permit_join
+      platform: state
+      to: 'off'
+    action:
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt_2nd/bridge/config/permit_join
+        payload: 'false'

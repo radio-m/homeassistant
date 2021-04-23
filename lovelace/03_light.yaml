@@ -116,11 +116,18 @@ cards:
 
   - type: vertical-stack
     cards:
-    - type: button
-      entity: switch.my_pc
-      name: "Компьютер"
-      state_color: true
-      icon: mdi:desktop-classic
+    - type: horizontal-stack
+      cards:
+      - type: button
+        entity: switch.my_pc
+        name: "Компьютер"
+        state_color: true
+        icon: mdi:desktop-classic
+      - type: button
+        entity: switch.undertabble_mi_wifi_socket
+        name: "Монитор"
+        state_color: true
+        icon: mdi:monitor-speaker
 
     - type: vertical-stack
       cards:
@@ -160,15 +167,16 @@ cards:
   - type: entities
     entities:
     - switch.broadlink_2
+    - switch.broadlink_3
     - type: custom:fold-entity-row
       head: group.motion_light
       group_config:
         secondary_info: last-changed
       entities:
-        - automation.vkliuchenie_sveta_v_vannoi_po_datchiku_dvizheniia
-        - automation.vkliuchenie_taimera_osveshcheniia_v_vannoi
-        - automation.avtomaticheskoe_vykliuchenie_sveta_v_vannoi_po_taimeru
-        - automation.sbros_taimera_esli_svet_v_vannoi_vykliuchen
+        - automation.svet_v_vannoi_vkliuchenie_po_datchiku_dvizheniia
+        - automation.svet_v_vannoi_vkliuchenie_taimera_osveshcheniia_v_vannoi
+        - automation.svet_v_vannoi_avtomaticheskoe_vykliuchenie_sveta_po_taimeru
+        - automation.svet_v_vannoi_sbros_taimera_esli_svet_v_vannoi_vykliuchen
 
 #   - type: entities
 #     show_header_toggle: false

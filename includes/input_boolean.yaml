@@ -1,0 +1,9 @@
+  main_zigbee_permit_join:
+    name: Allow devices to join main
+    initial: off
+    icon: mdi:cellphone-wireless
+
+  second_zigbee_permit_join:
+    name: Allow devices to join second
+    initial: off
+    icon: mdi:cellphone-wireless

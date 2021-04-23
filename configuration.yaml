@@ -94,6 +94,12 @@ frontend:
   extra_module_url:
     - /hacsfiles/custom-ui/custom-ui.js
 
+panel_iframe:
+  zigdee2mqtt_2nd:
+    title: "Zigdee2mqtt 2nd"
+    icon: mdi:zigbee
+    url: /z2m
+
 # Text to speech
 tts:
   - platform: google_translate

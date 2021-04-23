@@ -1,6 +1,6 @@
 #Отчёт о отключении устройств
 - id: Notify unavailable devices
-  alias: Notify unavailable devices
+  alias: Telegram уведомление - недоступные устройства
   initial_state: true
   mode: parallel
   trigger:
@@ -37,7 +37,7 @@
 
 #Уведомление о низком заряде батареи
 - id: Notify low battery devices
-  alias: Notify low battery devices
+  alias: Telegram уведомление - низкий заряд батареек
   initial_state: true
   mode: parallel
   trigger:

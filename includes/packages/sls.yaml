@@ -50,7 +50,7 @@ sls_gateway:
         payload_off: "offline"
     
     automation:
-      - alias: sls_offline
+      - alias: SLS - уведомление о состоянии
         description: 'Notify when SLS gateway offline'
         trigger:
         - platform: state

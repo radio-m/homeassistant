@@ -1,5 +1,5 @@
 - id: rpi_power_issue
-  alias: Power Problem Notification
+  alias: Уведомление о проблемах с питанием
   trigger:
   - platform: state
     entity_id: binary_sensor.rpi_power_status

@@ -633,8 +633,8 @@ cards:
             type: section
             label: 'Boiler low voltage'
           entities:
-            - automation.boiler_low_voltage_off
-            - automation.boiler_low_voltage_on
+            - automation.boiler_vykliuchit_kogda_napriazhenie_nizhe_185v
+            - automation.boiler_vkliuchit_kogda_zakonchilsia_taimer
             - entity: timer.boiler_low_voltage
               secondary_info: last-changed
           group_config: 

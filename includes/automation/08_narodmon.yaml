@@ -1,5 +1,5 @@
 - id: '1549565387339'
-  alias: Narodmon send data every 10 min
+  alias: Narodmon - отправка данных каждые 10 минут
   trigger:
     - platform: time_pattern
       minutes: '/10'

@@ -14,7 +14,7 @@ c_bedroom_humidifier:
         minutes: 10
         
   automation:
-    - alias: humidifier_issue
+    - alias: Увлажнитель - в детской - уведомление об отключении
       description: 'Notify when humidifier low water'
       trigger:
       - platform: numeric_state
@@ -34,7 +34,7 @@ c_bedroom_humidifier:
           message: "Увлажнитель не работает! Выключен или кончилась вода. {{now()}}"
       mode: single
 
-    - alias: "humidifier off when door open"
+    - alias: Увлажнитель - в детской - выключить, когда открыта дверь
       trigger:
         platform: state
         entity_id: binary_sensor.ble_opening_door_sensor
@@ -50,7 +50,7 @@ c_bedroom_humidifier:
             entity_id: climate.uvlazhnitel_v_detskoi
             hvac_mode: "off"
             
-    - alias: "humidifier on when door closed"
+    - alias: Увлажнитель - в детской - включить, когда закрыта дверь
       trigger:
         platform: state
         entity_id: binary_sensor.ble_opening_door_sensor

@@ -1,5 +1,5 @@
 # Включение света в ванной по датчику движения
-- alias: Включение света в ванной по датчику движения
+- alias: Свет в ванной - включение по датчику движения
   initial_state: false
   trigger:
     - platform: state
@@ -18,7 +18,7 @@
       entity_id: light.bath
 
 # Включение таймера освещения в ванной
-- alias: Включение таймера освещения в ванной
+- alias: Свет в ванной - включение таймера освещения в ванной
   initial_state: false
   trigger:
     - platform: state
@@ -36,7 +36,7 @@
       entity_id: timer.bath_light
 
 # Автоматическое выключение света в ванной по таймеру
-- alias: Автоматическое выключение света в ванной по таймеру
+- alias: Свет в ванной - автоматическое выключение света по таймеру
   initial_state: false
   trigger:
     - platform: event
@@ -56,7 +56,7 @@
       entity_id: light.bath
       
 # Сброс таймера если свет в ванной выключен
-- alias: Сброс таймера если свет в ванной выключен
+- alias: Свет в ванной - сброс таймера если свет в ванной выключен
   initial_state: false
   trigger:
     - platform: state
@@ -72,10 +72,10 @@
     - service: timer.cancel
       entity_id: timer.bath_light
     - service: automation.turn_off
-      entity_id: automation.vkliuchenie_sveta_v_vannoi_po_datchiku_dvizheniia
+      entity_id: automation.svet_v_vannoi_vkliuchenie_po_datchiku_dvizheniia
     - delay: 00:02:00
     - service: automation.turn_on
-      entity_id: automation.vkliuchenie_sveta_v_vannoi_po_datchiku_dvizheniia
+      entity_id: automation.svet_v_vannoi_vkliuchenie_po_datchiku_dvizheniia
 
 # # Обновление таймера освещения в ванной      
 # - alias: Обновление таймера освещения в ванной
