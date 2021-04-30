@@ -1,28 +1,32 @@
-- alias: Круглая кнопка - включение автоматизаций света в ванной
+- alias: Круглая кнопка - автоматизации
   trigger:
     - platform: state
       entity_id: sensor.mi_round_button_action
-      to: "single"
-  action:
-    - service: homeassistant.turn_on
-      entity_id: group.motion_light
 
-- alias: Круглая кнопка - выключение автоматизаций света в ванной
-  trigger:
-    - platform: state
-      entity_id: sensor.mi_round_button_action
-      to: "double"
   action:
-    - service: homeassistant.turn_off
-      entity_id: group.motion_light
-    - service: timer.cancel
-      entity_id: timer.bath_light
+    - choose:
 
-- alias: Круглая кнопка - выключатель ПК
-  trigger:
-    - platform: state
-      entity_id: sensor.mi_round_button_action
-      to: "hold"
-  action:
-    - service: switch.toggle
-      entity_id: switch.my_pc
+        - conditions: "{{ trigger.to_state.state == 'single' }}"
+          sequence:
+            - service: homeassistant.turn_on
+              data:
+                entity_id: group.motion_light
+
+        - conditions: "{{ trigger.to_state.state == 'double' }}"
+          sequence:
+            - service: homeassistant.turn_off
+              data:
+                entity_id: group.motion_light
+            - service: timer.cancel
+              entity_id: timer.bath_light
+
+        - conditions: "{{ trigger.to_state.state == 'hold' }}"
+          sequence:
+            - service: switch.toggle
+              data:
+                entity_id: switch.my_pc
+
+
+
+
+

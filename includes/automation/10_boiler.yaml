@@ -1,7 +1,7 @@
-- alias: Бойлер - включить в 23:05
+- alias: Бойлер - включить в 23:00
   description: 'включить розетку бойлера после 23:05, если нагрузка на розетке посудомойки меньше 15 Вт'
   trigger:
-  - at: '23:05'
+  - at: input_datetime.boiler_start
     platform: time
   condition:
   - condition: state
@@ -14,10 +14,10 @@
   - service: switch.turn_on
     entity_id: switch.bw_shp8_relay
     
-- alias: Бойлер - выключить в 12:00
+- alias: Бойлер - выключить в 07:00
   description: 'выключить розетку бойлера в 12:00'
   trigger:
-  - at: '12:00'
+  - at: input_datetime.boiler_stop
     platform: time
   condition:
   - condition: state
@@ -153,14 +153,16 @@
       message: "Бойлер не греет уже 2 часа! Поверьте предохранитель! {{now()}}"
   mode: single
   
-- alias: Бойлер - выключить, когда напряжение ниже 185v
-  description: 'старт таймера на 10 минут при падении напряжения в сети ниже 185v'
+- alias: Бойлер - выключить, когда напряжение ниже заданного
+  description: 'старт таймера на 10 минут при падении напряжения в сети ниже заданного'
   initial_state: true
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.input_voltage
-    below: '185'
+  - platform: template
+    value_template: "{{ states('sensor.input_voltage') | int < states('input_number.boiler_voltage') | int }}"
+#   - platform: state
+#     entity_id: sensor.input_voltage
   condition:
+#   - "{{ states('sensor.input_voltage') | int < states('input_number.boiler_voltage') | int }}"
   - condition: state
     entity_id: binary_sensor.boiler_time
     state: 'on'
@@ -207,6 +209,9 @@
   action:
   - service: switch.turn_on # 
     entity_id: switch.bw_shp8_relay
+
+
+
 
 
 

@@ -22,7 +22,7 @@ boiler_info:
     - platform: tod
       name: boiler_time
       after: '23:00'
-      before: '12:00'
+      before: '07:00'
 
     - platform: template
       sensors:

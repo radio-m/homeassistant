@@ -67,7 +67,7 @@ async def async_setup_entry(hass, config_entry, add_entities):
     _LOGGER.debug("Starting measuring sensor entry startup")
     blemonitor = hass.data[DOMAIN]["blemonitor"]
     bleupdater = BLEupdater(blemonitor, add_entities)
-    hass.loop.create_task(bleupdater.async_run())
+    hass.loop.create_task(bleupdater.async_run(hass))
     _LOGGER.debug("Measuring sensor entry setup finished")
     # Return successful setup
     return True
@@ -89,7 +89,7 @@ class BLEupdater():
         self.add_entities = add_entities
         _LOGGER.debug("BLE sensors updater initialized")
 
-    async def async_run(self):
+    async def async_run(self, hass):
         """Entities updater loop."""
 
         def temperature_limit(config, mac, temp):
@@ -106,17 +106,78 @@ class BLEupdater():
                         break
             return temp
 
+        async def async_add_sensor(mac, sensortype, firmware):
+            t_i, h_i, m_i, p_i, c_i, i_i, f_i, cn_i, bu_i, w_i, nw_i, im_i, v_i, b_i = MMTS_DICT[sensortype][0]
+
+            if mac not in sensors_by_mac:
+                sensors = []
+                if t_i != 9:
+                    sensors.insert(t_i, TemperatureSensor(self.config, mac, sensortype, firmware))
+                if h_i != 9:
+                    sensors.insert(h_i, HumiditySensor(self.config, mac, sensortype, firmware))
+                if m_i != 9:
+                    sensors.insert(m_i, MoistureSensor(self.config, mac, sensortype, firmware))
+                if p_i != 9:
+                    sensors.insert(p_i, PressureSensor(self.config, mac, sensortype, firmware))
+                if c_i != 9:
+                    sensors.insert(c_i, ConductivitySensor(self.config, mac, sensortype, firmware))
+                if i_i != 9:
+                    sensors.insert(i_i, IlluminanceSensor(self.config, mac, sensortype, firmware))
+                if f_i != 9:
+                    sensors.insert(f_i, FormaldehydeSensor(self.config, mac, sensortype, firmware))
+                if cn_i != 9:
+                    sensors.insert(cn_i, ConsumableSensor(self.config, mac, sensortype, firmware))
+                if bu_i != 9:
+                    sensors.insert(bu_i, ButtonSensor(self.config, mac, sensortype, firmware))
+                if w_i != 9:
+                    sensors.insert(w_i, WeightSensor(self.config, mac, sensortype, firmware))
+                if nw_i != 9:
+                    sensors.insert(nw_i, NonStabilizedWeightSensor(self.config, mac, sensortype, firmware))
+                if im_i != 9:
+                    sensors.insert(im_i, ImpedanceSensor(self.config, mac, sensortype, firmware))
+                if self.batt_entities and (v_i != 9):
+                    sensors.insert(v_i, VoltageSensor(self.config, mac, sensortype, firmware))
+                if self.batt_entities and (b_i != 9):
+                    sensors.insert(b_i, BatterySensor(self.config, mac, sensortype, firmware))
+                if len(sensors) != 0:
+                    sensors_by_mac[mac] = sensors
+                    self.add_entities(sensors)
+            else:
+                sensors = sensors_by_mac[mac]
+            return sensors
+
         _LOGGER.debug("Entities updater loop started!")
         sensors_by_mac = {}
         sensors = []
         batt = {}  # batteries
         rssi = {}
-        mibeacon_cnt = 0
+        ble_adv_cnt = 0
         new_sensor_message = False
         ts_last = dt_util.now()
         ts_now = ts_last
         data = None
         await asyncio.sleep(0)
+
+        # Set up sensors of configured devices on startup when sensortype is available in device registry
+        if self.config[CONF_DEVICES]:
+            dev_registry = await hass.helpers.device_registry.async_get_registry()
+            for device in self.config[CONF_DEVICES]:
+                mac = device["mac"]
+
+                # get sensortype and firmware from device registry to setup sensor
+                dev = dev_registry.async_get_device(identifiers={(DOMAIN, mac)})
+                if dev:
+                    mac = mac.replace(":", "")
+                    sensortype = dev.model
+                    firmware = dev.sw_version
+                    sensors = await async_add_sensor(mac, sensortype, firmware)
+                else:
+                    pass
+        else:
+            sensors = []
+
+        # Set up new sensors when first BLE advertisement is received
+        sensors = []
         while True:
             try:
                 advevent = await asyncio.wait_for(self.dataqueue.get(), 1)
@@ -128,7 +189,8 @@ class BLEupdater():
             except asyncio.TimeoutError:
                 pass
             if data:
-                mibeacon_cnt += 1
+                _LOGGER.debug("Data measuring sensor received: %s", data)
+                ble_adv_cnt += 1
                 mac = data["mac"]
                 # the RSSI value will be averaged for all valuable packets
                 if mac not in rssi:
@@ -137,50 +199,15 @@ class BLEupdater():
                 batt_attr = None
                 sensortype = data["type"]
                 firmware = data["firmware"]
-                t_i, h_i, m_i, p_i, c_i, i_i, f_i, cn_i, bu_i, w_i, im_i, v_i, b_i = MMTS_DICT[sensortype][0]
-                if mac not in sensors_by_mac:
-                    sensors = []
-                    if t_i != 9:
-                        sensors.insert(t_i, TemperatureSensor(self.config, mac, sensortype, firmware))
-                    if h_i != 9:
-                        sensors.insert(h_i, HumiditySensor(self.config, mac, sensortype, firmware))
-                    if m_i != 9:
-                        sensors.insert(m_i, MoistureSensor(self.config, mac, sensortype, firmware))
-                    if p_i != 9:
-                        sensors.insert(p_i, PressureSensor(self.config, mac, sensortype, firmware))
-                    if c_i != 9:
-                        sensors.insert(c_i, ConductivitySensor(self.config, mac, sensortype, firmware))
-                    if i_i != 9:
-                        sensors.insert(i_i, IlluminanceSensor(self.config, mac, sensortype, firmware))
-                    if f_i != 9:
-                        sensors.insert(f_i, FormaldehydeSensor(self.config, mac, sensortype, firmware))
-                    if cn_i != 9:
-                        sensors.insert(cn_i, ConsumableSensor(self.config, mac, sensortype, firmware))
-                    if bu_i != 9:
-                        sensors.insert(bu_i, ButtonSensor(self.config, mac, sensortype, firmware))
-                    if w_i != 9:
-                        sensors.insert(w_i, WeightSensor(self.config, mac, sensortype, firmware))
-                    if im_i != 9:
-                        sensors.insert(im_i, ImpedanceSensor(self.config, mac, sensortype, firmware))
-                    if self.batt_entities and (v_i != 9) and "voltage" in data:
-                        # only add voltage sensor if available in data
-                        try:
-                            sensors.insert(v_i, VoltageSensor(self.config, mac, sensortype, firmware))
-                        except IndexError:
-                            pass
-                    if self.batt_entities and (b_i != 9):
-                        sensors.insert(b_i, BatterySensor(self.config, mac, sensortype, firmware))
-                    if len(sensors) != 0:
-                        sensors_by_mac[mac] = sensors
-                        self.add_entities(sensors)
-                else:
-                    sensors = sensors_by_mac[mac]
+                t_i, h_i, m_i, p_i, c_i, i_i, f_i, cn_i, bu_i, w_i, nw_i, im_i, v_i, b_i = MMTS_DICT[sensortype][0]
+                sensors = await async_add_sensor(mac, sensortype, firmware)
 
                 if data["data"] is False:
                     data = None
                     continue
 
                 # store found readings per device
+                # battery sensors and battery attribute
                 if (b_i != 9):
                     if "battery" in data:
                         batt[mac] = int(data["battery"])
@@ -253,6 +280,14 @@ class BLEupdater():
                         weight.rssi_values = rssi[mac].copy()
                         weight.async_schedule_update_ha_state(True)
                         weight.pending_update = False
+                if "non-stabilized weight" in data and (nw_i != 9):
+                    non_stabilized_weight = sensors[nw_i]
+                    # schedule an immediate update of non-stabilized weight sensors
+                    non_stabilized_weight.collect(data, batt_attr)
+                    if non_stabilized_weight.ready_for_update is True:
+                        non_stabilized_weight.rssi_values = rssi[mac].copy()
+                        non_stabilized_weight.async_schedule_update_ha_state(True)
+                        non_stabilized_weight.pending_update = False
                 if "impedance" in data and (im_i != 9):
                     impedance = sensors[im_i]
                     # schedule an immediate update of impedance sensors
@@ -263,16 +298,7 @@ class BLEupdater():
                         impedance.pending_update = False
                 if self.batt_entities:
                     if "voltage" in data and (v_i != 9):
-                        try:
-                            sensors[v_i].collect(data, batt_attr)
-                        except IndexError:
-                            if new_sensor_message is False:
-                                _LOGGER.warning(
-                                    "New voltage sensor found with MAC address %s. "
-                                    "Make sure you use only one advertisement type (not all)", mac
-                                )
-                                new_sensor_message = True
-                            pass
+                        sensors[v_i].collect(data, batt_attr)
                 data = None
             ts_now = dt_util.now()
             if ts_now - ts_last < timedelta(seconds=self.period):
@@ -291,11 +317,11 @@ class BLEupdater():
                 rssi[mac].clear()
 
             _LOGGER.debug(
-                "%i MiBeacon BLE ADV messages processed for %i measuring device(s).",
-                mibeacon_cnt,
+                "%i BLE ADV messages processed for %i measuring device(s).",
+                ble_adv_cnt,
                 len(sensors_by_mac),
             )
-            mibeacon_cnt = 0
+            ble_adv_cnt = 0
 
 
 class MeasuringSensor(RestoreEntity):
@@ -759,7 +785,49 @@ class WeightSensor(MeasuringSensor):
         self._device_state_attributes["firmware"] = data["firmware"]
         if "weight unit" in data:
             self._unit_of_measurement = data["weight unit"]
-        else: 
+        else:
+            self._unit_of_measurement = None
+
+        if batt_attr is not None:
+            self._device_state_attributes[ATTR_BATTERY_LEVEL] = batt_attr
+        self.pending_update = True
+
+    async def async_update(self):
+        """Update."""
+        self._device_state_attributes["rssi"] = round(sts.mean(self.rssi_values))
+        self.rssi_values.clear()
+        self.pending_update = False
+
+
+class NonStabilizedWeightSensor(MeasuringSensor):
+    """Representation of a non-stabilized Weight sensor."""
+
+    def __init__(self, config, mac, devtype, firmware):
+        """Initialize the sensor."""
+        super().__init__(config, mac, devtype, firmware)
+        self._measurement = "non-stabilized weight"
+        self._name = "ble non-stabilized weight {}".format(self._device_name)
+        self._unique_id = "nw_" + self._device_name
+        self._device_class = None
+
+    @property
+    def icon(self):
+        """Return the icon of the sensor."""
+        return "mdi:scale-bathroom"
+
+    def collect(self, data, batt_attr=None):
+        """Measurements collector."""
+        if self.enabled is False:
+            self.pending_update = False
+            return
+        self._state = data[self._measurement]
+        self._device_state_attributes["last packet id"] = data["packet"]
+        self._device_state_attributes["firmware"] = data["firmware"]
+        self._device_state_attributes["stabilized"] = True if data["stabilized"] else False
+        self._device_state_attributes["weight removed"] = True if data["weight removed"] else False
+        if "weight unit" in data:
+            self._unit_of_measurement = data["weight unit"]
+        else:
             self._unit_of_measurement = None
 
         if batt_attr is not None:

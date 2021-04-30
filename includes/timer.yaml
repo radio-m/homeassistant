@@ -19,7 +19,7 @@
     duration: '00:15:00'
 
   boiler_low_voltage:
-    name: 'boiler low voltage'
+    name: 'Таймер отключения бойлера'
     duration: '00:10:00'
 
   westen:

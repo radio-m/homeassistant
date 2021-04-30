@@ -1,0 +1,7 @@
+  boiler_voltage:
+    name: Порог отключения бойлера
+    icon: mdi:alpha-v-circle
+    initial: 185
+    min: 150
+    max: 240
+    step: 1

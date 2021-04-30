@@ -1,0 +1,22 @@
+  both_date_and_time:
+    name: Input with both date and time
+    has_date: true
+    has_time: true
+  only_date:
+    name: Input with only date
+    has_date: true
+    has_time: false
+  only_time:
+    name: Input with only time
+    has_date: false
+    has_time: true
+
+  boiler_start:
+    name: Включить бойлер в
+    has_time: true
+    initial: '23:05'
+
+  boiler_stop:
+    name: Выключить бойлер в
+    has_time: true
+    initial: '06:55'

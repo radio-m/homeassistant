@@ -631,12 +631,15 @@ cards:
         - type: custom:fold-entity-row
           head:
             type: section
-            label: 'Boiler low voltage'
+            label: 'Автоматика бойлера'
           entities:
-            - automation.boiler_vykliuchit_kogda_napriazhenie_nizhe_185v
+            - automation.boiler_vykliuchit_kogda_napriazhenie_nizhe_zadannogo
             - automation.boiler_vkliuchit_kogda_zakonchilsia_taimer
             - entity: timer.boiler_low_voltage
               secondary_info: last-changed
+            - entity: input_number.boiler_voltage
+            - entity: input_datetime.boiler_start
+            - entity: input_datetime.boiler_stop
           group_config: 
             secondary_info: last-triggered
 

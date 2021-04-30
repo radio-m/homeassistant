@@ -149,3 +149,8 @@
             entities:
               - entity: sensor.tariff_difference_month
               - entity: sensor.tariff_difference_day
+              - entity: input_datetime.both_date_and_time
+              - entity: input_datetime.only_date
+              - entity: input_datetime.only_time
+              - entity: input_datetime.boiler_start
+              - entity: input_datetime.boiler_stop
