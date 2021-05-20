@@ -147,6 +147,9 @@
   - condition: state
     entity_id: switch.bw_shp8_relay
     state: 'on'
+  - condition: numeric_state
+    entity_id: sensor.boiler
+    below: 70
   action:
   - service: notify.telegram
     data:
@@ -155,7 +158,6 @@
   
 - alias: Бойлер - выключить, когда напряжение ниже заданного
   description: 'старт таймера на 10 минут при падении напряжения в сети ниже заданного'
-  initial_state: true
   trigger:
   - platform: template
     value_template: "{{ states('sensor.input_voltage') | int < states('input_number.boiler_voltage') | int }}"

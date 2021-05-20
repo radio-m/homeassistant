@@ -13,3 +13,31 @@
     type: time
     start: '{{ now().replace(hour=0, minute=0, second=0) }}'
     end: '{{ now() }}'
+
+  - platform: history_stats
+    name: Heater ON today count
+    entity_id: switch.gas_heater_relay
+    state: 'on'
+    type: count
+    end: '{{ now() }}'
+    duration:
+      hours: 8
+
+  - platform: statistics
+    entity_id: binary_sensor.gas_heater_relay
+    max_age:
+      hours: 8
+    name: gas heater stat
+
+  - platform: statistics
+    entity_id: binary_sensor.boiler_state
+    max_age:
+      hours: 8
+    name: boiler stat
+
+  - platform: statistics
+    entity_id: sensor.input_voltage
+    sampling_size: 1440
+    max_age:
+      hours: 12
+    name: voltage stat

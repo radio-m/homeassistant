@@ -106,6 +106,8 @@ rest_command:
   narodmon:
     url: http://narodmon.ru/get?ID={{ID}}&T1={{T1}}&H1={{H1}}&P1={{P1}}
 
+morph_numbers:
+
 #Folders
 sensor: !include_dir_merge_list includes/sensors
 binary_sensor: !include_dir_merge_list includes/bin_sensor

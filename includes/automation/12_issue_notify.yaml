@@ -67,6 +67,15 @@
              {{ now() }} Внимание! {{state_attr(trigger.entity_id, 'friendly_name') }} упал до 5%, замените батарейку ({{state_attr(trigger.entity_id, 'battery_type') }})!
 
 
+- alias: Notify Напряжение выше 230V
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.input_voltage
+    above: 230
+  action:
+    - service: notify.telegram
+      data:
+         message: "Напряжение выше 230V"
 
 
 

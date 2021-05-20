@@ -20,11 +20,17 @@
       entity_id: switch.broadlink_1
       state: "on"
   action:
-    - service: notify.telegram
-      data:
-        message: 'Машинка достирала'
-    - service: notify.telegram_olga
-      data:
+    # - service: notify.mobile_app_mi_9
+    #   data:
+    #     message: TTS
+    #     title: 'Машинка достирала'
+    #     data:
+    #       channel: alarm_stream
+    #       priority: high
+    #       ttl: 0
+    - service: telegram_bot.send_message
+      data_template:
+        target: [!secret my_chat, !secret olga_chat]
         message: 'Машинка достирала'
 
 - alias: Telegram уведомление - стиральная машина отключилась
@@ -59,8 +65,9 @@
     event_data:
       command: '/washing_machine_turn_on'
   action:
-    - service: notify.telegram
-      data:
+    - service: telegram_bot.send_message
+      data_template:
+        target: [!secret my_chat, !secret olga_chat]
         message: 'Розетку уже кто-то включил'
     - service: switch.turn_on
       entity_id: switch.broadlink_1
@@ -68,7 +75,7 @@
 - alias: Telegram уведомление - погода
   trigger:
     platform: time
-    at: 07:30:00
+    at: 07:10:00
   action:
     - service: notify.telegram
       data:
@@ -90,8 +97,12 @@
           {% elif state == 'windy' %} Ветрено {{"\U0001F32C"}}
           {% elif state == 'windy-variant' %} Ветрено {{"\U0001F32C"}}
           {% else %} Нет данных {% endif %}
-          Температура {{ state_attr('weather.home_assistant', 'temperature') }} °C
-          Ветер {{ state_attr('weather.home_assistant', 'wind_speed') }} км/ч
+          🌡 {{ state_attr('weather.home_assistant', 'temperature') }} °C  🌬 {{ state_attr('weather.home_assistant', 'wind_speed') }} км/ч
+          
+          💡 Бойлер сегодня отработал  {{ state_attr('sensor.boiler_on_today', 'value') }} и сжег {{ states('sensor.mqtt_power_today_bw_shp8') | round(2)}} кВт•ч
+          
+          🔥 Котел за сутки работал {{ state_attr('sensor.heater_on_today', 'value') }}, ночью включался {{ states('sensor.heater_on_today_count')|format(morph='раз', as_text=false) }}
+
 
 - alias: Telegram уведомление - газовый котел
   trigger:

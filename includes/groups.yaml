@@ -3,9 +3,9 @@ people:
   entities:
     - device_tracker.redmi_note_3
     - device_tracker.mi9_miphone
-    - device_tracker.s50
-    - device_tracker.redmi_5_plus_router
-    - device_tracker.redmi5plus_mom
+    - device_tracker.dad_s_phone
+    - device_tracker.olga_s_phone
+    - device_tracker.mom_s_phone
 
 motion_light:
   name: 'Motion light'

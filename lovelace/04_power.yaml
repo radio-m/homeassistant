@@ -618,12 +618,21 @@ cards:
 
         - entity: switch.bw_shp8_relay
           secondary_info: last-changed
+
+        - entity: sensor.boiler
+          type: custom:multiple-entity-row
+          name: Бойлер
+          show_state: false
+          entities:
+            - entity: sensor.bw_shp8_voltage
+              name: Напряжение
+            - entity: sensor.boiler
+              name: Температура
+
         - type: attribute
           entity: sensor.boiler_on_today
           name: "Бойлер сегодня включен"
           attribute: value
-        - entity: sensor.bw_shp8_voltage
-          name: "Напряжение на розетке бойлера"
         - entity: switch.dishwasher
         - entity: sensor.dishwasher_voltage
           name: "Напряжение на розетке посудомойки"

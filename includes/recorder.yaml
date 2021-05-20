@@ -1,4 +1,6 @@
   purge_keep_days: 3
+  auto_purge: true
+  commit_interval: 5
 
   include:
     domains:
@@ -108,6 +110,8 @@
       - binary_sensor.washing_machine
       - binary_sensor.boiler_time
       - binary_sensor.boiler_timer
+      - sensor.boiler
+
 
   exclude:
     entities:

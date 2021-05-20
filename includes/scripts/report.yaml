@@ -1,0 +1,12 @@
+system_report:
+  alias: Отправка отчета о состоянии системы
+  sequence:
+   - service: notify.telegram
+     data:
+       message: | 
+           {{"\U0001F6C0"}} Состояние системы
+           {{"\U0001F567"}} Отчет за {{ states('sensor.time_date_custom') }}
+           {{"\U0001F4A1"}} Светильников недоступно - {{ states('sensor.unavailable_now_light') }} 
+           {{"\U0001F50C"}} Свичей недоступно - {{ states('sensor.unavailable_now_switch') }} 
+           {{"\U0001F321"}} Сенсоров недоступно - {{ states('sensor.unavailable_now_sensor') }} 
+           {{"\U0001F51F"}} Бинарных сенсоров недоступно - {{ states('sensor.unavailable_now_binary_sensor') }}
