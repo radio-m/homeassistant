@@ -1,5 +1,5 @@
-- id: Датчик движения - коридор - включить подсветку
-  alias: motion light on
+- id: "Датчик движения - коридор - включить подсветку"
+  alias: Датчик движения - коридор - включить подсветку
   trigger:
     - platform: state
       to: "on"
@@ -19,8 +19,8 @@
         entity_id: light.coridor_rgb
         brightness_pct: 2
         
-- id: Датчик движения - коридор - выключить подсветку
-  alias: motion light off
+- id: "Датчик движения - коридор - выключить подсветку"
+  alias: Датчик движения - коридор - выключить подсветку
   trigger:
     - platform: state
       to: "off"
@@ -38,6 +38,7 @@
         entity_id: light.coridor_rgb
 
 - alias: Датчик движения - прихожая - выключить свет
+  id: "Датчик движения - прихожая - выключить свет"
   trigger:
     - platform: state
       to: "off"
@@ -52,6 +53,7 @@
         entity_id: light.entrance
 
 - alias: Выключатель в коридоре - подсветка
+  id: "Выключатель в коридоре - подсветка"
   trigger: 
     - platform: state
       entity_id: light.coridor_floor
@@ -70,6 +72,7 @@
                 entity_id: light.coridor_rgb
 
 - alias: Выключатель в гостинной - торшер
+  id: "Выключатель в гостинной - торшер"
   trigger: 
     - platform: state
       entity_id: light.lr_night_light
@@ -86,7 +89,7 @@
               data:
                 entity_id: switch.broadlink_3
 
-- id: Очистка уведомлений о паролях
+- id: "Очистка уведомлений о паролях"
   alias: Очистка уведомлений о паролях
   initial_state: true
   mode: parallel
@@ -106,7 +109,20 @@
         notification_id: >
           {{ trigger.event.data.service_data.notification_id }}
 
-
+- alias: База данных - сжать
+  id: "База данных - сжать"
+  description: ''
+  trigger:
+  - platform: time
+    at: 03:12
+  condition: []
+  action:
+  - service: recorder.purge
+    data:
+      keep_days: 3
+      repack: true
+      apply_filter: true
+  mode: single
 
 
 

@@ -1,4 +1,5 @@
 - alias: Круглая кнопка - автоматизации
+  id: "kruglaia_knopka_avtomatizatsii"
   trigger:
     - platform: state
       entity_id: sensor.mi_round_button_action

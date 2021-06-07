@@ -3,6 +3,7 @@
   "name": "Morph Numbers",
   "documentation": "https://github.com/AlexxIT/MorphNumbers",
   "dependencies": [],
+  "version": "1.0",
   "codeowners": [
     "@AlexxIT"
   ],

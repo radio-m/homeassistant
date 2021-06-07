@@ -24,11 +24,11 @@ binary_sensor.washing_machine:
       if (state === 'on') return 'rgb(0, 180, 30)';
       else return 'rgb(255, 0, 0)';
 
-binary_sensor.boiler_time:
+binary_sensor.day_tarif_template:
   icon: mdi:clock-time-three
   templates:
     icon_color: >
-      if (state === 'on') return 'rgb(0, 180, 30)';
+      if (state === 'off') return 'rgb(0, 180, 30)';
       else return 'rgb(255, 0, 0)';
 
 binary_sensor.boiler_timer:

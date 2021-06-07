@@ -1,4 +1,4 @@
-  - id: '1585439765216'
+  - id: 'Уведомление в приложении - запуск НА'
     alias: Уведомление в приложении - запуск НА
     initial_state: true
     trigger:   
@@ -8,11 +8,14 @@
     - service: notify.mobile_app_mi_9
       data:
         title: "Home Assistant"
-        message: "Зафиксирован запуск в {{ states('sensor.time_date_custom') }}"
+        message: |
+          Зафиксирован запуск в {{ states('sensor.time_date_custom') }}
+          Время запуска: {{ states('sensor.start_time') }} сек
     - service: notify.telegram
       data:
         message: | 
-          {{"\U0001F567"}} Зафиксирован запуск в {{ states('sensor.time_date_custom') }} 
+          {{"\U0001F567"}} Зафиксирован запуск в {{ states('sensor.time_date_custom') }}
+          Время запуска: {{ states('sensor.start_time') }} сек
           {{"\U0001F4C3"}} Отчет о состоянии будет через 1 минуту            
     - delay: 00:01:10
     - service: script.turn_on

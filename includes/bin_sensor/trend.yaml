@@ -1,0 +1,21 @@
+  - platform: trend
+    sensors:
+      boiler_temperature_trend:
+        entity_id: sensor.boiler
+        device_class: heat
+
+  - platform: trend
+    sensors:
+      temp_falling:
+        entity_id: sensor.bme280_temperature
+        sample_duration: 7200
+        max_samples: 120
+        min_gradient: -0.0008
+        device_class: cold
+
+      temp_rising:
+        entity_id: sensor.bme280_temperature
+        sample_duration: 7200
+        max_samples: 120
+        min_gradient: 0.0008
+        device_class: heat

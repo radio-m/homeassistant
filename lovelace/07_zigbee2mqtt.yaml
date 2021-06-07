@@ -145,13 +145,61 @@
 
       - type: vertical-stack
         cards:
-
           - type: entities
             entities:
-              - entity: sensor.tariff_difference_month
-              - entity: sensor.tariff_difference_day
-              - entity: input_datetime.boiler_start
-              - entity: input_datetime.boiler_stop
-              - entity: sensor.heater_on_today
-              - entity: sensor.heater_on_today_count
-              - entity: sensor.gas_heater_stat
+            - switch.stiralnaia_mashina
+            - sensor.stiralnaia_mashina_washer_completion_time
+            - sensor.stiralnaia_mashina_washer_job_state
+            - sensor.stiralnaia_mashina_washer_machine_state
+
+      - type: picture-elements
+        elements:
+          - entity: sensor.time
+            style:
+              color: var(--secondary-text-color)
+              font-size: 500%
+              left: 50%
+              top: 40%
+            type: state-label
+          - entity: sensor.date
+            style:
+              color: var(--primary-text-color)
+              font-size: 100%
+              left: 50%
+              top: 80%
+            type: state-label
+        image: >-
+          data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==
+        card_mod:
+          style: |
+            div {
+              height: 100px;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

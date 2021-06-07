@@ -21,8 +21,6 @@
       type: module
     - url: /hacsfiles/bignumber-card/bignumber-card.js
       type: js
-    - url: /hacsfiles/atomic_calendar/atomic_calendar.js
-      type: module
     - url: /hacsfiles/secondaryinfo-entity-row/secondaryinfo-entity-row.js
       type: module
     - url: /hacsfiles/lovelace-card-tools/card-tools.js
@@ -36,4 +34,6 @@
     - url: /hacsfiles/lovelace-multiple-entity-row/multiple-entity-row.js
       type: module
     - url: /hacsfiles/battery-state-card/battery-state-card.js
+      type: module
+    - url: /hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js
       type: module

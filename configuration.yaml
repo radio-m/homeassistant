@@ -17,7 +17,11 @@ homeassistant:
   external_url: !secret ext_ip
   internal_url: https://192.168.31.125:8123
 
-# http:
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.33.8
+    # - 192.168.31.1
 #   server_port: 433
 #   ssl_certificate: /ssl/fullchain.pem
 #   ssl_key: /ssl/privkey.pem
@@ -27,35 +31,34 @@ homeassistant:
 default_config:
 
 zeroconf:
-  default_interface: true
 
 recorder: !include includes/recorder.yaml
 
 logger:
-    default: warning
-    logs:
-      homeassistant.loader: error
+    default: warn
+    # logs:
+    #   homeassistant.loader: error
 
 wake_on_lan:
 
-mqtt:
-  broker: core-mosquitto  # Локальный брокер
-  discovery: true
-  discovery_prefix: homeassistant
-  client_id: home-assistant-1
-  keepalive: 60
-  username: mqtt
-  password: mqtt
-  birth_message:
-    topic: "tele/hass1/LWT"
-    payload: "Online"
-    qos: 1
-    retain: true
-  will_message:
-    topic: "tele/hass1/LWT"
-    payload: "Offline"
-    qos: 1
-    retain: true
+# mqtt:
+#   broker: core-mosquitto  # Локальный брокер
+#   discovery: true
+#   discovery_prefix: homeassistant
+#   client_id: home-assistant-1
+#   keepalive: 60
+#   username: mqtt
+#   password: mqtt
+#   birth_message:
+#     topic: "tele/hass1/LWT"
+#     payload: "Online"
+#     qos: 1
+#     retain: true
+#   will_message:
+#     topic: "tele/hass1/LWT"
+#     payload: "Offline"
+#     qos: 1
+#     retain: true
 
 #lovelace
 lovelace:
@@ -106,7 +109,9 @@ rest_command:
   narodmon:
     url: http://narodmon.ru/get?ID={{ID}}&T1={{T1}}&H1={{H1}}&P1={{P1}}
 
+#AlexxIT
 morph_numbers:
+start_time:
 
 #Folders
 sensor: !include_dir_merge_list includes/sensors

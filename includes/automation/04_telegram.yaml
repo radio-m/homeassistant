@@ -1,4 +1,5 @@
-- alias: 'Telegram bot that reply pong to ping'
+- alias: Telegram bot that reply pong to ping
+  id: "Telegram bot that reply pong to ping"
   trigger:
     platform: event
     event_type: telegram_command
@@ -9,70 +10,71 @@
       data:
         message: 'pong'
         
-- alias: Telegram уведомление - стиральная машина достирала
-  trigger:
-    platform: state
-    entity_id: binary_sensor.washing_machine
-    from: "on"
-    to: "off"
-  condition:
-    - condition: state
-      entity_id: switch.broadlink_1
-      state: "on"
-  action:
-    # - service: notify.mobile_app_mi_9
-    #   data:
-    #     message: TTS
-    #     title: 'Машинка достирала'
-    #     data:
-    #       channel: alarm_stream
-    #       priority: high
-    #       ttl: 0
-    - service: telegram_bot.send_message
-      data_template:
-        target: [!secret my_chat, !secret olga_chat]
-        message: 'Машинка достирала'
+# - alias: Telegram уведомление - стиральная машина достирала
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.washing_machine
+#     from: "on"
+#     to: "off"
+#   condition:
+#     - condition: state
+#       entity_id: switch.broadlink_1
+#       state: "on"
+#   action:
+#     # - service: notify.mobile_app_mi_9
+#     #   data:
+#     #     message: TTS
+#     #     title: 'Машинка достирала'
+#     #     data:
+#     #       channel: alarm_stream
+#     #       priority: high
+#     #       ttl: 0
+#     - service: telegram_bot.send_message
+#       data_template:
+#         target: [!secret my_chat, !secret olga_chat]
+#         message: 'Машинка достирала'
 
-- alias: Telegram уведомление - стиральная машина отключилась
-  trigger:
-    platform: state
-    entity_id: switch.broadlink_1
-    from: "on"
-    to: "off"
-  condition:
-    - condition: state
-      entity_id: binary_sensor.washing_machine # switch.broadlink_1
-      state: "on"
-  action:
-    - service: notify.telegram
-      data:
-        message: 'Розетка стиралки отключилась. Включить?'
-        data:
-          inline_keyboard:
-            - 'Да:/washing_machine_turn_on, Нет:/washing_machine_turn_off'
+# - alias: Telegram уведомление - стиральная машина отключилась
+#   trigger:
+#     platform: state
+#     entity_id: switch.broadlink_1
+#     from: "on"
+#     to: "off"
+#   condition:
+#     - condition: state
+#       entity_id: binary_sensor.washing_machine # switch.broadlink_1
+#       state: "on"
+#   action:
+#     - service: notify.telegram
+#       data:
+#         message: 'Розетка стиралки отключилась. Включить?'
+#         data:
+#           inline_keyboard:
+#             - 'Да:/washing_machine_turn_on, Нет:/washing_machine_turn_off'
 
-    - service: notify.telegram_olga
-      data:
-        message: 'Розетка стиралки отключилась. Включить?'
-        data:
-          inline_keyboard:
-            - 'Да:/washing_machine_turn_on, Нет:/washing_machine_turn_off'
+#     - service: notify.telegram_olga
+#       data:
+#         message: 'Розетка стиралки отключилась. Включить?'
+#         data:
+#           inline_keyboard:
+#             - 'Да:/washing_machine_turn_on, Нет:/washing_machine_turn_off'
 
-- alias: Telegram уведомление - стиральная машина питание восстановлено
-  trigger:
-    platform: event
-    event_type: telegram_callback
-    event_data:
-      command: '/washing_machine_turn_on'
-  action:
-    - service: telegram_bot.send_message
-      data_template:
-        target: [!secret my_chat, !secret olga_chat]
-        message: 'Розетку уже кто-то включил'
-    - service: switch.turn_on
-      entity_id: switch.broadlink_1
+# - alias: Telegram уведомление - стиральная машина питание восстановлено
+#   trigger:
+#     platform: event
+#     event_type: telegram_callback
+#     event_data:
+#       command: '/washing_machine_turn_on'
+#   action:
+#     - service: telegram_bot.send_message
+#       data_template:
+#         target: [!secret my_chat, !secret olga_chat]
+#         message: 'Розетку уже кто-то включил'
+#     - service: switch.turn_on
+#       entity_id: switch.broadlink_1
 
-- alias: Telegram уведомление - погода
+- alias: Telegram уведомление - утренний отчет
+  id: "Telegram уведомление - утренний отчет"
   trigger:
     platform: time
     at: 07:10:00
@@ -99,12 +101,18 @@
           {% else %} Нет данных {% endif %}
           🌡 {{ state_attr('weather.home_assistant', 'temperature') }} °C  🌬 {{ state_attr('weather.home_assistant', 'wind_speed') }} км/ч
           
-          💡 Бойлер сегодня отработал  {{ state_attr('sensor.boiler_on_today', 'value') }} и сжег {{ states('sensor.mqtt_power_today_bw_shp8') | round(2)}} кВт•ч
+          💡 Бойлер сегодня отработал  {{ state_attr('sensor.boiler_on_today', 'value') }} и сжег {{ states('sensor.mqtt_power_today_broadlink_1') | round(2)}} кВт•ч
+          {% set heater = states('sensor.heater_on_today_count') %}
+          {% if heater == '0' %}🔥 Котел не включался
+          {% else %}🔥 Котел за сутки работал {{ state_attr('sensor.heater_on_today', 'value') }}, ночью включался {{ states('sensor.heater_on_today_count')|format(morph='раз', as_text=false) }}{% endif %}
+          🌡 воды в системе {{states('sensor.water_system')}}, в бойлере {{states('sensor.boiler')}}
           
-          🔥 Котел за сутки работал {{ state_attr('sensor.heater_on_today', 'value') }}, ночью включался {{ states('sensor.heater_on_today_count')|format(morph='раз', as_text=false) }}
+          
+          
 
 
 - alias: Telegram уведомление - газовый котел
+  id: "Telegram уведомление - газовый котел"
   trigger:
     platform: state
     entity_id: switch.gas_heater_relay

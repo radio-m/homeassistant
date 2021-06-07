@@ -1,0 +1,19 @@
+- id: '1622356581908'
+  alias: Новая автоматизация
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_occupancy
+    to: 'on'
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: state
+        entity_id: binary_sensor.motion_sensor_occupancy
+        state: 'off'
+      sequence:
+      - service: notify.mobile_app_mi_9
+        data:
+          message: motion
+  mode: single

@@ -1,5 +1,5 @@
   purge_keep_days: 3
-  auto_purge: true
+  auto_purge: false
   commit_interval: 5
 
   include:
@@ -93,6 +93,7 @@
       - sensor.input_power_factor
       - sensor.input_power_factor_2
       - sensor.input_voltage
+      - sensor.voltage_stat
 
 # Persons
       - person.anatolii
@@ -111,6 +112,13 @@
       - binary_sensor.boiler_time
       - binary_sensor.boiler_timer
       - sensor.boiler
+
+      - switch.stiralnaia_mashina
+      - sensor.stiralnaia_mashina_washer_completion_time
+      - sensor.stiralnaia_mashina_washer_job_state
+      - sensor.stiralnaia_mashina_washer_machine_state
+      
+      - binary_sensor.day_tarif_template
 
 
   exclude:

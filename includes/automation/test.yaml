@@ -1,32 +1,8 @@
 
-  - id: ДД_Выключение света
-    alias: ДД - Выключить свет
-    description: 'Выключить свет при отсутствии движения в течении 2 минут'
-    trigger:
-      - platform: state
-        entity_id: 
-          - binary_sensor.motion_sensor_occupancy
-          - binary_sensor.bath_motion_sensor_occupancy
-        to: 'off'
-        for:
-          minutes: 2
-    condition:
-    #   - condition: state
-    #     entity_id: >
-    #       {% if trigger.entity_id == 'binary_sensor.bath_motion_sensor_occupancy'%}
-    #         switch.patio_switch
-    #       {% elif trigger.entity_id == 'binary_sensor.motion_sensor_occupancy' %}
-    #         switch.yard_switch
-    #       {% endif %}
-    #     state: 'on'
-    action:
-      - service: switch.turn_off
-        target:
-          entity_id: >-
-            {% if trigger.entity_id == 'binary_sensor.bath_motion_sensor_occupancy'%}
-              switch.patio_switch
-            {% elif trigger.entity_id == 'binary_sensor.motion_sensor_occupancy' %}
-              switch.yard_switch
-            {% endif %}
-    mode: parallel
-    max: 10
+
+
+
+
+
+
+

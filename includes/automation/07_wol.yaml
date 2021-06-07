@@ -1,4 +1,4 @@
-- id: '1578759248643'
+- id: 'Мой ПК - включить, когда я дома'
   alias: Мой ПК - включить, когда я дома
   description: ''
   trigger:
@@ -19,41 +19,26 @@
       title: "WOL"
       message: "Magic pockets sent"
 
-- alias: Мой ПК - включить пилот
+- alias: Мой ПК - пилот
+  id: "Мой ПК - пилот"
   trigger:
-  - entity_id: switch.my_pc
-    from: 'off'
-    platform: state
-    to: 'on'
+  - platform: state
+    entity_id: switch.my_pc
   action:
-  - service: switch.turn_on
-    entity_id: switch.undertabble_mi_wifi_socket
-#   - service: switch.turn_on
-#     entity_id: switch.tv
-#   - delay: 
-#       seconds: 2
-#   - service: switch.turn_on
-#     entity_id: switch.audio1
+    - choose:
+        - conditions: "{{ trigger.to_state.state == 'on' }}"
+          sequence:
+            - service: switch.turn_on
+              data:
+                entity_id: switch.undertabble_mi_wifi_socket
+        - conditions: "{{ trigger.to_state.state == 'off' }}"
+          sequence:
+            - service: switch.turn_off
+              data:
+                entity_id: switch.undertabble_mi_wifi_socket
 
-- alias: Мой ПК - выключить пилот
-  trigger:
-  - entity_id: switch.my_pc
-    from: 'on'
-    platform: state
-    to: 'off'
-    for:
-      seconds: 30
-  action:
-#   - service: switch.turn_on
-#     entity_id: switch.audio1
-#   - delay:
-#       seconds: 3
-#   - service: switch.turn_on
-#     entity_id: switch.tv
-  - service: switch.turn_off
-    entity_id: switch.undertabble_mi_wifi_socket
-      
 - alias: Мой ПК - выключение по таймеру
+  id: "Мой ПК - выключение по таймеру"
   initial_state: true
   trigger:
 # Таймер

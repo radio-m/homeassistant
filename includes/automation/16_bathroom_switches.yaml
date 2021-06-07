@@ -1,4 +1,5 @@
 - alias: Выключатель в ванной - проходной
+  id: "Выключатель в ванной - проходной"
   trigger:
     - platform: state
       entity_id: sensor.bathroom_double_switch_action

@@ -107,7 +107,7 @@ class BLEupdater():
             return temp
 
         async def async_add_sensor(mac, sensortype, firmware):
-            t_i, h_i, m_i, p_i, c_i, i_i, f_i, cn_i, bu_i, w_i, nw_i, im_i, vd_i, to_i, v_i, b_i = MMTS_DICT[sensortype][0]
+            t_i, h_i, m_i, p_i, c_i, i_i, f_i, cn_i, bu_i, re_i, fr_i, vr_i, br_i, di_i, w_i, nw_i, im_i, vd_i, to_i, v_i, b_i = MMTS_DICT[sensortype][0]
             if mac not in sensors_by_mac:
                 sensors = []
                 if t_i != 9:
@@ -128,6 +128,16 @@ class BLEupdater():
                     sensors.insert(cn_i, ConsumableSensor(self.config, mac, sensortype, firmware))
                 if bu_i != 9:
                     sensors.insert(bu_i, ButtonSensor(self.config, mac, sensortype, firmware))
+                if re_i != 9:
+                    sensors.insert(re_i, RemoteSensor(self.config, mac, sensortype, firmware))
+                if fr_i != 9:
+                    sensors.insert(fr_i, FanRemoteSensor(self.config, mac, sensortype, firmware))
+                if vr_i != 9:
+                    sensors.insert(vr_i, VentilatorFanRemoteSensor(self.config, mac, sensortype, firmware))
+                if br_i != 9:
+                    sensors.insert(br_i, BathroomHeaterRemoteSensor(self.config, mac, sensortype, firmware))
+                if di_i != 9:
+                    sensors.insert(di_i, DimmerSensor(self.config, mac, sensortype, firmware))
                 if w_i != 9:
                     sensors.insert(w_i, WeightSensor(self.config, mac, sensortype, firmware))
                 if nw_i != 9:
@@ -205,7 +215,7 @@ class BLEupdater():
                 batt_attr = None
                 sensortype = data["type"]
                 firmware = data["firmware"]
-                t_i, h_i, m_i, p_i, c_i, i_i, f_i, cn_i, bu_i, w_i, nw_i, im_i, vd_i, to_i, v_i, b_i = MMTS_DICT[sensortype][0]
+                t_i, h_i, m_i, p_i, c_i, i_i, f_i, cn_i, bu_i, re_i, fr_i, vr_i, br_i, di_i, w_i, nw_i, im_i, vd_i, to_i, v_i, b_i = MMTS_DICT[sensortype][0]
                 sensors = await async_add_sensor(mac, sensortype, firmware)
 
                 if data["data"] is False:
@@ -270,7 +280,7 @@ class BLEupdater():
                     sensors[f_i].collect(data, batt_attr)
                 if "consumable" in data and (cn_i != 9):
                     sensors[cn_i].collect(data, batt_attr)
-                if "button" in data and (bu_i != 9):
+                if "press" in data and (bu_i != 9):
                     button = sensors[bu_i]
                     # schedule an immediate update of button sensors
                     button.collect(data, batt_attr)
@@ -278,6 +288,46 @@ class BLEupdater():
                         button.rssi_values = rssi[mac].copy()
                         button.async_schedule_update_ha_state(True)
                         button.pending_update = False
+                if "remote" in data and (re_i != 9):
+                    remote = sensors[re_i]
+                    # schedule an immediate update of remote sensors
+                    remote.collect(data, batt_attr)
+                    if remote.ready_for_update is True:
+                        remote.rssi_values = rssi[mac].copy()
+                        remote.async_schedule_update_ha_state(True)
+                        remote.pending_update = False
+                if "fan remote" in data and (fr_i != 9):
+                    fan_remote = sensors[fr_i]
+                    # schedule an immediate update of fan remote sensors
+                    fan_remote.collect(data, batt_attr)
+                    if fan_remote.ready_for_update is True:
+                        fan_remote.rssi_values = rssi[mac].copy()
+                        fan_remote.async_schedule_update_ha_state(True)
+                        fan_remote.pending_update = False
+                if "ventilator fan remote" in data and (vr_i != 9):
+                    ven_fan_remote = sensors[vr_i]
+                    # schedule an immediate update of ventilator fan remote sensors
+                    ven_fan_remote.collect(data, batt_attr)
+                    if ven_fan_remote.ready_for_update is True:
+                        ven_fan_remote.rssi_values = rssi[mac].copy()
+                        ven_fan_remote.async_schedule_update_ha_state(True)
+                        ven_fan_remote.pending_update = False
+                if "bathroom heater remote" in data and (br_i != 9):
+                    bathroom_heater_remote = sensors[br_i]
+                    # schedule an immediate update of bathroom heater remote sensors
+                    bathroom_heater_remote.collect(data, batt_attr)
+                    if bathroom_heater_remote.ready_for_update is True:
+                        bathroom_heater_remote.rssi_values = rssi[mac].copy()
+                        bathroom_heater_remote.async_schedule_update_ha_state(True)
+                        bathroom_heater_remote.pending_update = False
+                if "dimmer" in data and (di_i != 9):
+                    dimmer = sensors[di_i]
+                    # schedule an immediate update of dimmer sensors
+                    dimmer.collect(data, batt_attr)
+                    if dimmer.ready_for_update is True:
+                        dimmer.rssi_values = rssi[mac].copy()
+                        dimmer.async_schedule_update_ha_state(True)
+                        dimmer.pending_update = False
                 if "weight" in data and (w_i != 9):
                     weight = sensors[w_i]
                     # schedule an immediate update of weight sensors
@@ -418,6 +468,12 @@ class MeasuringSensor(RestoreEntity):
             self._device_state_attributes["last packet id"] = old_state.attributes["last packet id"]
         if "last button press" in old_state.attributes:
             self._device_state_attributes["last button press"] = old_state.attributes["last button press"]
+        if "last remote button pressed" in old_state.attributes:
+            self._device_state_attributes["last remote button pressed"] = old_state.attributes["last remote button pressed"]
+        if "last type of press" in old_state.attributes:
+            self._device_state_attributes["last type of press"] = old_state.attributes["last type of press"]
+        if "dimmer value" in old_state.attributes:
+            self._device_state_attributes["dimmer value"] = old_state.attributes["dimmer value"]
         if ATTR_BATTERY_LEVEL in old_state.attributes:
             self._device_state_attributes[ATTR_BATTERY_LEVEL] = old_state.attributes[ATTR_BATTERY_LEVEL]
         self.ready_for_update = True
@@ -485,6 +541,7 @@ class MeasuringSensor(RestoreEntity):
             self._measurements.append(int(data[self._measurement]))
         else:
             self._measurements.append(data[self._measurement])
+        self._device_state_attributes["sensor type"] = data["type"]
         self._device_state_attributes["last packet id"] = data["packet"]
         self._device_state_attributes["firmware"] = data["firmware"]
         if batt_attr is not None:
@@ -624,7 +681,7 @@ class HumiditySensor(MeasuringSensor):
         self._device_class = DEVICE_CLASS_HUMIDITY
         # LYWSD03MMC / MHO-C401 "jagged" humidity workaround
         if devtype in ('LYWSD03MMC', 'MHO-C401'):
-            if self._device_firmware == "Xiaomi (MiBeacon)":
+            if self._device_firmware == "Xiaomi (MiBeacon)" or self._device_firmware == "Xiaomi (MiBeacon V4/V5 encrypted)":
                 self._jagged = True
 
 
@@ -746,7 +803,7 @@ class ButtonSensor(MeasuringSensor):
     def __init__(self, config, mac, devtype, firmware):
         """Initialize the sensor."""
         super().__init__(config, mac, devtype, firmware)
-        self._measurement = "button"
+        self._measurement = "press"
         self._name = "ble button {}".format(self._device_name)
         self._unique_id = "bu_" + self._device_name
         self._unit_of_measurement = None
@@ -779,6 +836,202 @@ class ButtonSensor(MeasuringSensor):
         self._device_state_attributes["rssi"] = round(sts.mean(self.rssi_values))
         self._device_state_attributes["last button press"] = self._state
         async_call_later(self.hass, 1, self.reset_state)
+        self.rssi_values.clear()
+        self.pending_update = False
+
+
+class RemoteSensor(MeasuringSensor):
+    """Representation of a Remote sensor."""
+
+    def __init__(self, config, mac, devtype, firmware):
+        """Initialize the sensor."""
+        super().__init__(config, mac, devtype, firmware)
+        self._press = "press"
+        self._remote = "remote"
+        self._name = "ble remote {}".format(self._device_name)
+        self._unique_id = "re_" + self._device_name
+        self._unit_of_measurement = None
+        self._device_class = None
+
+    @property
+    def icon(self):
+        """Return the icon of the sensor."""
+        return "mdi:remote"
+
+    def collect(self, data, batt_attr=None):
+        """Measurements collector."""
+        if self.enabled is False:
+            self.pending_update = False
+            return
+        self._state = data[self._press] + " " + data[self._remote]
+        self._device_state_attributes["last packet id"] = data["packet"]
+        self._device_state_attributes["firmware"] = data["firmware"]
+        self._device_state_attributes["last remote button pressed"] = data["remote"]
+        self._device_state_attributes["last type of press"] = data["press"]
+        if batt_attr is not None:
+            self._device_state_attributes[ATTR_BATTERY_LEVEL] = batt_attr
+        self.pending_update = True
+
+    async def async_update(self):
+        """Update."""
+        self._device_state_attributes["rssi"] = round(sts.mean(self.rssi_values))
+        self.rssi_values.clear()
+        self.pending_update = False
+
+
+class FanRemoteSensor(MeasuringSensor):
+    """Representation of a Fan Remote sensor."""
+
+    def __init__(self, config, mac, devtype, firmware):
+        """Initialize the sensor."""
+        super().__init__(config, mac, devtype, firmware)
+        self._press = "press"
+        self._fan_remote = "fan remote"
+        self._name = "ble fan remote {}".format(self._device_name)
+        self._unique_id = "fr_" + self._device_name
+        self._unit_of_measurement = None
+        self._device_class = None
+
+    @property
+    def icon(self):
+        """Return the icon of the sensor."""
+        return "mdi:remote"
+
+    def collect(self, data, batt_attr=None):
+        """Measurements collector."""
+        if self.enabled is False:
+            self.pending_update = False
+            return
+        self._state = data[self._press] + " " + data[self._fan_remote]
+        self._device_state_attributes["last packet id"] = data["packet"]
+        self._device_state_attributes["firmware"] = data["firmware"]
+        self._device_state_attributes["last remote button pressed"] = data["fan remote"]
+        self._device_state_attributes["last type of press"] = data["press"]
+        if batt_attr is not None:
+            self._device_state_attributes[ATTR_BATTERY_LEVEL] = batt_attr
+        self.pending_update = True
+
+    async def async_update(self):
+        """Update."""
+        self._device_state_attributes["rssi"] = round(sts.mean(self.rssi_values))
+        self.rssi_values.clear()
+        self.pending_update = False
+
+
+class VentilatorFanRemoteSensor(MeasuringSensor):
+    """Representation of a Ventilator Fan Remote sensor."""
+
+    def __init__(self, config, mac, devtype, firmware):
+        """Initialize the sensor."""
+        super().__init__(config, mac, devtype, firmware)
+        self._press = "press"
+        self._ven_fan_remote = "ventilator fan remote"
+        self._name = "ble ventilator fan remote {}".format(self._device_name)
+        self._unique_id = "vr_" + self._device_name
+        self._unit_of_measurement = None
+        self._device_class = None
+
+    @property
+    def icon(self):
+        """Return the icon of the sensor."""
+        return "mdi:remote"
+
+    def collect(self, data, batt_attr=None):
+        """Measurements collector."""
+        if self.enabled is False:
+            self.pending_update = False
+            return
+        self._state = data[self._press] + " " + data[self._ven_fan_remote]
+        self._device_state_attributes["last packet id"] = data["packet"]
+        self._device_state_attributes["firmware"] = data["firmware"]
+        self._device_state_attributes["last remote button pressed"] = data["ventilator fan remote"]
+        self._device_state_attributes["last type of press"] = data["press"]
+        if batt_attr is not None:
+            self._device_state_attributes[ATTR_BATTERY_LEVEL] = batt_attr
+        self.pending_update = True
+
+    async def async_update(self):
+        """Update."""
+        self._device_state_attributes["rssi"] = round(sts.mean(self.rssi_values))
+        self.rssi_values.clear()
+        self.pending_update = False
+
+
+class BathroomHeaterRemoteSensor(MeasuringSensor):
+    """Representation of a Bathroom Heater Remote sensor."""
+
+    def __init__(self, config, mac, devtype, firmware):
+        """Initialize the sensor."""
+        super().__init__(config, mac, devtype, firmware)
+        self._press = "press"
+        self._bathroom_heater_remote = "bathroom heater remote"
+        self._name = "ble bathroom heater remote {}".format(self._device_name)
+        self._unique_id = "br_" + self._device_name
+        self._unit_of_measurement = None
+        self._device_class = None
+
+    @property
+    def icon(self):
+        """Return the icon of the sensor."""
+        return "mdi:gesture-tap-button"
+
+    def collect(self, data, batt_attr=None):
+        """Measurements collector."""
+        if self.enabled is False:
+            self.pending_update = False
+            return
+
+        self._state = data[self._bathroom_heater_remote]
+        self._device_state_attributes["last packet id"] = data["packet"]
+        self._device_state_attributes["firmware"] = data["firmware"]
+        self._device_state_attributes["last type of press"] = data[self._press]
+        self._device_state_attributes["last remote button pressed"] = data["bathroom heater remote"]
+        if batt_attr is not None:
+            self._device_state_attributes[ATTR_BATTERY_LEVEL] = batt_attr
+        self.pending_update = True
+
+    async def async_update(self):
+        """Update."""
+        self._device_state_attributes["rssi"] = round(sts.mean(self.rssi_values))
+        self.rssi_values.clear()
+        self.pending_update = False
+
+
+class DimmerSensor(MeasuringSensor):
+    """Representation of a Dimmer sensor."""
+
+    def __init__(self, config, mac, devtype, firmware):
+        """Initialize the sensor."""
+        super().__init__(config, mac, devtype, firmware)
+        self._press = "press"
+        self._dimmer = "dimmer"
+        self._name = "ble dimmer {}".format(self._device_name)
+        self._unique_id = "di_" + self._device_name
+        self._unit_of_measurement = None
+        self._device_class = None
+
+    @property
+    def icon(self):
+        """Return the icon of the sensor."""
+        return "mdi:rotate-right"
+
+    def collect(self, data, batt_attr=None):
+        """Measurements collector."""
+        if self.enabled is False:
+            self.pending_update = False
+            return
+        self._state = data[self._press] + " " + data[self._dimmer]
+        self._device_state_attributes["last packet id"] = data["packet"]
+        self._device_state_attributes["firmware"] = data["firmware"]
+        self._device_state_attributes["dimmer value"] = data[self._dimmer]
+        self._device_state_attributes["last type of press"] = data[self._press]
+        if batt_attr is not None:
+            self._device_state_attributes[ATTR_BATTERY_LEVEL] = batt_attr
+        self.pending_update = True
+
+    async def async_update(self):
+        """Update."""
+        self._device_state_attributes["rssi"] = round(sts.mean(self.rssi_values))
         self.rssi_values.clear()
         self.pending_update = False
 

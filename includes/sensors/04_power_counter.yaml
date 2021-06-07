@@ -99,7 +99,7 @@
 - platform: template
   sensors:
     load_broadlink_1:
-      friendly_name: 'Стиральная машина'
+      friendly_name: 'Бойлер (broadlink)'
       value_template: "{{ state_attr('switch.broadlink_1', 'current_power_w') }}"
       icon_template: mdi:washing-machine
       unit_of_measurement: 'Вт'
@@ -192,50 +192,50 @@
 ################################################################################
 
 #BlitzWolf BW-SHP8
-- platform: template
-  sensors:
-    load_bw_shp8:
-      friendly_name: 'Бойлер'
-      value_template: "{{ states('sensor.bw_shp8_power') }}"
-      icon_template: mdi:water-boiler
-      unit_of_measurement: 'Вт'
-    #   entity_id: sensor.0x00158d0003535c2f_power
+# - platform: template
+#   sensors:
+#     load_bw_shp8:
+#       friendly_name: 'Бойлер'
+#       value_template: "{{ states('sensor.bw_shp8_power') }}"
+#       icon_template: mdi:water-boiler
+#       unit_of_measurement: 'Вт'
+#     #   entity_id: sensor.0x00158d0003535c2f_power
 
-- platform: mqtt
-  state_topic: "power/bw_shp8/yesterday"
-  name: 'mqtt_power_yesterday_bw_shp8'
-  unit_of_measurement: 'кВт⋅ч'
+# - platform: mqtt
+#   state_topic: "power/bw_shp8/yesterday"
+#   name: 'mqtt_power_yesterday_bw_shp8'
+#   unit_of_measurement: 'кВт⋅ч'
         
-- platform: mqtt
-  state_topic: "power/bw_shp8/today"
-  name: 'mqtt_power_today_bw_shp8'
-  unit_of_measurement: 'кВт⋅ч'
+# - platform: mqtt
+#   state_topic: "power/bw_shp8/today"
+#   name: 'mqtt_power_today_bw_shp8'
+#   unit_of_measurement: 'кВт⋅ч'
 
-- platform: mqtt
-  state_topic: "power/bw_shp8/month"
-  name: 'mqtt_power_month_bw_shp8'
-  unit_of_measurement: 'кВт⋅ч'
+# - platform: mqtt
+#   state_topic: "power/bw_shp8/month"
+#   name: 'mqtt_power_month_bw_shp8'
+#   unit_of_measurement: 'кВт⋅ч'
     
-- platform: mqtt
-  state_topic: "power/bw_shp8/lastmonth"
-  name: 'mqtt_power_lastmonth_bw_shp8'
-  unit_of_measurement: 'кВт⋅ч'
+# - platform: mqtt
+#   state_topic: "power/bw_shp8/lastmonth"
+#   name: 'mqtt_power_lastmonth_bw_shp8'
+#   unit_of_measurement: 'кВт⋅ч'
 
-- platform: template
-  sensors:
-    money_month_bw_shp8:
-      friendly_name: "Стоимость за текущий месяц"
-      unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_bw_shp8.state | float * 1.68)|round(2) }}"
-      icon_template: mdi:square-inc-cash 
+# - platform: template
+#   sensors:
+#     money_month_bw_shp8:
+#       friendly_name: "Стоимость за текущий месяц"
+#       unit_of_measurement: 'грн'
+#       value_template: "{{ (states.sensor.mqtt_power_month_bw_shp8.state | float * 1.68)|round(2) }}"
+#       icon_template: mdi:square-inc-cash 
     
-- platform: template
-  sensors:
-    money_lastmonth_bw_shp8:
-      friendly_name: "Стоимость за прошлый месяц"
-      unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_bw_shp8.state | float * 1.68)|round(2) }}"
-      icon_template: mdi:square-inc-cash 
+# - platform: template
+#   sensors:
+#     money_lastmonth_bw_shp8:
+#       friendly_name: "Стоимость за прошлый месяц"
+#       unit_of_measurement: 'грн'
+#       value_template: "{{ (states.sensor.mqtt_power_lastmonth_bw_shp8.state | float * 1.68)|round(2) }}"
+#       icon_template: mdi:square-inc-cash 
 
 ################################################################################
 
@@ -393,17 +393,11 @@
        "{{ ((states.sensor.load_xiaomi_power_strip.state | float) +
             (states.sensor.load_broadlink_1.state | float) +
             (states.sensor.load_broadlink_2.state | float) +
-            (states.sensor.load_bw_shp8.state | float) +
             (states.sensor.load_dishwasher.state | float) + 
             (states.sensor.load_humidifier.state | float) + 
             (states.sensor.load_my_pc.state | float)) | round(3) }}"
-            # (states.sensor.load_158d0001d35bc0.state | float) + 
-            # (states.sensor.load_158d0001fa2934.state | float) + 
-            # (states.sensor.load_158d00030a6e78.state | float) + 
-            # (states.sensor.load_bwshp2.state | float) + 
-            # (states.sensor.load_wifi_6port.state | float) + 
-            # (states.sensor.load_wifi_socket_usb.state | float)) | round(3) }}"
-              
+            # (states.sensor.load_bw_shp8.state | float) +
+
 - platform: mqtt
   state_topic: "power/total_energy/yesterday"
   name: 'mqtt_power_yesterday_total_energy'

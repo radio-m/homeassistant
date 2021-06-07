@@ -3,66 +3,91 @@ icon: mdi:cog
 background: center / cover no-repeat fixed url('https://www.verdict.co.uk/wp-content/uploads/2019/01/shutterstock_1107359975-e1547040824633.jpg')
 cards:
 
-  - type: entities
-    show_header_toggle: false
-    style: |
-      ha-card {
-        --ha-card-background: rgba(0, 0, 0, 0.6);
-        color: white
-        }
-    entities:
-    - type: 'custom:bignumber-card'
-      entity: sensor.time
-    - type: "custom:atomic-calendar"
-      title: "Календарь"
+  - type: vertical-stack
+    cards:
+
+    - type: picture-elements
+      elements:
+        - entity: sensor.time
+          style:
+            color: var(--text-primary-color)
+            font-size: 700%
+            left: 50%
+            top: 50%
+          type: state-label
+      image: >-
+        data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==
+      card_mod:
+        style: |
+          div {
+            height: 100px;
+            --ha-card-background: rgba(0, 0, 0, 0.6);
+            color: white
+          }
+
+    - type: entities
+      show_header_toggle: false
+      style: |
+        ha-card {
+          --ha-card-background: rgba(0, 0, 0, 0.6);
+          color: white
+          }
       entities:
-      - entity: calendar.prazdniki_ukrainy
-        type: holiday   # events from this calendar will be red
-      - entity: calendar.ru_prazdniki_ukrainy
-        type: holiday
-      - entity: calendar.contacts
-        type: icon1
-      enableModeChange: true
-      defaultMode: 2
-      fullDayEventText: 'Весь день'
-      maxDaysToShow: 7
-      showLocation: true
-      showMonth: true
-      showLoader: true
-      showDate: true
-      showCurrentEventLine: false
-      dimFinishedEvents: true
-      finishedEventOpacity: 0.6
-      showProgressBar: true
-    - entity: sensor.last_boot_custom
-      name: Сервер в онлайне
-      icon: mdi:av-timer
-    - entity: sensor.online_custom
-      name: Home Assistant в онлайне
-      icon: mdi:clock
-    - type: divider
-    - entity: sensor.version
-      type: custom:multiple-entity-row
-      name: Версия НА текущая/последняя
-      entities:
-        - entity: sensor.current_ha
-          name: false
-    - entity: sensor.hacs
-      name: Community updates avaliable
-      icon: mdi:update
-    - type: divider
-    - entity: sensor.home_assistant_v2_db
-      name: Объем базы данных
-      icon: mdi:database
-    - type: divider
-    - entity: zone.home
-      icon: 'mdi:restart'
-      name: "Перезагрузить НА"
-      tap_action:
-        action: call-service
-        confirmation:
-          text: Are you sure you want to restart?
-        service: homeassistant.restart
+
+      - type: "custom:atomic-calendar-revive"
+        title: "Календарь"
+        entities:
+        - entity: calendar.prazdniki_ukrainy
+          type: holiday   # events from this calendar will be red
+          color: 'red'
+        - entity: calendar.ru_prazdniki_ukrainy
+          type: holiday
+          color: 'red'
+        - entity: calendar.contacts
+          type: icon1
+          icon: 'mdi:home-heart'
+          color: 'green'
+        enableModeChange: true
+        defaultMode: Calendar
+        maxDaysToShow: 7
+        showMonth: true
+        showWeekDay: true
+        showCurrentEventLine: false
+        dimFinishedEvents: true
+        finishedEventOpacity: 0.6
+        showProgressBar: true
+        language: ru
+
+      - entity: sensor.last_boot_custom
+        name: Сервер в онлайне
+        icon: mdi:av-timer
+      - entity: sensor.online_custom
+        name: Home Assistant в онлайне
+        icon: mdi:clock
+      - entity: sensor.start_time
+      - type: divider
+      - entity: sensor.version
+        type: custom:multiple-entity-row
+        name: Версия НА текущая/последняя
+        entities:
+          - entity: sensor.current_ha
+            name: false
+      - entity: sensor.hacs
+        name: Community updates avaliable
+        icon: mdi:update
+      - type: divider
+      - entity: sensor.home_assistant_v2_db
+        name: Объем базы данных
+        icon: mdi:database
+      - type: divider
+      - entity: zone.home
+        icon: 'mdi:restart'
+        name: "Перезагрузить НА"
+        tap_action:
+          action: call-service
+          confirmation:
+            text: Are you sure you want to restart?
+          service: homeassistant.restart
 
   - type: vertical-stack
     cards:

@@ -1,0 +1,6 @@
+sensor.stiralnaia_mashina_washer_machine_state:
+  templates:
+    icon: >
+      if (state === 'stop') return 'mdi:stop';
+      if (state === 'run') return 'mdi:play';
+      if (state === 'pause') return 'mdi:pause';

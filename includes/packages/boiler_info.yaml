@@ -5,7 +5,7 @@ boiler_info:
       sensors:
         boiler:
           friendly_name: boiler_state
-          value_template: "{{ states('sensor.bw_shp8_power') | float > 5 }}"
+          value_template: "{{ states('sensor.load_broadlink_1') | float > 5 }}"
 
     - platform: template
       sensors:
@@ -13,16 +13,16 @@ boiler_info:
           friendly_name: dishwasher_state
           value_template: "{{ states('sensor.load_dishwasher') | float >= 1 }}"
 
-    - platform: template
-      sensors:
-        washing_machine:
-          friendly_name: washing_machine_state
-          value_template: "{{ states('sensor.load_broadlink_1') | float > 5 }}"
+    # - platform: template
+    #   sensors:
+    #     washing_machine:
+    #       friendly_name: washing_machine_state
+    #       value_template: "{{ states('sensor.load_broadlink_1') | float > 5 }}"
 
-    - platform: tod
-      name: boiler_time
-      after: '23:00'
-      before: '07:00'
+    # - platform: tod
+    #   name: boiler_time
+    #   after: '23:00'
+    #   before: '07:00'
 
     - platform: template
       sensors:
@@ -36,11 +36,11 @@ boiler_info:
         boiler_power_state:
           friendly_name: boiler_power_state
           value_template: >                 # "{{ states('sensor.bw_shp8_power') | float > 5 }}"
-            {% if is_state('switch.bw_shp8_relay', 'off') %}
+            {% if is_state('switch.broadlink_1', 'off') %}
               off
-            {% elif states.sensor.bw_shp8_power.state|float < 5 %}
+            {% elif states.sensor.load_broadlink_1.state|float < 5 %}
               standby
-            {% elif states.sensor.bw_shp8_power.state|float > 5 %}
+            {% elif states.sensor.load_broadlink_1.state|float > 5 %}
               heat
             {% else %}
               failed

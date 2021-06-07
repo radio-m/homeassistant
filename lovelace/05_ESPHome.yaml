@@ -95,6 +95,21 @@ cards:
       - sensor.dew_point
       - switch.restart_bme280
 
+#   - type: entities
+#     title: 'Бойлер'
+#     show_header_toggle: false
+#     state_color: true
+#     entities:
+#       - binary_sensor.bw_shp8_status
+#       - sensor.bw_shp8_ip_address
+#       - sensor.bw_shp8_wifi_signal_sensor
+#       - type: divider
+#       - sensor.bw_shp8_current
+#       - sensor.bw_shp8_power
+#       - sensor.bw_shp8_voltage
+#       - switch.bw_shp8_relay
+#       - switch.bw_shp8_restart_switch
+
   - type: entities
     title: 'Magic Light'
     show_header_toggle: false

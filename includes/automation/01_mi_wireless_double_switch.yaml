@@ -1,4 +1,5 @@
-- alias: Свет в детской - потолочный
+- id: 'svet_v_detskoi_potolochnyi'
+  alias: Свет в детской - потолочный
   trigger:
     - platform: state
       entity_id: sensor.c_bedroom_double_switch_action
@@ -7,7 +8,8 @@
     - service: switch.toggle
       entity_id: switch.wall_switch_c_bedroom_left
       
-- alias: Свет в детской - подкроватный на 10%
+- id: 'svet_v_detskoi_podkrovatnyi_na_10'
+  alias: Свет в детской - подкроватный на 10%
   trigger:
     - platform: state
       entity_id: switch.wall_switch_c_bedroom_right
@@ -36,7 +38,8 @@
             - service: switch.turn_off
               entity_id: switch.wall_switch_c_bedroom_center
 
-- alias: Свет в детской - подкроватный на 100%
+- id: 'svet_v_detskoi_podkrovatnyi_na_100'
+  alias: Свет в детской - подкроватный на 100%
   trigger:
     - platform: state
       entity_id: switch.wall_switch_c_bedroom_center
@@ -66,7 +69,8 @@
               entity_id: switch.wall_switch_c_bedroom_right
 
 
-- alias: Свет в детской - подкроватный выключить
+- id: 'svet_v_detskoi_podkrovatnyi_vykliuchit'
+  alias: Свет в детской - подкроватный выключить
   trigger:
     - platform: state
       entity_id: sensor.c_bedroom_double_switch_action
@@ -106,7 +110,8 @@
                 - switch.wall_switch_c_bedroom_right
                 - switch.wall_switch_c_bedroom_center
 
-- alias: Свет в детской - выключить
+- id: 'svet_v_detskoi_vykliuchit'
+  alias: Свет в детской - выключить
   trigger:
     - platform: state
       entity_id: sensor.c_bedroom_double_switch_action

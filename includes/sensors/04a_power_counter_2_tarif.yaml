@@ -240,61 +240,61 @@
 
 #BlitzWolf BW-SHP8
 
-- platform: mqtt
-  state_topic: "power/bw_shp8/yesterday_day"
-  name: 'mqtt_power_yesterday_day_bw_shp8'
-  unit_of_measurement: 'кВт⋅ч'
+# - platform: mqtt
+#   state_topic: "power/bw_shp8/yesterday_day"
+#   name: 'mqtt_power_yesterday_day_bw_shp8'
+#   unit_of_measurement: 'кВт⋅ч'
         
-- platform: mqtt
-  state_topic: "power/bw_shp8/today_day"
-  name: 'mqtt_power_today_day_bw_shp8'
-  unit_of_measurement: 'кВт⋅ч'
+# - platform: mqtt
+#   state_topic: "power/bw_shp8/today_day"
+#   name: 'mqtt_power_today_day_bw_shp8'
+#   unit_of_measurement: 'кВт⋅ч'
 
-- platform: mqtt
-  state_topic: "power/bw_shp8/month_day"
-  name: 'mqtt_power_month_day_bw_shp8'
-  unit_of_measurement: 'кВт⋅ч'
+# - platform: mqtt
+#   state_topic: "power/bw_shp8/month_day"
+#   name: 'mqtt_power_month_day_bw_shp8'
+#   unit_of_measurement: 'кВт⋅ч'
     
-- platform: mqtt
-  state_topic: "power/bw_shp8/lastmonth_day"
-  name: 'mqtt_power_lastmonth_day_bw_shp8'
-  unit_of_measurement: 'кВт⋅ч'
+# - platform: mqtt
+#   state_topic: "power/bw_shp8/lastmonth_day"
+#   name: 'mqtt_power_lastmonth_day_bw_shp8'
+#   unit_of_measurement: 'кВт⋅ч'
 
-- platform: mqtt
-  state_topic: "power/bw_shp8/yesterday_night"
-  name: 'mqtt_power_yesterday_night_bw_shp8'
-  unit_of_measurement: 'кВт⋅ч'
+# - platform: mqtt
+#   state_topic: "power/bw_shp8/yesterday_night"
+#   name: 'mqtt_power_yesterday_night_bw_shp8'
+#   unit_of_measurement: 'кВт⋅ч'
         
-- platform: mqtt
-  state_topic: "power/bw_shp8/today_night"
-  name: 'mqtt_power_today_night_bw_shp8'
-  unit_of_measurement: 'кВт⋅ч'
+# - platform: mqtt
+#   state_topic: "power/bw_shp8/today_night"
+#   name: 'mqtt_power_today_night_bw_shp8'
+#   unit_of_measurement: 'кВт⋅ч'
 
-- platform: mqtt
-  state_topic: "power/bw_shp8/month_night"
-  name: 'mqtt_power_month_night_bw_shp8'
-  unit_of_measurement: 'кВт⋅ч'
+# - platform: mqtt
+#   state_topic: "power/bw_shp8/month_night"
+#   name: 'mqtt_power_month_night_bw_shp8'
+#   unit_of_measurement: 'кВт⋅ч'
     
-- platform: mqtt
-  state_topic: "power/bw_shp8/lastmonth_night"
-  name: 'mqtt_power_lastmonth_night_bw_shp8'
-  unit_of_measurement: 'кВт⋅ч'
+# - platform: mqtt
+#   state_topic: "power/bw_shp8/lastmonth_night"
+#   name: 'mqtt_power_lastmonth_night_bw_shp8'
+#   unit_of_measurement: 'кВт⋅ч'
 
-- platform: template
-  sensors:
-    money_2_tarif_month_bw_shp8:
-      friendly_name: "Стоимость за текущий месяц"
-      unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_month_day_bw_shp8.state | float * 1.68 + states.sensor.mqtt_power_month_night_bw_shp8.state | float * 0.84)|round(2) }}"
-      icon_template: mdi:square-inc-cash 
+# - platform: template
+#   sensors:
+#     money_2_tarif_month_bw_shp8:
+#       friendly_name: "Стоимость за текущий месяц"
+#       unit_of_measurement: 'грн'
+#       value_template: "{{ (states.sensor.mqtt_power_month_day_bw_shp8.state | float * 1.68 + states.sensor.mqtt_power_month_night_bw_shp8.state | float * 0.84)|round(2) }}"
+#       icon_template: mdi:square-inc-cash 
     
-- platform: template
-  sensors:
-    money_2_tarif_lastmonth_bw_shp8:
-      friendly_name: "Стоимость за прошлый месяц"
-      unit_of_measurement: 'грн'
-      value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_bw_shp8.state | float * 1.68 + states.sensor.mqtt_power_lastmonth_night_bw_shp8.state | float * 0.84)|round(2) }}"
-      icon_template: mdi:square-inc-cash 
+# - platform: template
+#   sensors:
+#     money_2_tarif_lastmonth_bw_shp8:
+#       friendly_name: "Стоимость за прошлый месяц"
+#       unit_of_measurement: 'грн'
+#       value_template: "{{ (states.sensor.mqtt_power_lastmonth_day_bw_shp8.state | float * 1.68 + states.sensor.mqtt_power_lastmonth_night_bw_shp8.state | float * 0.84)|round(2) }}"
+#       icon_template: mdi:square-inc-cash 
 
 ################################################################################
 

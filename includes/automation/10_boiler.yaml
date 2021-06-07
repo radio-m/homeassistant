@@ -1,18 +1,19 @@
 - alias: Бойлер - включить в 23:00
+  id: "Бойлер - включить в 23:00"
   description: 'включить розетку бойлера после 23:05, если нагрузка на розетке посудомойки меньше 15 Вт'
   trigger:
   - at: input_datetime.boiler_start
     platform: time
   condition:
   - condition: state
-    entity_id: switch.bw_shp8_relay # розетка бойлера
+    entity_id: switch.broadlink_1 # розетка бойлера
     state: 'off'
   - condition: state
     entity_id: binary_sensor.dishwasher # розетка посудомойки
     state: 'off'
   action:
   - service: switch.turn_on
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
     
 - alias: Бойлер - выключить в 07:00
   description: 'выключить розетку бойлера в 12:00'
@@ -21,13 +22,14 @@
     platform: time
   condition:
   - condition: state
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
     state: 'on'
   action:
   - service: switch.turn_off # 
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
 
 - alias: Бойлер - включить после старта системы
+  id: "Бойлер - включить после старта системы"
   description: 'включить розетку бойлера после старта системы в период с 23:05 по 12:00, если нагрузка на розетке посудомойки меньше 15 Вт'
   trigger:
   - event: start
@@ -37,7 +39,7 @@
     entity_id: binary_sensor.boiler_time
     state: 'on'
   - condition: state
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
     state: 'off'
   - condition: state
     entity_id: binary_sensor.dishwasher
@@ -47,9 +49,10 @@
     state: 'off'
   action:
   - service: switch.turn_on # 
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
 
 - alias: Бойлер - выключить после старта системы
+  id: "Бойлер - выключить после старта системы"
   description: 'выключить розетку бойлера после старта системы в период с 12:00 по 23:05'
   trigger:
   - event: start
@@ -59,13 +62,14 @@
     entity_id: binary_sensor.boiler_time
     state: 'off'
   - condition: state
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
     state: 'on'
   action:
   - service: switch.turn_off # 
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
 
 - alias: Бойлер - выключить, когда посдомойка работает
+  id: "Бойлер - выключить, когда посдомойка работает"
   description: 'выключить розетку бойлера, когда нагрузка на розетке посудомойки больше 15 Вт'
   trigger:
   - platform: state
@@ -76,13 +80,14 @@
 #     before: '06:50'
 #     condition: time
   - condition: state
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
     state: 'on'
   action:
   - service: switch.turn_off # 
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
     
 - alias: Бойлер - включить, когда посудомойка домыла
+  id: "Бойлер - включить, когда посудомойка домыла"
   description: 'включить розетку бойлера, когда нагрузка на розетке посудомойки меньше 15 Вт в течение 15 минут'
   trigger:
   - platform: state
@@ -93,70 +98,92 @@
     entity_id: binary_sensor.boiler_time
     state: 'on'
   - condition: state
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
     state: 'off'
   - condition: state
     entity_id: binary_sensor.boiler_timer
     state: 'off'
   action:
   - service: switch.turn_on
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
 
-- alias: Бойлер - выключить, когда стиральная машина работает
-  description: 'выключить розетку бойлера, когда нагрузка на розетку стиралки больше 5 Вт'
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.washing_machine
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: switch.bw_shp8_relay
-    state: 'on'
-  action:
-  - service: switch.turn_off # 
-    entity_id: switch.bw_shp8_relay
+# - alias: Бойлер - выключить, когда стиральная машина работает
+#   id: "Бойлер - выключить, когда стиральная машина работает"
+#   description: 'выключить розетку бойлера, когда нагрузка на розетку стиралки больше 5 Вт'
+#   trigger:
+#   - platform: state
+#     entity_id: binary_sensor.washing_machine
+#     to: 'on'
+#   condition:
+#   - condition: state
+#     entity_id: switch.broadlink_1
+#     state: 'on'
+#   action:
+#   - service: switch.turn_off # 
+#     entity_id: switch.broadlink_1
     
-- alias: Бойлер - включить, когда стиральная машина достирала
-  description: 'включить розетку бойлера, когда нагрузка на розетку стиралки меньше 5 Вт'
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.washing_machine
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.boiler_time
-    state: 'on'
-  - condition: state
-    entity_id: switch.bw_shp8_relay
-    state: 'off'
-  - condition: state
-    entity_id: binary_sensor.boiler_timer
-    state: 'off'
-  action:
-  - service: switch.turn_on
-    entity_id: switch.bw_shp8_relay
+# - alias: Бойлер - включить, когда стиральная машина достирала
+#   id: "Бойлер - включить, когда стиральная машина достирала"
+#   description: 'включить розетку бойлера, когда нагрузка на розетку стиралки меньше 5 Вт'
+#   trigger:
+#   - platform: state
+#     entity_id: binary_sensor.washing_machine
+#     to: 'off'
+#   condition:
+#   - condition: state
+#     entity_id: binary_sensor.boiler_time
+#     state: 'on'
+#   - condition: state
+#     entity_id: switch.broadlink_1
+#     state: 'off'
+#   - condition: state
+#     entity_id: binary_sensor.boiler_timer
+#     state: 'off'
+#   action:
+#   - service: switch.turn_on
+#     entity_id: switch.broadlink_1
 
 - alias: Бойлер - уведомление о сработавшем предохранителе
+  id: 'boiler_uvedomlenie_o_srabotavshem_predokhranitele'
   description: 'Notify when boiler fuse is ON'
   trigger:
   - platform: numeric_state
-    entity_id: sensor.bw_shp8_power
+    entity_id: sensor.load_broadlink_1
     below: '50'
     for: 02:01
   condition:
   - condition: state
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
     state: 'on'
   - condition: numeric_state
     entity_id: sensor.boiler
-    below: 70
+    below: 77.2
   action:
   - service: notify.telegram
     data:
       message: "Бойлер не греет уже 2 часа! Поверьте предохранитель! {{now()}}"
   mode: single
-  
+
+- alias: Бойлер - не запустился
+  id: 'Бойлер - не запустился'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.broadlink_1
+    to: 'on'
+  condition:
+  action:
+  - wait_template: "{{ is_state('sensor.boiler_power_state', 'heat') }}"
+    timeout: "00:01:00"
+  - choose:
+    - conditions: "{{ not wait.completed }}"
+      sequence:
+      - service: notify.telegram
+        data:
+          message: "С вероятностью 99% у бойлера выбило предохранитель"
+
 - alias: Бойлер - выключить, когда напряжение ниже заданного
+  id: "Бойлер - выключить, когда напряжение ниже заданного"
   description: 'старт таймера на 10 минут при падении напряжения в сети ниже заданного'
   trigger:
   - platform: template
@@ -169,7 +196,7 @@
     entity_id: binary_sensor.boiler_time
     state: 'on'
   - condition: state
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
     state: 'on'
   action:
   - choose:
@@ -179,7 +206,7 @@
             state: 'idle'
         sequence:
           - service: switch.turn_off # 
-            entity_id: switch.bw_shp8_relay
+            entity_id: switch.broadlink_1
           - service: timer.start
             entity_id: timer.boiler_low_voltage
     default:
@@ -189,6 +216,7 @@
         entity_id: timer.boiler_low_voltage
 
 - alias: Бойлер - включить, когда закончился таймер
+  id: "Бойлер - включить, когда закончился таймер"
   description: 'включение бойлера после таймера на 10 минут при падении напряжения в сети ниже 185v'
   trigger:
   - platform: event
@@ -200,7 +228,7 @@
     entity_id: binary_sensor.boiler_time
     state: 'on'
   - condition: state
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
     state: 'off'
   - condition: state
     entity_id: binary_sensor.washing_machine
@@ -210,7 +238,7 @@
     state: 'off'
   action:
   - service: switch.turn_on # 
-    entity_id: switch.bw_shp8_relay
+    entity_id: switch.broadlink_1
 
 
 

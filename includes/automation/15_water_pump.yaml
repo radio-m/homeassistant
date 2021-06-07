@@ -1,4 +1,5 @@
 - alias: Водяной насос - включение
+  id: "Водяной насос - включение"
   mode: restart
   trigger:
   - platform: state
@@ -23,6 +24,7 @@
     entity_id: switch.water_pump
     
 - alias: Водяной насос - выключение
+  id: "Водяной насос - выключение"
   trigger:
   - platform: numeric_state
     below: 30

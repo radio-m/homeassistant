@@ -78,25 +78,25 @@ cards:
           sensor.money_lastmonth_total_energy.state ]]</b> грн
         type: 'custom:secondaryinfo-entity-row'
 # Бойлер
-    - type: entities
-      show_header_toggle: false
-      entities:
-      - entity: sensor.load_bw_shp8
-        secondary_info: >-
-          сегодня: <b>[[
-          sensor.mqtt_power_today_bw_shp8.state ]]</b> кВт⋅ч<br>
-          этот месяц: <b>[[
-          sensor.mqtt_power_month_bw_shp8.state ]]</b> кВт⋅ч<br>
-          сумма: <b>[[ 
-          sensor.money_month_bw_shp8.state
-          ]]</b> грн<br>
-          вчера: <b>[[
-          sensor.mqtt_power_yesterday_bw_shp8.state ]]</b> кВт⋅ч<br>
-          прошлый месяц: <b>[[
-          sensor.mqtt_power_lastmonth_bw_shp8.state ]]</b> кВт⋅ч<br>
-          сумма: <b>[[ 
-          sensor.money_lastmonth_bw_shp8.state ]]</b> грн
-        type: 'custom:secondaryinfo-entity-row'
+    # - type: entities
+    #   show_header_toggle: false
+    #   entities:
+    #   - entity: sensor.load_bw_shp8
+    #     secondary_info: >-
+    #       сегодня: <b>[[
+    #       sensor.mqtt_power_today_bw_shp8.state ]]</b> кВт⋅ч<br>
+    #       этот месяц: <b>[[
+    #       sensor.mqtt_power_month_bw_shp8.state ]]</b> кВт⋅ч<br>
+    #       сумма: <b>[[ 
+    #       sensor.money_month_bw_shp8.state
+    #       ]]</b> грн<br>
+    #       вчера: <b>[[
+    #       sensor.mqtt_power_yesterday_bw_shp8.state ]]</b> кВт⋅ч<br>
+    #       прошлый месяц: <b>[[
+    #       sensor.mqtt_power_lastmonth_bw_shp8.state ]]</b> кВт⋅ч<br>
+    #       сумма: <b>[[ 
+    #       sensor.money_lastmonth_bw_shp8.state ]]</b> грн
+    #     type: 'custom:secondaryinfo-entity-row'
 # Холодильник
     - type: entities
       show_header_toggle: false
@@ -605,18 +605,34 @@ cards:
             name: Бойлер
           - entity: binary_sensor.dishwasher
             name: Посудомойка
-          - entity: binary_sensor.washing_machine
-            name: Стиралка
-          - entity: binary_sensor.boiler_time
-            name: 23-12
+        #   - entity: binary_sensor.washing_machine
+        #     name: Стиралка
+          - entity: binary_sensor.day_tarif_template
+            name: 23-07
           - entity: binary_sensor.boiler_timer
             name: Таймер
+
+      - type: glance
+        # title: Стиральная машина
+        show_name: true
+        show_state: true
+        show_icon: false
+        entities:
+            - sensor.stiralnaia_mashina_washer_completion_time
+            - sensor.stiralnaia_mashina_washer_job_state
+            - sensor.stiralnaia_mashina_washer_machine_state
 
       - type: entities
         show_header_toggle: false
         entities:
+        - entity: switch.dishwasher
+        - entity: sensor.dishwasher_voltage
+          name: "Напряжение на розетке посудомойки"
 
-        - entity: switch.bw_shp8_relay
+      - type: entities
+        show_header_toggle: false
+        entities:
+        - entity: switch.broadlink_1
           secondary_info: last-changed
 
         - entity: sensor.boiler
@@ -633,9 +649,7 @@ cards:
           entity: sensor.boiler_on_today
           name: "Бойлер сегодня включен"
           attribute: value
-        - entity: switch.dishwasher
-        - entity: sensor.dishwasher_voltage
-          name: "Напряжение на розетке посудомойки"
+
 
         - type: custom:fold-entity-row
           head:
@@ -690,12 +704,7 @@ cards:
             name: месяц
           - entity: sensor.tariff_difference_day
             name: день
-      - entity: sensor.mqtt_power_month_day_input_energy
-        name: За месяц по дневному тарифу
-      - entity: sensor.mqtt_power_month_night_input_energy
-        name: За месяц по ночному тарифу
-      - entity: sensor.money_2_tarif_month_input_energy
-        name: За месяц
+
 
 
 

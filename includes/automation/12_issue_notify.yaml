@@ -1,5 +1,5 @@
 #Отчёт о отключении устройств
-- id: Notify unavailable devices
+- id: "Notify unavailable devices"
   alias: Telegram уведомление - недоступные устройства
   initial_state: true
   mode: parallel
@@ -36,7 +36,7 @@
              {{ now() }} Внимание! Устройтсво {{state_attr(trigger.entity_id, 'friendly_name') }} Offline
 
 #Уведомление о низком заряде батареи
-- id: Notify low battery devices
+- id: "Notify low battery devices"
   alias: Telegram уведомление - низкий заряд батареек
   initial_state: true
   mode: parallel
@@ -68,6 +68,7 @@
 
 
 - alias: Notify Напряжение выше 230V
+  id: "Notify Напряжение выше 230V"
   trigger:
     platform: numeric_state
     entity_id: sensor.input_voltage

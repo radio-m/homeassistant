@@ -1,4 +1,4 @@
-- id: '1549565387339'
+- id: 'Narodmon - отправка данных каждые 10 минут'
   alias: Narodmon - отправка данных каждые 10 минут
   trigger:
     - platform: time_pattern

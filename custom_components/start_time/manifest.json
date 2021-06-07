@@ -1,0 +1,11 @@
+{
+  "domain": "start_time",
+  "name": "Start Time",
+  "documentation": "https://github.com/AlexxIT/StartTime",
+  "requirements": [],
+  "dependencies": [],
+  "version": "1.0",
+  "codeowners": [
+    "AlexxIT"
+  ]
+}
