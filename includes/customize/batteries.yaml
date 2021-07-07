@@ -4,8 +4,8 @@ sensor.m_bedroom_battery:
 sensor.c_bedroom_battery:
   friendly_name: Заряд НТ в детской
   battery_type: CR2032
-sensor.g_bedroom_battery:
-  friendly_name: Заряд НТ у бабушки
+sensor.bedroom_battery:
+  friendly_name: Заряд НТ в ванной
   battery_type: CR2032
 sensor.c_bedroom_double_switch_battery:
   friendly_name: Заряд двойной в детской

@@ -47,7 +47,7 @@
     entity_id:
       - sensor.m_bedroom_battery
       - sensor.c_bedroom_battery
-      - sensor.g_bedroom_battery
+      - sensor.bathroom_battery
       - sensor.mi_round_button_battery
       - sensor.basement_temp_battery
       - sensor.lumber_temp_battery

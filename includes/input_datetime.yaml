@@ -14,9 +14,9 @@
   boiler_start:
     name: Включить бойлер в
     has_time: true
-    initial: '23:05'
+    initial: '23:01'
 
   boiler_stop:
     name: Выключить бойлер в
     has_time: true
-    initial: '06:55'
+    initial: '06:59'

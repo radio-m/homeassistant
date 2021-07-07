@@ -71,6 +71,7 @@
 
 - id: 'svet_v_detskoi_podkrovatnyi_vykliuchit'
   alias: Свет в детской - подкроватный выключить
+  mode: parallel
   trigger:
     - platform: state
       entity_id: sensor.c_bedroom_double_switch_action

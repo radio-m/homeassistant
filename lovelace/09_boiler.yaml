@@ -1,0 +1,80 @@
+title: Бойлер
+icon: mdi:water-boiler
+background: center / cover no-repeat fixed url('/local/Pictures/boiler.jpg')
+cards:
+
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - entity: sensor.load_broadlink_1
+        secondary_info: >-
+          сегодня: <b>[[
+          sensor.mqtt_power_today_broadlink_1.state ]]</b> кВт⋅ч<br>
+          этот месяц: <b>[[
+          sensor.mqtt_power_month_broadlink_1.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_month_broadlink_1.state
+          ]]</b> грн<br>
+          вчера: <b>[[
+          sensor.mqtt_power_yesterday_broadlink_1.state ]]</b> кВт⋅ч<br>
+          прошлый месяц: <b>[[
+          sensor.mqtt_power_lastmonth_broadlink_1.state ]]</b> кВт⋅ч<br>
+          сумма: <b>[[ 
+          sensor.money_lastmonth_broadlink_1.state ]]</b> грн
+        type: 'custom:secondaryinfo-entity-row'
+
+    - type: vertical-stack
+      cards:
+
+      - type: glance
+        show_name: false
+        show_state: false
+        entities:
+          - entity: sensor.boiler_power_state
+            name: Бойлер
+          - entity: binary_sensor.dishwasher
+            name: Посудомойка
+        #   - entity: binary_sensor.washing_machine
+        #     name: Стиралка
+          - entity: binary_sensor.day_tarif_template
+            name: 23-07
+          - entity: binary_sensor.boiler_timer
+            name: Таймер
+
+
+      - type: entities
+        show_header_toggle: false
+        entities:
+        - entity: switch.broadlink_1
+          secondary_info: last-changed
+
+        - entity: sensor.boiler
+          type: custom:multiple-entity-row
+          name: Бойлер
+          show_state: false
+          entities:
+            - entity: sensor.bw_shp8_voltage
+              name: Напряжение
+            - entity: sensor.boiler
+              name: Температура
+
+        - type: attribute
+          entity: sensor.boiler_on_today
+          name: "Бойлер сегодня включен"
+          attribute: value
+
+
+        - type: custom:fold-entity-row
+          head:
+            type: section
+            label: 'Автоматика бойлера'
+          entities:
+            - automation.boiler_vykliuchit_kogda_napriazhenie_nizhe_zadannogo
+            - automation.boiler_vkliuchit_kogda_zakonchilsia_taimer
+            - entity: timer.boiler_low_voltage
+              secondary_info: last-changed
+            - entity: input_number.boiler_voltage
+            - entity: input_datetime.boiler_start
+            - entity: input_datetime.boiler_stop
+          group_config: 
+            secondary_info: last-triggered

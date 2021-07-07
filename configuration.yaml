@@ -20,8 +20,7 @@ homeassistant:
 http:
   use_x_forwarded_for: true
   trusted_proxies:
-    - 172.30.33.8
-    # - 192.168.31.1
+    - 172.30.33.0/24
 #   server_port: 433
 #   ssl_certificate: /ssl/fullchain.pem
 #   ssl_key: /ssl/privkey.pem
@@ -30,35 +29,12 @@ http:
 
 default_config:
 
-zeroconf:
-
 recorder: !include includes/recorder.yaml
 
 logger:
     default: warn
-    # logs:
-    #   homeassistant.loader: error
 
 wake_on_lan:
-
-# mqtt:
-#   broker: core-mosquitto  # Локальный брокер
-#   discovery: true
-#   discovery_prefix: homeassistant
-#   client_id: home-assistant-1
-#   keepalive: 60
-#   username: mqtt
-#   password: mqtt
-#   birth_message:
-#     topic: "tele/hass1/LWT"
-#     payload: "Online"
-#     qos: 1
-#     retain: true
-#   will_message:
-#     topic: "tele/hass1/LWT"
-#     payload: "Offline"
-#     qos: 1
-#     retain: true
 
 #lovelace
 lovelace:
@@ -68,12 +44,6 @@ frontend:
   themes: !include_dir_merge_named themes/
   extra_module_url:
     - /hacsfiles/custom-ui/custom-ui.js
-
-panel_iframe:
-  zigdee2mqtt_2nd:
-    title: "Zigdee2mqtt 2nd"
-    icon: mdi:zigbee
-    url: /z2m
 
 # Text to speech
 tts:
@@ -93,11 +63,6 @@ telegram_bot:
     
 # Router
 device_tracker:
-#   - platform: asuswrt
-#     consider_home: 600
-#     new_device_defaults:
-#       track_new_devices: false
-
   - platform: xiaomi
     host: 192.168.31.1
     password: !secret mirouter_pwd
@@ -109,11 +74,6 @@ rest_command:
   narodmon:
     url: http://narodmon.ru/get?ID={{ID}}&T1={{T1}}&H1={{H1}}&P1={{P1}}
 
-#AlexxIT
-morph_numbers:
-start_time:
-
-#Folders
 sensor: !include_dir_merge_list includes/sensors
 binary_sensor: !include_dir_merge_list includes/bin_sensor
 automation: !include_dir_merge_list includes/automation

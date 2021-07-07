@@ -1,0 +1,25 @@
+- alias: Вентиляция в ванной
+  id: "Вентиляция в ванной"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id: sensor.bathroom_humidity
+    - platform: state
+      entity_id: sensor.home_humidity_median
+
+  action:
+    - choose:
+
+        - conditions:
+            - "{{ (states.sensor.bathroom_humidity.state | float - states.sensor.home_humidity_median.state | float) >= 5 }}"
+            - "{{ is_state('switch.sonoff_mini_001_switch', 'off') }}"
+          sequence:
+            - service: switch.turn_on
+              entity_id: switch.sonoff_mini_001_switch
+
+        - conditions:
+            - "{{ (states.sensor.bathroom_humidity.state | float - states.sensor.home_humidity_median.state | float) < 5 }}"
+            - "{{ is_state('switch.sonoff_mini_001_switch', 'on') }}"
+          sequence:
+            - service: switch.turn_off
+              entity_id: switch.sonoff_mini_001_switch

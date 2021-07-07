@@ -99,58 +99,105 @@ cards:
           }
       id: graph1
       url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/je0Sj6WRz/cpu-parameters?orgId=1&panelId=2
-      aspect_ratio: 75%
+      aspect_ratio: 50%
+
+    # - type: custom:mini-graph-card
+    #   entities:
+    #     - entity: sensor.processor_use
+    #     - entity: sensor.memory_use_percent
+    #       color: red
+    #     - color: yellow
+    #       entity: sensor.cpu_temperature
+    #       show_line: true
+    #       show_points: false
+    #       show_legend: false
+    #       y_axis: secondary
+    #   color_thresholds:
+    #       - value: 0
+    #         color: "#00ff55"
+    #       - value: 50
+    #         color: orange
+    #       - value: 70
+    #         color: red
+    #   line_width: 3
+    #   hours_to_show: 12
+    #   points_per_hour: 30
+    #   lower_bound: 0
+    #   show:
+    #     graph: line
+    #     fill: true
+    #     labels: true
+    #     legend: false
+    #     state: false
+    #     labels_secondary: true
+
+  - type: 'custom:vertical-stack-in-card'
+    cards:
     - type: horizontal-stack
       cards:
-        - type: gauge
-          style: |
-            ha-card {
-              --ha-card-background: rgba(0, 0, 0, 0.6);
-              color: white
-              }
-          name: CPU
-          unit: '%'
-          entity: sensor.processor_use
-          severity:
-            green: 0
-            yellow: 45
-            red: 85
-        - type: gauge
-          style: |
-            ha-card {
-              --ha-card-background: rgba(0, 0, 0, 0.6);
-              color: white
-              }
-          name: RAM
-          unit: '%'
-          entity: sensor.memory_use_percent
-          severity:
-            green: 0
-            yellow: 45
-            red: 85
-        - type: gauge
-          style: |
-            ha-card {
-              --ha-card-background: rgba(0, 0, 0, 0.6);
-              color: white
-              }
-          name: CPU
-          unit: '°C'
-          entity: sensor.cpu_temperature
-          min: 20
-          max: 80
-          severity:
-            green: 20
-            yellow: 50
-            red: 60
-#     - type: history-graph
-#       entities:
-#       - entity: sensor.cpu_temperature
-#         name: CPU t
-#       - entity: sensor.memory_use_percent
-#         name: RAM
-#       - entity: sensor.processor_use
-#         name: CPU
+
+          - entity: sensor.processor_use
+            height: 15px
+            max: 100
+            min: 0
+            severity:
+              - color: Green
+                from: 0
+                to: 50
+              - color: Orange
+                from: 50
+                to: 80
+              - color: Red
+                from: 80
+                to: 100
+            name: CPU
+            positions:
+                icon: 'off'
+                indicator: 'off'
+            type: 'custom:bar-card'
+
+          - entity: sensor.memory_use_percent
+            height: 15px
+            max: 100
+            min: 0
+            severity:
+              - color: Green
+                from: 0
+                to: 50
+              - color: Orange
+                from: 50
+                to: 80
+              - color: Red
+                from: 80
+                to: 100
+            name: RAM
+            positions:
+                icon: 'off'
+                indicator: 'off'
+            type: 'custom:bar-card'
+
+          - entity: sensor.cpu_temperature
+            height: 15px
+            max: 100
+            min: 0
+            severity:
+              - color: Green
+                from: 0
+                to: 50
+              - color: Orange
+                from: 50
+                to: 60
+              - color: Red
+                from: 60
+                to: 100
+            name: CPU
+            positions:
+                icon: 'off'
+                indicator: 'off'
+            type: 'custom:bar-card'
+
+  - type: vertical-stack
+    cards:
 
     - type: custom:mini-graph-card
       style: |
@@ -198,10 +245,28 @@ cards:
   - type: vertical-stack
     cards:
 
+    # - type: custom:mini-graph-card
+    #   entities:
+    #     - entity: sensor.input_voltage
+    #       color: green
+    #     - color: red
+    #       entity: sensor.input_power
+    #       show_line: true
+    #       show_points: false
+    #       show_legend: false
+    #       y_axis: secondary
+    #   hours_to_show: 12
+    #   points_per_hour: 30
+    #   show:
+    #     labels: true
+    #     legend: false
+    #     state: false
+    #     labels_secondary: true
+
     - type: iframe
       id: graph2
       url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=2
-      aspect_ratio: 75%
+      aspect_ratio: 50%
 
   - type: glance
     title: '-- Component Count --'

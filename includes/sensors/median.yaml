@@ -1,0 +1,25 @@
+  - platform: min_max
+    name: c bedroom temperature median
+    type: median
+    entity_ids:
+      - sensor.c_bedroom_temperature
+      - sensor.ble_temperature_c_bedroom_bt
+      - sensor.ble_temperature_eva
+
+  - platform: min_max
+    name: c bedroom humidity median
+    type: median
+    entity_ids:
+      - sensor.c_bedroom_humidity
+      - sensor.ble_humidity_c_bedroom_bt
+      - sensor.ble_humidity_eva
+
+  - platform: min_max
+    name: home humidity median
+    type: median
+    entity_ids:
+      - sensor.c_bedroom_humidity
+      - sensor.m_bedroom_humidity
+      - sensor.ble_humidity_living_room
+      - sensor.ble_humidity_c_bedroom_bt
+      - sensor.ble_humidity_eva

@@ -108,10 +108,17 @@ cards:
 
       - type: custom:mini-graph-card
         entities:
-          - sensor.ble_temperature_living_room
-          - sensor.c_bedroom_temperature
-          - sensor.m_bedroom_temperature
-          - sensor.ble_temperature_c_bedroom_bt
+          - entity: sensor.ble_temperature_living_room
+          - entity: sensor.c_bedroom_temperature
+          - entity: sensor.m_bedroom_temperature
+          - entity: sensor.ble_temperature_c_bedroom_bt
+          - color: red
+            entity: binary_sensor.gas_heater_relay
+            name: Нагрев
+            show_line: false
+            show_points: false
+            show_legend: false
+            y_axis: secondary
         name: In temp
         show:
           labels: true
@@ -125,7 +132,12 @@ cards:
         hours_to_show: 24
         points_per_hour: 2
         lower_bound: 15
-        upper_bound: 25
+        upper_bound: 30
+        state_map:
+          - value: "off"
+            label: Не греет
+          - value: "on"
+            label: Греет
 
   - type: vertical-stack
     cards:
@@ -134,8 +146,7 @@ cards:
         entities:
           - entity: switch.humidifier
             secondary_info: last-changed
-          - entity: climate.uvlazhnitel_v_detskoi
-            name: "Увлажнитель в детской"
+          - entity: input_number.c_bedroom_humidity
           - entity: binary_sensor.ble_opening_door_sensor
             secondary_info: last-changed
             name: Дверь в детскую
@@ -192,16 +203,16 @@ cards:
               - entity: sensor.c_bedroom_battery
                 name: Заряд
 
-          - entity: sensor.g_bedroom_temperature
+          - entity: sensor.bathroom_temperature
             type: custom:multiple-entity-row
-            name: У бабушки
+            name: В ванной
             show_state: false
             entities:
-              - entity: sensor.g_bedroom_temperature
+              - entity: sensor.bathroom_temperature
                 name: Температура
-              - entity: sensor.g_bedroom_humidity
+              - entity: sensor.bathroom_humidity
                 name: Влажность
-              - entity: sensor.g_bedroom_battery
+              - entity: sensor.bathroom_battery
                 name: Заряд
 
           - entity: sensor.basement_temp_temperature

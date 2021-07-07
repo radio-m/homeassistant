@@ -1,0 +1,68 @@
+- alias: Увлажнитель - в детской
+  id: "Увлажнитель - в детской"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id: sensor.c_bedroom_humidity
+
+  action:
+    - choose:
+
+        - conditions:
+            - "{{ states.input_number.c_bedroom_humidity.state | float > states.sensor.c_bedroom_humidity.state | float }}"
+            - "{{ is_state('binary_sensor.ble_opening_door_sensor', 'off') }}"
+            - "{{ is_state('switch.humidifier', 'off') }}"
+          sequence:
+            - service: switch.turn_on
+              entity_id: switch.humidifier
+
+        - conditions:
+            - "{{ (states.input_number.c_bedroom_humidity.state | float + 5) < states.sensor.c_bedroom_humidity.state | float }}"
+            - "{{ is_state('switch.humidifier', 'on') }}"
+          sequence:
+            - service: switch.turn_off
+              entity_id: switch.humidifier
+
+- alias: Увлажнитель - в детской - уведомление об отключении
+  id: "Увлажнитель - в детской - уведомление об отключении"
+  description: 'Notify when humidifier low water'
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.humidifier_power
+    below: '5'
+    for: 00:01
+  condition: "{{ is_state('switch.humidifier', 'on') }}"
+  action:
+  - service: notify.telegram
+    data:
+      message: "Увлажнитель не работает! Выключен или кончилась вода. {{now()}}"
+  - service: notify.telegram_olga
+    data:
+      message: "Увлажнитель не работает! Выключен или кончилась вода. {{now()}}"
+  mode: single
+
+- alias: Увлажнитель - в детской - выключить, когда открыта дверь
+  id: "Увлажнитель - в детской - выключить, когда открыта дверь"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.ble_opening_door_sensor
+    to: 'on'
+    for: 00:01:00
+  condition: "{{ is_state('switch.humidifier', 'on') }}"
+  action:
+    - service: switch.turn_off
+      entity_id: switch.humidifier
+            
+- alias: Увлажнитель - в детской - включить, когда закрыта дверь
+  id: "Увлажнитель - в детской - включить, когда закрыта дверь"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.ble_opening_door_sensor
+    to: 'off'
+    for: 00:01:00
+  condition:
+    - "{{ states.sensor.c_bedroom_humidity.state | float < (states.input_number.c_bedroom_humidity.state | float + 5) }}"
+    - "{{ is_state('switch.humidifier', 'off') }}"
+  action:
+    - service: switch.turn_on
+      entity_id: switch.humidifier

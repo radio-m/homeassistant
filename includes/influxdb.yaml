@@ -11,36 +11,6 @@
       - sensor.memory_use_percent
       - sensor.home_assistant_v2_db
 
-#BME280
-      - sensor.ds18b20_out_temperature
-      - sensor.bme280_humidity
-      - sensor.bme280_pressure
-      - sensor.bme280_pressure_in_mmhg
-      - sensor.bme280_temperature
-      - sensor.dew_point
-
-#zigbee sensors
-#Mi
-      - sensor.m_bedroom_temperature
-      - sensor.c_bedroom_temperature
-      - sensor.g_bedroom_temperature
-
-      - sensor.m_bedroom_humidity
-      - sensor.c_bedroom_humidity
-      - sensor.g_bedroom_humidity
-#SONOff
-      - sensor.basement_temp_temperature
-      - sensor.lumber_temp_temperature
-      
-      - sensor.basement_temp_humidity
-      - sensor.lumber_temp_humidity
-
-#BT sensors
-      - sensor.ble_humidity_c_bedroom_bt
-      - sensor.ble_temperature_c_bedroom_bt
-      - sensor.ble_humidity_living_room
-      - sensor.ble_temperature_living_room
-
 #Power current
       - sensor.load_broadlink_1
       - sensor.load_broadlink_2
@@ -66,12 +36,3 @@
 
       - sensor.input_power
       - sensor.input_voltage
-      
-  component_config:
-    counter.hotw:
-      override_measurement: lt
-  component_config_glob:
-    sensor.*humidity*:
-      override_measurement: humidity
-    sensor.*temperature*:
-      override_measurement: temperature

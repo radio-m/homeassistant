@@ -1,182 +1,121 @@
-    title: СС 2531
-    icon: mdi:usb-flash-drive
-    
+title: СС 2531
+icon: mdi:usb-flash-drive
+
+cards:
+
+  - type: vertical-stack
     cards:
+    - type: entities
+      entities:
+      - entity: binary_sensor.sls_state
+        state_color: true
+      - entity: sensor.sls_uptimestr
+      - entity: sensor.sls_rssi
+      - entity: sensor.sls_uptime
+      - entity: sensor.sls_freemem
+      - entity: sensor.sls_ip
+      - entity: sensor.sls_version
+      - entity: binary_sensor.sls_paring
+      - entity: switch.sls_main_join
+        state_color: true
+      show_header_toggle: false
+      title: SLS Gateway
+      state_color: true
 
-      - type: vertical-stack
-        cards:
-        - type: entities
-          entities:
-          - entity: binary_sensor.sls_state
-            state_color: true
-          - entity: sensor.sls_uptimestr
-          - entity: sensor.sls_rssi
-          - entity: sensor.sls_uptime
-          - entity: sensor.sls_freemem
-          - entity: sensor.sls_ip
-          - entity: sensor.sls_version
-          - entity: binary_sensor.sls_paring
-          - entity: switch.sls_main_join
-            state_color: true
-          show_header_toggle: false
-          title: SLS Gateway
-          state_color: true
+    - type: entities
+      title: Добавление Zigbee устройств
+      show_header_toggle: false
+      entities:
+         - entity: input_boolean.main_zigbee_permit_join
+         - entity: sensor.main_bridge_state
 
-        - type: entities
-          title: Добавление Zigbee устройств
-          show_header_toggle: false
-          entities:
-             - entity: input_boolean.main_zigbee_permit_join
-             - entity: sensor.main_bridge_state
+    - type: entities
+      title: Добавление Zigbee устройств
+      show_header_toggle: false
+      entities:
+         - entity: input_boolean.second_zigbee_permit_join
+         - entity: sensor.second_bridge_state
 
-        - type: entities
-          title: Добавление Zigbee устройств
-          show_header_toggle: false
-          entities:
-             - entity: input_boolean.second_zigbee_permit_join
-             - entity: sensor.second_bridge_state
+  - type: vertical-stack
+    cards:
+    - type: entities
+      entities:
+        - entity: input_number.timer_minutes
+          name: minutes
+        - type: call-service
+          icon: mdi:timer-outline
+          name: "timer"
+          secondary_info: timer.variable
+          action_name: старт
+          service: script.turn_on
+          service_data:
+            entity_id: script.var_timer
+        - entity: timer.variable
 
-      - type: vertical-stack
-        cards:
-        - type: entities
-          entities:
-            - entity: input_number.timer_minutes
-              name: minutes
-            - type: call-service
-              icon: mdi:timer-outline
-              name: "timer"
-              secondary_info: timer.variable
-              action_name: старт
-              service: script.turn_on
-              service_data:
-                entity_id: script.var_timer
-            - entity: timer.variable
+  - type: custom:battery-state-card
+    title: "Заряд батареек в датчиках"
+    sort_by_level: "asc"
+    collapse: 3
+    entities:
+      - sensor.m_bedroom_battery
+      - sensor.c_bedroom_battery
+      - sensor.bathroom_battery
+      - sensor.mi_round_button_battery
+      - sensor.basement_temp_battery
+      - sensor.lumber_temp_battery
+      - sensor.motion_sensor_battery
+      - sensor.c_bedroom_double_switch_battery
+      - sensor.ble_battery_e72e017314c7
+      - sensor.ble_battery_582d3434ca5b
+      - sensor.ble_battery_e4aaec350373
+      - sensor.ble_battery_eva
 
-      - type: custom:battery-state-card
-        title: "Заряд батареек в датчиках"
-        sort_by_level: "asc"
-        collapse: 3
-        entities:
-          - sensor.m_bedroom_battery
-          - sensor.c_bedroom_battery
-          - sensor.g_bedroom_battery
-          - sensor.mi_round_button_battery
-          - sensor.basement_temp_battery
-          - sensor.lumber_temp_battery
-          - sensor.motion_sensor_battery
-          - sensor.c_bedroom_double_switch_battery
-          - sensor.ble_battery_e72e017314c7
-          - sensor.ble_battery_582d3434ca5b
-          - sensor.ble_battery_e4aaec350373
-          - sensor.ble_battery_eva
+  - type: entities
+    entities:
+      - entity: sensor.bathroom_humidity
+        name: Влажность в ванной
+      - entity: sensor.home_humidity_median
+        name: Средняя влажность по дому
+      - entity: switch.sonoff_mini_001_switch
 
-      - type: vertical-stack
-        cards:
-        - type: custom:mini-graph-card
-          entities:
-            - sensor.c_bedroom_temperature_median
-            - sensor.c_bedroom_temperature
-            - sensor.ble_temperature_c_bedroom_bt
-          name: In temp
-          show:
-            labels: true
-        #   color_thresholds:
-        #     - value: 17
-        #       color: "#0000ff"
-        #     - value: 20
-        #       color: "#00ff55"
-        #     - value: 23
-        #       color: "#ffff00"
-          hours_to_show: 24
-          points_per_hour: 2
-        #   lower_bound: 15
-        #   upper_bound: 25
-          
-        - type: entities
-          entities:
-            - entity: sensor.c_bedroom_temperature
-              type: custom:multiple-entity-row
-              name: В детской
-              show_state: false
-              entities:
-                - entity: sensor.c_bedroom_temperature
-                  name: false
-                - entity: sensor.c_bedroom_temperature_median
-                  name: false
-                - entity: sensor.ble_temperature_c_bedroom_bt
-                  name: false
+  - type: custom:mini-graph-card
+    entities:
+      - color: green
+        entity: binary_sensor.sonoff_mini_001_relay
+        name: Вентилятор
+        show_line: true
+        show_points: false
+        show_legend: false
+        show_state: false
+        y_axis: secondary
+      - entity: sensor.home_humidity_median
+        name: Средняя влажность по дому
+      - entity: sensor.bathroom_humidity
+        name: Влажность в ванной
+        show_state: true
 
-      - type: vertical-stack
-        cards:
-        - type: custom:mini-graph-card
-          entities:
-            - sensor.c_bedroom_humidity_median
-            - sensor.c_bedroom_humidity
-            - sensor.ble_humidity_c_bedroom_bt
-          name: In hum
-          show:
-            labels: true
-        #   color_thresholds:
-        #     - value: 17
-        #       color: "#0000ff"
-        #     - value: 20
-        #       color: "#00ff55"
-        #     - value: 23
-        #       color: "#ffff00"
-          hours_to_show: 24
-          points_per_hour: 2
-        #   lower_bound: 15
-        #   upper_bound: 25
-          
-        - type: entities
-          entities:
-            - entity: sensor.c_bedroom_humidity
-              type: custom:multiple-entity-row
-              name: В детской
-              show_state: false
-              entities:
-                - entity: sensor.c_bedroom_humidity
-                  name: false
-                - entity: sensor.c_bedroom_humidity_median
-                  name: false
-                - entity: sensor.ble_humidity_c_bedroom_bt
-                  name: false
+    # smoothing: false
+    points_per_hour: 6
+    update_interval: 30
+    show:
+      labels: true
+      labels_secondary: false
+    state_map:
+      - value: "off"
+        label: Выкл
+      - value: "on"
+        label: Вкл
 
-
-      - type: vertical-stack
-        cards:
-          - type: entities
-            entities:
-            - switch.stiralnaia_mashina
-            - sensor.stiralnaia_mashina_washer_completion_time
-            - sensor.stiralnaia_mashina_washer_job_state
-            - sensor.stiralnaia_mashina_washer_machine_state
-
-      - type: picture-elements
-        elements:
-          - entity: sensor.time
-            style:
-              color: var(--secondary-text-color)
-              font-size: 500%
-              left: 50%
-              top: 40%
-            type: state-label
-          - entity: sensor.date
-            style:
-              color: var(--primary-text-color)
-              font-size: 100%
-              left: 50%
-              top: 80%
-            type: state-label
-        image: >-
-          data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==
-        card_mod:
-          style: |
-            div {
-              height: 100px;
-            }
-
-
+  - type: entities
+    entities:
+      - sensor.amazfit_gtr_calories
+      - sensor.amazfit_gtr_distance
+      - sensor.amazfit_gtr_heart_rate
+      - sensor.amazfit_gtr_height
+      - sensor.amazfit_gtr_move_time
+      - sensor.amazfit_gtr_sleep
+      - sensor.amazfit_gtr_steps
+      - sensor.amazfit_gtr_weight
 
 
 

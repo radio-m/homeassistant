@@ -4,7 +4,6 @@ DOMAIN = "ble_monitor"
 PLATFORMS = ["binary_sensor", "sensor"]
 
 # Configuration options
-CONF_ROUNDING = "rounding"
 CONF_DECIMALS = "decimals"
 CONF_PERIOD = "period"
 CONF_LOG_SPIKES = "log_spikes"
@@ -25,7 +24,6 @@ CONFIG_IS_FLOW = "is_flow"
 SERVICE_CLEANUP_ENTRIES = "cleanup_entries"
 
 # Default values for configuration options
-DEFAULT_ROUNDING = True
 DEFAULT_DECIMALS = 1
 DEFAULT_PERIOD = 60
 DEFAULT_LOG_SPIKES = False
@@ -52,169 +50,165 @@ AES128KEY32_REGEX = "(?i)^[A-F0-9]{32}$"
 # Sensor measurement limits to exclude erroneous spikes from the results (temperature in °C)
 CONF_TMIN = -40.0
 CONF_TMAX = 60.0
+CONF_TMIN_KETTLES = -20.0
+CONF_TMAX_KETTLES = 120.0
 CONF_HMIN = 0.0
 CONF_HMAX = 99.9
 
-# Sensor type indexes dictionary for sensor platform
-# Sensor:
-# T  = temperature
-# H  = humidity
-# M  = moisture
-# P  = pressure
-# C  = conductivity
-# I  = illuminance
-# F  = formaldehyde
-# Cn = consumable
-# Bu = button
-# Re = remote
-# Fr = fan remote
-# Vr = ventilator fan remote
-# Br = bathroom heater remote
-# Di = dimmer
-# W  = weight
-# NW = non-stabilized Weight
-# Im = impedance
-# Vd = volume dispensed
-# To = toothbrush mode
-# V  = voltage
-# B  = battery
-
-# Binary_sensor:
-# Rb = remote binary
-# Sw = switch
-# Op = opening
-# L  = light
-# Mo = moisture
-# Mn = motion
-# WR = weight wemoved
-# B  = battery (add only when other binary sensor is available)
-
-#                                            sensor                                   binary sensor
-# Measurement type         [T  H  M  P  C  I  F  Cn Bu Re Fr Vr Br Di W  NW Im Vd To V  B]  [Rb Sw Op L  Mo Mn WR B]
-# start from 0 till 8. 9 means no data
-MMTS_DICT = {
-    'LYWSDCGQ'          : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'CGG1'              : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'CGG1-ENCRYPTED'    : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'CGDK2'             : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'LYWSD02'           : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'LYWSD03MMC'        : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 3, 2], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'CGD1'              : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'CGP1W'             : [[0, 1, 9, 2, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 3], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'MHO-C401'          : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'MHO-C303'          : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 2], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'JQJCY01YM'         : [[0, 1, 9, 9, 9, 9, 2, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 3], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'HHCCJCY01'         : [[0, 9, 1, 9, 2, 3, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'GCLS002'           : [[0, 9, 1, 9, 2, 3, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'HHCCPOT002'        : [[9, 9, 0, 9, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'WX08ZM'            : [[9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1], [9, 0, 9, 9, 9, 9, 9, 1]],
-    'MCCGQ02HL'         : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 9, 0, 1, 9, 9, 9, 2]],
-    'CGH1'              : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 9, 0, 9, 9, 9, 9, 1]],
-    'YM-K1501'          : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [9, 0, 9, 9, 9, 9, 9, 9]],
-    'YM-K1501EU'        : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [9, 0, 9, 9, 9, 9, 9, 9]],
-    'V-SK152'           : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [9, 0, 9, 9, 9, 9, 9, 9]],
-    'SJWS01LM'          : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 9, 9, 9, 0, 9, 9, 1]],
-    'MJYD02YL'          : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0], [9, 9, 9, 0, 9, 1, 9, 2]],
-    'MUE4094RT'         : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 0, 9, 9]],
-    'RTCGQ02LM'         : [[9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1], [9, 9, 9, 0, 9, 1, 9, 2]],
-    'CGPR1'             : [[9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1], [9, 9, 9, 9, 9, 0, 9, 1]],
-    'MMC-T201-1'        : [[0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'M1S-T500'          : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 1], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'YLAI003'           : [[9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'YLYK01YL'          : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [0, 9, 9, 9, 9, 9, 9, 9]],
-    'YLYK01YL-FANCL'    : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'YLYK01YL-VENFAN'   : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'YLYB01YL-BHFRC'    : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'YLKG07YL/YLKG08YL' : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'ATC'               : [[0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 3, 2], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'Mi Scale V1'       : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 1, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9, 0, 9]],
-    'Mi Scale V2'       : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 1, 2, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9, 0, 9]],
-    'Kegtron KT-100'    : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9], [9, 9, 9, 9, 9, 9, 9, 9]],
-    'Kegtron KT-200'    : [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9], [9, 9, 9, 9, 9, 9, 9, 9]],
+# Dictionary with the available sensors
+SENSOR_DICT = {
+    "temperature":              "TemperatureSensor",
+    "humidity":                 "HumiditySensor",
+    "moisture":                 "MoistureSensor",
+    "pressure":                 "PressureSensor",
+    "conductivity":             "ConductivitySensor",
+    "illuminance":              "IlluminanceSensor",
+    "formaldehyde":             "FormaldehydeSensor",
+    "acceleration":             "AccelerationSensor",
+    "consumable":               "ConsumableSensor",
+    "button":                   "ButtonSensor",
+    "remote":                   "RemoteSensor",
+    "fan remote":               "FanRemoteSensor",
+    "ventilator fan remote":    "VentilatorFanRemoteSensor",
+    "bathroom heater remote":   "BathroomHeaterRemoteSensor",
+    "dimmer":                   "DimmerSensor",
+    "weight":                   "WeightSensor",
+    "non-stabilized weight":    "NonStabilizedWeightSensor",
+    "impedance":                "ImpedanceSensor",
+    "toothbrush mode":          "ToothbrushModeSensor",
+    "volume dispensed port 1":  "VolumeDispensedPort1Sensor",
+    "volume dispensed port 2":  "VolumeDispensedPort2Sensor",
+    "voltage":                  "VoltageSensor",
+    "battery":                  "BatterySensor",
+    "one btn switch":           "SingleSwitchSensor",
+    "two btn switch left":      "DoubleSwitchLeftSensor",
+    "two btn switch right":     "DoubleSwitchRightSensor",
+    "three btn switch left":    "TripleSwitchLeftSensor",
+    "three btn switch middle":  "TripleSwitchMiddleSensor",
+    "three btn switch right":   "TripleSwitchRightSensor",
 }
 
-# Dictionary with list with supported measurement sensors (first list) and binary sensor (second list)
+
+# Dictionary with the available binary sensors
+BINARY_SENSOR_DICT = {
+    "remote single press":     "RemoteSinglePressBinarySensor",
+    "remote long press":       "RemoteLongPressBinarySensor",
+    "switch":                  "PowerBinarySensor",
+    "opening":                 "OpeningBinarySensor",
+    "light":                   "LightBinarySensor",
+    "moisture":                "MoistureBinarySensor",
+    "motion":                  "MotionBinarySensor",
+    "weight removed":          "WeightRemovedBinarySensor",
+    "smoke detector":          "SmokeDetectorBinarySensor",
+}
+
+
+# Dictionary with supported sensors
+# Format {device: [averaging sensor list], [instantly updating sensor list],[binary sensor list]}:
+# - [averaging sensor list]:            sensors that update the state after avering of the data
+# - [instantly updating sensor list]:   sensors that update the state instantly after new data
+# - [binary sensor list]:               binary sensors
 MEASUREMENT_DICT = {
-    'LYWSDCGQ'          : [["temperature", "humidity", "battery"], []],
-    'CGG1'              : [["temperature", "humidity", "battery"], []],
-    'CGG1-ENCRYPTED'    : [["temperature", "humidity", "battery"], []],
-    'CGDK2'             : [["temperature", "humidity", "battery"], []],
-    'LYWSD02'           : [["temperature", "humidity", "battery"], []],
-    'LYWSD03MMC'        : [["temperature", "humidity", "battery", "voltage"], []],
-    'CGD1'              : [["temperature", "humidity", "battery"], []],
-    'CGP1W'             : [["temperature", "humidity", "battery", "pressure"], []],
-    'MHO-C401'          : [["temperature", "humidity", "battery"], []],
-    'MHO-C303'          : [["temperature", "humidity", "battery"], []],
-    'JQJCY01YM'         : [["temperature", "humidity", "battery", "formaldehyde"], []],
-    'HHCCJCY01'         : [["temperature", "moisture", "conductivity", "illuminance", "remote"], ["remote binary"]],
-    'GCLS002'           : [["temperature", "moisture", "conductivity", "illuminance"], []],
-    'HHCCPOT002'        : [["moisture", "conductivity"], []],
-    'WX08ZM'            : [["consumable", "battery"], ["switch", "battery"]],
-    'MCCGQ02HL'         : [["battery"], ["opening", "light", "battery"]],
-    'CGH1'              : [["battery"], ["opening", "battery"]],
-    'YM-K1501'          : [["temperature"], ["switch"]],
-    'YM-K1501EU'        : [["temperature"], ["switch"]],
-    'V-SK152'           : [["temperature"], ["switch"]],
-    'SJWS01LM'          : [["battery"], ["moisture", "battery"]],
-    'MJYD02YL'          : [["battery"], ["light", "motion", "battery"]],
-    'MUE4094RT'         : [[], ["motion"]],
-    'RTCGQ02LM'         : [["button"], ["light", "motion", "battery"]],
-    'CGPR1'             : [["illuminance", "battery"], ["motion", "battery"]],
-    'MMC-T201-1'        : [["temperature", "battery"], []],
-    'M1S-T500'          : [["toothbrush mode", "battery"], []],
-    'YLAI003'           : [["button", "battery"], []],
-    'YLYK01YL'          : [["remote"], ["remote binary"]],
-    'YLYK01YL-FANCL'    : [["fan remote"], []],
-    'YLYK01YL-VENFAN'   : [["byte_1"], []],
-    'YLYB01YL-BHFRC'    : [["bathroom heater remote"], []],
-    'YLKG07YL/YLKG08YL' : [["dimmer"], []],
-    'ATC'               : [["temperature", "humidity", "battery", "voltage"], []],
-    'Mi Scale V1'       : [["weight", "non-stabilized weight"], ["weight removed"]],
-    'Mi Scale V2'       : [["weight", "non-stabilized weight", "impedance"], ["weight removed"]],
-    'Kegtron KT-100'    : [["volume dispensed"], []],
-    'Kegtron KT-200'    : [["volume dispensed"], []],
+    'LYWSDCGQ'                : [["temperature", "humidity", "battery"], [], []],
+    'LYWSD02'                 : [["temperature", "humidity", "battery"], [], []],
+    'LYWSD03MMC'              : [["temperature", "humidity", "battery", "voltage"], [], []],
+    'HHCCJCY01'               : [["temperature", "moisture", "conductivity", "illuminance"], [], []],
+    'GCLS002'                 : [["temperature", "moisture", "conductivity", "illuminance"], [], []],
+    'HHCCPOT002'              : [["moisture", "conductivity"], [], []],
+    'WX08ZM'                  : [["consumable", "battery"], [], ["switch"]],
+    'MCCGQ02HL'               : [["battery"], [], ["opening", "light"]],
+    'YM-K1501'                : [[], ["temperature"], ["switch"]],
+    'YM-K1501EU'              : [[], ["temperature"], ["switch"]],
+    'V-SK152'                 : [[], ["temperature"], ["switch"]],
+    'SJWS01LM'                : [["battery"], [], ["moisture"]],
+    'MJYD02YL'                : [["battery"], [], ["light", "motion"]],
+    'MUE4094RT'               : [[], [], ["motion"]],
+    'RTCGQ02LM'               : [[], ["button"], ["light", "motion"]],
+    'MMC-T201-1'              : [["temperature", "battery"], [], []],
+    'M1S-T500'                : [["battery"], ["toothbrush mode"], []],
+    'CGC1'                    : [["temperature", "humidity", "battery"], [], []],
+    'CGD1'                    : [["temperature", "humidity", "battery"], [], []],
+    'CGDK2'                   : [["temperature", "humidity", "battery"], [], []],
+    'CGG1'                    : [["temperature", "humidity", "battery"], [], []],
+    'CGG1-ENCRYPTED'          : [["temperature", "humidity", "battery"], [], []],
+    'CGH1'                    : [["battery"], [], ["opening"]],
+    'CGP1W'                   : [["temperature", "humidity", "battery", "pressure"], [], []],
+    'CGPR1'                   : [["illuminance", "battery"], [], ["motion"]],
+    'MHO-C401'                : [["temperature", "humidity", "battery"], [], []],
+    'MHO-C303'                : [["temperature", "humidity", "battery"], [], []],
+    'JQJCY01YM'               : [["temperature", "humidity", "battery", "formaldehyde"], [], []],
+    'JTYJGD03MI'              : [[], ["button", "battery"], ["smoke detector"]],
+    'K9B-1BTN'                : [[], ["one btn switch"], []],
+    'K9B-2BTN'                : [[], ["two btn switch left", "two btn switch right"], []],
+    'K9B-3BTN'                : [[], ["three btn switch left", "three btn switch middle", "three btn switch right"], []],
+    'YLAI003'                 : [[], ["button", "battery"], []],
+    'YLYK01YL'                : [[], ["remote"], ["remote single press", "remote long press"]],
+    'YLYK01YL-FANCL'          : [[], ["fan remote"], []],
+    'YLYK01YL-VENFAN'         : [[], ["ventilator fan remote"], []],
+    'YLYB01YL-BHFRC'          : [[], ["bathroom heater remote"], []],
+    'YLKG07YL/YLKG08YL'       : [[], ["dimmer"], []],
+    'ATC'                     : [["temperature", "humidity", "battery", "voltage"], [], []],
+    'Mi Scale V1'             : [[], ["weight", "non-stabilized weight"], ["weight removed"]],
+    'Mi Scale V2'             : [[], ["weight", "non-stabilized weight", "impedance"], ["weight removed"]],
+    'Kegtron KT-100'          : [[], ["volume dispensed port 1"], []],
+    'Kegtron KT-200'          : [[], ["volume dispensed port 1", "volume dispensed port 2"], []],
+    'Smart hygrometer'        : [["temperature", "humidity", "battery", "voltage"], [], []],
+    'Lanyard/mini hygrometer' : [["temperature", "humidity", "battery", "voltage"], [], []],
+    'T201'                    : [["temperature", "humidity", "battery", "voltage"], [], []],
+    'H5074'                   : [["temperature", "humidity", "battery"], [], []],
+    'Ruuvitag'                : [["temperature", "humidity", "pressure", "battery", "voltage"], ["acceleration"], ["motion"]],
 }
 
 KETTLES = ('YM-K1501', 'YM-K1501EU', 'V-SK152')
 
 # Sensor manufacturer dictionary
 MANUFACTURER_DICT = {
-    'LYWSDCGQ'          : 'Xiaomi',
-    'CGG1'              : 'Qingping',
-    'CGG1-ENCRYPTED'    : 'Qingping',
-    'CGDK2'             : 'Qingping',
-    'LYWSD02'           : 'Xiaomi',
-    'LYWSD03MMC'        : 'Xiaomi',
-    'CGD1'              : 'Qingping',
-    'CGP1W'             : 'Qingping',
-    'MHO-C401'          : 'Miaomiaoce',
-    'MHO-C303'          : 'Miaomiaoce',
-    'JQJCY01YM'         : 'Honeywell',
-    'HHCCJCY01'         : 'Xiaomi',
-    'GCLS002'           : 'Xiaomi',
-    'HHCCPOT002'        : 'Xiaomi',
-    'WX08ZM'            : 'Xiaomi',
-    'MCCGQ02HL'         : 'Xiaomi',
-    'CGH1'              : 'Qingping',
-    'YM-K1501'          : 'Xiaomi',
-    'YM-K1501EU'        : 'Xiaomi',
-    'V-SK152'           : 'Viomi',
-    'SJWS01LM'          : 'Xiaomi',
-    'MJYD02YL'          : 'Xiaomi',
-    'MUE4094RT'         : 'Xiaomi',
-    'RTCGQ02LM'         : 'Xiaomi',
-    'CGPR1'             : 'Qingping',
-    'MMC-T201-1'        : 'Xiaomi',
-    'M1S-T500'          : 'Xiaomi Soocas',
-    'YLAI003'           : 'Yeelight',
-    'YLYK01YL'          : 'Yeelight',
-    'YLYK01YL-FANCL'    : 'Yeelight',
-    'YLYK01YL-VENFAN'   : 'Yeelight',
-    'YLYB01YL-BHFRC'    : 'Yeelight',
-    'YLKG07YL/YLKG08YL' : 'Yeelight',
-    'ATC'               : 'ATC',
-    'Mi Scale V1'       : 'Xiaomi',
-    'Mi Scale V2'       : 'Xiaomi',
-    'Kegtron KT-100'    : 'Kegtron',
-    'Kegtron KT-200'    : 'Kegtron',
+    'LYWSDCGQ'                : 'Xiaomi',
+    'LYWSD02'                 : 'Xiaomi',
+    'LYWSD03MMC'              : 'Xiaomi',
+    'HHCCJCY01'               : 'Xiaomi',
+    'GCLS002'                 : 'Xiaomi',
+    'HHCCPOT002'              : 'Xiaomi',
+    'WX08ZM'                  : 'Xiaomi',
+    'MCCGQ02HL'               : 'Xiaomi',
+    'YM-K1501'                : 'Xiaomi',
+    'YM-K1501EU'              : 'Xiaomi',
+    'V-SK152'                 : 'Viomi',
+    'SJWS01LM'                : 'Xiaomi',
+    'MJYD02YL'                : 'Xiaomi',
+    'MUE4094RT'               : 'Xiaomi',
+    'RTCGQ02LM'               : 'Xiaomi',
+    'MMC-T201-1'              : 'Xiaomi',
+    'M1S-T500'                : 'Xiaomi Soocas',
+    'CGC1'                    : 'Qingping',
+    'CGD1'                    : 'Qingping',
+    'CGDK2'                   : 'Qingping',
+    'CGG1'                    : 'Qingping',
+    'CGG1-ENCRYPTED'          : 'Qingping',
+    'CGH1'                    : 'Qingping',
+    'CGP1W'                   : 'Qingping',
+    'CGPR1'                   : 'Qingping',
+    'MHO-C401'                : 'Miaomiaoce',
+    'MHO-C303'                : 'Miaomiaoce',
+    'JQJCY01YM'               : 'Honeywell',
+    'JTYJGD03MI'              : 'Honeywell',
+    'YLAI003'                 : 'Yeelight',
+    'YLYK01YL'                : 'Yeelight',
+    'YLYK01YL-FANCL'          : 'Yeelight',
+    'YLYK01YL-VENFAN'         : 'Yeelight',
+    'YLYB01YL-BHFRC'          : 'Yeelight',
+    'YLKG07YL/YLKG08YL'       : 'Yeelight',
+    'K9B-1BTN'                : 'Linptech',
+    'K9B-2BTN'                : 'Linptech',
+    'K9B-3BTN'                : 'Linptech',
+    'ATC'                     : 'ATC',
+    'Mi Scale V1'             : 'Xiaomi',
+    'Mi Scale V2'             : 'Xiaomi',
+    'Kegtron KT-100'          : 'Kegtron',
+    'Kegtron KT-200'          : 'Kegtron',
+    'Smart hygrometer'        : 'Thermoplus',
+    'Lanyard/mini hygrometer' : 'Thermoplus',
+    'T201'                    : 'Brifit',
+    'H5074'                   : 'Govee',
+    'Ruuvitag'                : 'Ruuvitag',
 }

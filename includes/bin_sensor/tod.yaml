@@ -51,10 +51,10 @@
 #     after: '10:00'
 #     before: '22:00'
 
-  - platform: tod
-    name: day_tarif
-    after: '07:00'
-    before: '23:00'
+#   - platform: tod
+#     name: day_tarif
+#     after: '07:00'
+#     before: '23:00'
 
 
   - platform: template

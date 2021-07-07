@@ -25,11 +25,11 @@ def parse_kegtron(self, data, source_mac, rssi):
     if msg_length == 31:
         firmware = "Kegtron"
         kegtron_mac = source_mac
-        (sensor_id,) = unpack(">B", data[10:11])
-        if sensor_id & (1 << 6):
-            sensor_type = "Kegtron KT-200"
+        (device_id,) = unpack(">B", data[10:11])
+        if device_id & (1 << 6):
+            device_type = "Kegtron KT-200"
         else:
-            sensor_type = "Kegtron KT-100"
+            device_type = "Kegtron KT-100"
 
         xvalue = data[4:]
 
@@ -60,19 +60,26 @@ def parse_kegtron(self, data, source_mac, rssi):
         result = {
             "keg size": keg_size,
             "volume start": vol_start / 1000,
-            "volume dispensed": vol_disp / 1000,
             "port state": port_state,
             "port index": port_index,
             "port count": port_count,
             "port name": port_name
         }
+
+        if port_index == 1:
+            result.update({"volume dispensed port 1": vol_disp / 1000})
+        elif port_index == 2:
+            result.update({"volume dispensed port 2": vol_disp / 1000})
+        else:
+            return None
+
         # check for MAC presence in whitelist, if needed
         if self.discovery is False and kegtron_mac.lower() not in self.whitelist:
             _LOGGER.debug("Discovery is disabled. MAC: %s is not whitelisted!", to_mac(kegtron_mac))
             return None
 
         result.update({
-            "type": sensor_type,
+            "type": device_type,
             "firmware": firmware,
             "mac": ''.join('{:02X}'.format(x) for x in kegtron_mac),
             "packet": "no packet id",

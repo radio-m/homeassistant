@@ -1,0 +1,17 @@
+title: Стиральная машина
+icon: mdi:washing-machine
+background: center / cover no-repeat fixed url('/local/Pictures/bg.jpg')
+cards:
+
+    - type: vertical-stack
+      cards:
+
+      - type: glance
+        # title: Стиральная машина
+        show_name: true
+        show_state: true
+        show_icon: false
+        entities:
+            - sensor.stiralnaia_mashina_washer_completion_time
+            - sensor.stiralnaia_mashina_washer_job_state
+            - sensor.stiralnaia_mashina_washer_machine_state

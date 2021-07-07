@@ -8,6 +8,8 @@
     - !include lovelace/05_ESPHome.yaml
 
     - !include lovelace/07_zigbee2mqtt.yaml
+    - !include lovelace/08_washing_machine.yaml
+    - !include lovelace/09_boiler.yaml
 #   - !include lovelace/.yaml
 
   resources:
@@ -19,8 +21,6 @@
       type: js
     - url: /hacsfiles/lovelace-fold-entity-row/fold-entity-row.js
       type: module
-    - url: /hacsfiles/bignumber-card/bignumber-card.js
-      type: js
     - url: /hacsfiles/secondaryinfo-entity-row/secondaryinfo-entity-row.js
       type: module
     - url: /hacsfiles/lovelace-card-tools/card-tools.js
@@ -29,11 +29,13 @@
       type: module
     - url: /hacsfiles/lovelace-card-mod/card-mod.js
       type: module
-    - url: /hacsfiles/button-card/button-card.js
-      type: module
     - url: /hacsfiles/lovelace-multiple-entity-row/multiple-entity-row.js
       type: module
     - url: /hacsfiles/battery-state-card/battery-state-card.js
       type: module
     - url: /hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js
+      type: module
+    - url: /hacsfiles/bar-card/bar-card.js
+      type: module
+    - url: /hacsfiles/timer-bar-card/timer-bar-card.js
       type: module

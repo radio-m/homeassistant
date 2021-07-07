@@ -26,7 +26,6 @@ from homeassistant.helpers.entity_registry import (
 
 from .ble_parser import ble_parser, hci_get_mac
 from .const import (
-    DEFAULT_ROUNDING,
     DEFAULT_DECIMALS,
     DEFAULT_PERIOD,
     DEFAULT_LOG_SPIKES,
@@ -40,7 +39,6 @@ from .const import (
     DEFAULT_DEVICE_USE_MEDIAN,
     DEFAULT_DEVICE_RESTORE_STATE,
     DEFAULT_DEVICE_RESET_TIMER,
-    CONF_ROUNDING,
     CONF_DECIMALS,
     CONF_PERIOD,
     CONF_LOG_SPIKES,
@@ -110,10 +108,9 @@ DEVICE_SCHEMA = vol.Schema(
 CONFIG_SCHEMA = vol.Schema(
     {
         DOMAIN: vol.All(
-            cv.deprecated(CONF_ROUNDING),
+            cv.deprecated(CONF_BATT_ENTITIES),
             vol.Schema(
                 {
-                    vol.Optional(CONF_ROUNDING, default=DEFAULT_ROUNDING): cv.positive_int,
                     vol.Optional(CONF_DECIMALS, default=DEFAULT_DECIMALS): cv.positive_int,
                     vol.Optional(CONF_PERIOD, default=DEFAULT_PERIOD): cv.positive_int,
                     vol.Optional(CONF_LOG_SPIKES, default=DEFAULT_LOG_SPIKES): cv.boolean,
@@ -136,7 +133,7 @@ CONFIG_SCHEMA = vol.Schema(
                     vol.Optional(
                         CONF_REPORT_UNKNOWN, default=DEFAULT_REPORT_UNKNOWN
                     ): vol.In(
-                        ["Xiaomi", "Qingping", "ATC", "Mi Scale", "Kegtron", "Other", False]
+                        ["Xiaomi", "Qingping", "ATC", "Mi Scale", "Kegtron", "Thermoplus", "Brifit", "Govee", "Ruuvitag", "Other", False]
                     ),
                 }
             )
@@ -437,6 +434,7 @@ class HCIdump(Thread):
         self._joining = False
         self.evt_cnt = 0
         self.lpacket_ids = {}
+        self.movements_list = {}
         self.adv_priority = {}
         self.config = config
         self._interfaces = config[CONF_HCI_INTERFACE]
@@ -486,8 +484,10 @@ class HCIdump(Thread):
         if msg:
             measurements = list(msg.keys())
             device_type = msg["type"]
-            measuring = any(x in measurements for x in MEASUREMENT_DICT[device_type][0])
-            binary = any(x in measurements for x in MEASUREMENT_DICT[device_type][1])
+            sensor_list = MEASUREMENT_DICT[device_type][0] + MEASUREMENT_DICT[device_type][1]
+            binary_list = MEASUREMENT_DICT[device_type][2] + ["battery"]
+            measuring = any(x in measurements for x in sensor_list)
+            binary = any(x in measurements for x in binary_list)
             if binary == measuring:
                 self.dataqueue_bin.sync_q.put_nowait(msg)
                 self.dataqueue_meas.sync_q.put_nowait(msg)

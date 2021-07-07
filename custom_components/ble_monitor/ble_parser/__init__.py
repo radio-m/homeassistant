@@ -3,10 +3,14 @@ import logging
 import subprocess
 
 from .atc import parse_atc
+from .brifit import parse_brifit
+from .govee import parse_govee
 from .kegtron import parse_kegtron
 from .miscale import parse_miscale
-from .xiaomi import XiaomiMiBeaconParser
+from .xiaomi import parse_xiaomi
 from .qingping import parse_qingping
+from .ruuvitag import parse_ruuvitag
+from .thermoplus import parse_thermoplus
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -45,25 +49,35 @@ def ble_parser(self, data):
             adstruct = data[adpayload_start:adpayload_start + adstuct_size]
             # https://www.bluetooth.com/specifications/assigned-numbers/generic-access-profile/
             adstuct_type = adstruct[1]
-            # AD type 'UUI16' https://www.bluetooth.com/specifications/assigned-numbers/
             if adstuct_type == 0x16 and adstuct_size > 4:
-                # check for service data of supported manufacturers
+                # AD type 'UUI16' https://www.bluetooth.com/specifications/assigned-numbers/
                 uuid16 = (adstruct[3] << 8) | adstruct[2]
+                # check for service data of supported manufacturers
                 if uuid16 == 0xFFF9 or uuid16 == 0xFDCD:  # UUID16 = Cleargrass or Qingping
                     return parse_qingping(self, adstruct, mac, rssi)
                 elif uuid16 == 0x181A:  # UUID16 = ATC
                     return parse_atc(self, adstruct, mac, rssi)
                 elif uuid16 == 0xFE95:  # UUID16 = Xiaomi
-                    xiaomi_index = data.find(b'\x16\x95\xFE', 15 + 15 if is_ext_packet else 0)
-                    if xiaomi_index != -1:
-                        return XiaomiMiBeaconParser.decode(self, data, xiaomi_index, is_ext_packet)
-                    else:
-                        return None
+                    return parse_xiaomi(self, adstruct, mac, rssi)
                 elif uuid16 == 0x181D or uuid16 == 0x181B:  # UUID16 = Mi Scale
                     return parse_miscale(self, adstruct, mac, rssi)
-            elif adstuct_type == 0xFF:  # AD type 'Manufacturer Specific Data'
-                if adstruct[0] == 0x1E and adstruct[2] == 0xFF and adstruct[3] == 0xFF:
+                elif uuid16 == 0xFEAA:  # UUID16 = Ruuvitag V2/V4
+                    return parse_ruuvitag(self, adstruct, mac, rssi)
+            elif adstuct_type == 0xFF:
+                # AD type 'Manufacturer Specific Data' with company identifier
+                # https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers/
+                comp_id = (adstruct[3] << 8) | adstruct[2]
+                # check for service data of supported companies
+                if adstruct[0] == 0x1E and comp_id == 0xFFFF:  # Kegtron
                     return parse_kegtron(self, adstruct, mac, rssi)
+                if adstruct[0] == 0x15 and (comp_id == 0x0010 or comp_id == 0x0011):  # Thermoplus
+                    return parse_thermoplus(self, adstruct, mac, rssi)
+                # if adstruct[0] == 0x0A and comp_id == 0xEC88:  # Govee
+                    # return parse_govee(self, adstruct, mac, rssi)
+                if comp_id == 0x0499:  # Ruuvitag V3/V5
+                    return parse_ruuvitag(self, adstruct, mac, rssi)
+                if adstruct[0] == 0x14 and (comp_id == 0xaa55):  # Brifit
+                    return parse_brifit(self, adstruct, mac, rssi)
             elif adstuct_type > 0x3D:
                 # AD type not standard
                 if self.report_unknown == "Other":

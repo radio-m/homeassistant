@@ -39,6 +39,29 @@ cards:
         url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=11
         aspect_ratio: 35%
 
+    - type: custom:canvas-gauge-card
+      entity:
+        - sensor.load_input_energy
+      card_height: 180
+      gauge:
+          type: "radial-gauge"
+          title: Мощность Вт
+          width: 220
+          height: 200
+          minValue: 0
+          maxValue: 10000
+          startAngle: 45
+          ticksAngle: 270
+          valueBox: true
+          majorTicks: ["0", "1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"]
+          minorTicks: 4
+          strokeTicks: true
+          highlights: [{"from": 0, "to": 5000,"color": "rgba(10, 255, 0, .75)"},{"from": 5000, "to": 7000,"color": "rgba(255, 255, 0, .75)"},{"from": 7000, "to": 9000,"color": "rgba(255, 140, 0, .75)"}, {"from": 9000, "to": 10000,"color": "rgba(255, 0, 0, .75)"}]
+          borderShadowWidth: 0
+          borderOuterWidth: 0
+          borderMiddleWidth: 0
+          borderInnerWidth: 0
+
     - type: entities
       show_header_toggle: false
       entities:
@@ -597,74 +620,12 @@ cards:
     - type: vertical-stack
       cards:
 
-      - type: glance
-        show_name: false
-        show_state: false
-        entities:
-          - entity: sensor.boiler_power_state
-            name: Бойлер
-          - entity: binary_sensor.dishwasher
-            name: Посудомойка
-        #   - entity: binary_sensor.washing_machine
-        #     name: Стиралка
-          - entity: binary_sensor.day_tarif_template
-            name: 23-07
-          - entity: binary_sensor.boiler_timer
-            name: Таймер
-
-      - type: glance
-        # title: Стиральная машина
-        show_name: true
-        show_state: true
-        show_icon: false
-        entities:
-            - sensor.stiralnaia_mashina_washer_completion_time
-            - sensor.stiralnaia_mashina_washer_job_state
-            - sensor.stiralnaia_mashina_washer_machine_state
-
       - type: entities
         show_header_toggle: false
         entities:
         - entity: switch.dishwasher
         - entity: sensor.dishwasher_voltage
           name: "Напряжение на розетке посудомойки"
-
-      - type: entities
-        show_header_toggle: false
-        entities:
-        - entity: switch.broadlink_1
-          secondary_info: last-changed
-
-        - entity: sensor.boiler
-          type: custom:multiple-entity-row
-          name: Бойлер
-          show_state: false
-          entities:
-            - entity: sensor.bw_shp8_voltage
-              name: Напряжение
-            - entity: sensor.boiler
-              name: Температура
-
-        - type: attribute
-          entity: sensor.boiler_on_today
-          name: "Бойлер сегодня включен"
-          attribute: value
-
-
-        - type: custom:fold-entity-row
-          head:
-            type: section
-            label: 'Автоматика бойлера'
-          entities:
-            - automation.boiler_vykliuchit_kogda_napriazhenie_nizhe_zadannogo
-            - automation.boiler_vkliuchit_kogda_zakonchilsia_taimer
-            - entity: timer.boiler_low_voltage
-              secondary_info: last-changed
-            - entity: input_number.boiler_voltage
-            - entity: input_datetime.boiler_start
-            - entity: input_datetime.boiler_stop
-          group_config: 
-            secondary_info: last-triggered
 
       - type: entities
         show_header_toggle: false

@@ -30,12 +30,12 @@
           sequence:
             - service: switch.turn_on
               data:
-                entity_id: switch.undertabble_mi_wifi_socket
+                entity_id: switch.broadlink_2
         - conditions: "{{ trigger.to_state.state == 'off' }}"
           sequence:
             - service: switch.turn_off
               data:
-                entity_id: switch.undertabble_mi_wifi_socket
+                entity_id: switch.broadlink_2
 
 - alias: Мой ПК - выключение по таймеру
   id: "Мой ПК - выключение по таймеру"

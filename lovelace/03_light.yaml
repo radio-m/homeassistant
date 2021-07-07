@@ -1,5 +1,7 @@
 title: "Свет"
 icon: mdi:lightbulb
+background: center / cover no-repeat fixed url('/local/Pictures/Led4.jpg')
+
 cards:
   - type: horizontal-stack
     cards:
@@ -124,7 +126,7 @@ cards:
         state_color: true
         icon: mdi:desktop-classic
       - type: button
-        entity: switch.undertabble_mi_wifi_socket
+        entity: switch.broadlink_2
         name: "Монитор"
         state_color: true
         icon: mdi:monitor-speaker

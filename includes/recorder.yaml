@@ -36,17 +36,19 @@
 #Mi
       - sensor.m_bedroom_temperature
       - sensor.c_bedroom_temperature
-      - sensor.g_bedroom_temperature
+      - sensor.bathroom_temperature
 
       - sensor.m_bedroom_humidity
       - sensor.c_bedroom_humidity
-      - sensor.g_bedroom_humidity
+      - sensor.bathroom_humidity
 #SONOff
       - sensor.basement_temp_temperature
       - sensor.lumber_temp_temperature
       
       - sensor.basement_temp_humidity
       - sensor.lumber_temp_humidity
+      
+      - binary_sensor.sonoff_mini_001_relay
 
 #BT sensors
       - sensor.ble_humidity_c_bedroom_bt
@@ -104,6 +106,9 @@
       - binary_sensor.boiler
       - sensor.c_bedroom_temperature_median
       - sensor.c_bedroom_humidity_median
+      - sensor.home_humidity_median
+      
+
 
 #Boiler automation
       - binary_sensor.boiler

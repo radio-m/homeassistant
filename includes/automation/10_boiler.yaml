@@ -36,8 +36,8 @@
     platform: homeassistant
   condition:
   - condition: state
-    entity_id: binary_sensor.boiler_time
-    state: 'on'
+    entity_id: binary_sensor.day_tarif_template
+    state: 'off'
   - condition: state
     entity_id: switch.broadlink_1
     state: 'off'
@@ -59,8 +59,8 @@
     platform: homeassistant
   condition:
   - condition: state
-    entity_id: binary_sensor.boiler_time
-    state: 'off'
+    entity_id: binary_sensor.day_tarif_template
+    state: 'on'
   - condition: state
     entity_id: switch.broadlink_1
     state: 'on'
@@ -95,13 +95,10 @@
     to: 'off'
   condition:
   - condition: state
-    entity_id: binary_sensor.boiler_time
-    state: 'on'
-  - condition: state
-    entity_id: switch.broadlink_1
+    entity_id: binary_sensor.day_tarif_template
     state: 'off'
   - condition: state
-    entity_id: binary_sensor.boiler_timer
+    entity_id: switch.broadlink_1
     state: 'off'
   action:
   - service: switch.turn_on
@@ -131,13 +128,13 @@
 #     to: 'off'
 #   condition:
 #   - condition: state
-#     entity_id: binary_sensor.boiler_time
+#     entity_id: binary_sensor.day_tarif_template
 #     state: 'on'
 #   - condition: state
 #     entity_id: switch.broadlink_1
 #     state: 'off'
 #   - condition: state
-#     entity_id: binary_sensor.boiler_timer
+#     entity_id: binary_sensor.day_tarif_templater
 #     state: 'off'
 #   action:
 #   - service: switch.turn_on
@@ -193,8 +190,8 @@
   condition:
 #   - "{{ states('sensor.input_voltage') | int < states('input_number.boiler_voltage') | int }}"
   - condition: state
-    entity_id: binary_sensor.boiler_time
-    state: 'on'
+    entity_id: binary_sensor.day_tarif_template
+    state: 'off'
   - condition: state
     entity_id: switch.broadlink_1
     state: 'on'
@@ -225,8 +222,8 @@
       entity_id: timer.boiler_low_voltage
   condition:
   - condition: state
-    entity_id: binary_sensor.boiler_time
-    state: 'on'
+    entity_id: binary_sensor.day_tarif_template
+    state: 'off'
   - condition: state
     entity_id: switch.broadlink_1
     state: 'off'
