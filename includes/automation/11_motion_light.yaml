@@ -102,3 +102,60 @@
 #     - service: timer.start
 #       entity_id: timer.bath_light
 
+- id: "Датчик движения - коридор - включить подсветку"
+  alias: Датчик движения - коридор - включить подсветку
+  trigger:
+    - platform: state
+      to: "on"
+      entity_id: binary_sensor.motion_sensor_occupancy
+  condition:
+    # - condition: time
+    #   after: 00:00:00
+    - condition: sun
+      before: sunrise
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.gateway_led
+        brightness_pct: 1
+    - service: light.turn_on
+      data:
+        entity_id: light.coridor_rgb
+        brightness_pct: 2
+        
+- id: "Датчик движения - коридор - выключить подсветку"
+  alias: Датчик движения - коридор - выключить подсветку
+  trigger:
+    - platform: state
+      to: "off"
+      entity_id: binary_sensor.motion_sensor_occupancy
+  condition:
+    - condition: state
+      entity_id: light.gateway_led
+      state: 'on'
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.gateway_led
+    - service: light.turn_off
+      data:
+        entity_id: light.coridor_rgb
+
+- alias: Датчик движения - прихожая - выключить свет
+  id: "Датчик движения - прихожая - выключить свет"
+  trigger:
+    - platform: state
+      to: "off"
+      entity_id: binary_sensor.bath_motion_sensor_occupancy
+  condition:
+    - condition: state
+      entity_id: light.entrance
+      state: 'on'
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.entrance
+
+
+
+

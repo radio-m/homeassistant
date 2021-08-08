@@ -78,5 +78,21 @@
       data:
          message: "Напряжение выше 230V"
 
+- alias: Notify Задымление на кухне
+  id: "Notify Задымление на кухне"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.ty5567830684cca8b8f799
+    to: 'ON'
+  action:
+    - service: notify.telegram
+      data:
+         message: "🚒🚒🚒 Задымление на кухне!!!"
+
+
+
+
+
+
 
 

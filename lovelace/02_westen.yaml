@@ -144,12 +144,21 @@ cards:
       - type: entities
         state_color: true
         entities:
-          - entity: switch.humidifier
+          - entity: switch.humidity_mode
+            type: custom:multiple-entity-row
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.c_bedroom_humidity
+                name: Влажность
             secondary_info: last-changed
-          - entity: input_number.c_bedroom_humidity
+          - entity: input_number.humidity_level
           - entity: binary_sensor.ble_opening_door_sensor
             secondary_info: last-changed
             name: Дверь в детскую
+          - entity: switch.humidifier
+            secondary_info: last-changed
+            name: Увлажнитель
 
   - type: vertical-stack
     cards:

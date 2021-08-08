@@ -6,21 +6,21 @@ cards:
     - type: entities
       show_header_toggle: false
       entities:
-      - entity: sensor.load_broadlink_1
+      - entity: sensor.load_bw_shp8
         secondary_info: >-
           сегодня: <b>[[
-          sensor.mqtt_power_today_broadlink_1.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_today_bw_shp8.state ]]</b> кВт⋅ч<br>
           этот месяц: <b>[[
-          sensor.mqtt_power_month_broadlink_1.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_month_bw_shp8.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_month_broadlink_1.state
+          sensor.money_month_bw_shp8.state
           ]]</b> грн<br>
           вчера: <b>[[
-          sensor.mqtt_power_yesterday_broadlink_1.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_yesterday_bw_shp8.state ]]</b> кВт⋅ч<br>
           прошлый месяц: <b>[[
-          sensor.mqtt_power_lastmonth_broadlink_1.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_lastmonth_bw_shp8.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_lastmonth_broadlink_1.state ]]</b> грн
+          sensor.money_lastmonth_bw_shp8.state ]]</b> грн
         type: 'custom:secondaryinfo-entity-row'
 
     - type: vertical-stack
@@ -34,8 +34,8 @@ cards:
             name: Бойлер
           - entity: binary_sensor.dishwasher
             name: Посудомойка
-        #   - entity: binary_sensor.washing_machine
-        #     name: Стиралка
+          - entity: binary_sensor.washing_machine
+            name: Стиралка
           - entity: binary_sensor.day_tarif_template
             name: 23-07
           - entity: binary_sensor.boiler_timer
@@ -44,19 +44,31 @@ cards:
 
       - type: entities
         show_header_toggle: false
+        state_color: true
         entities:
-        - entity: switch.broadlink_1
-          secondary_info: last-changed
+        - entity: climate.boiler_thermostat
 
-        - entity: sensor.boiler
+        - entity: sensor.bw_shp8_ds18b20
           type: custom:multiple-entity-row
           name: Бойлер
           show_state: false
           entities:
             - entity: sensor.bw_shp8_voltage
               name: Напряжение
-            - entity: sensor.boiler
+            - entity: sensor.bw_shp8_ds18b20
               name: Температура
+              
+        - entity: sensor.bw_shp8_power
+          type: custom:multiple-entity-row
+          name: Бойлер
+          show_state: false
+          entities:
+            - entity: sensor.bw_shp8_voltage
+              name: Напряжение
+            - entity: sensor.bw_shp8_current
+              name: Ток
+            - entity: sensor.bw_shp8_power
+              name: Мощность
 
         - type: attribute
           entity: sensor.boiler_on_today

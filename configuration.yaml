@@ -5,6 +5,7 @@ homeassistant:
   elevation: !secret elevation
   unit_system: metric
   time_zone: !secret time_zone
+  currency: UAH
   customize: !include_dir_merge_named includes/customize
   packages: !include_dir_merge_named includes/packages
   allowlist_external_dirs :
@@ -60,7 +61,15 @@ telegram_bot:
     allowed_chat_ids:
       - !secret my_chat
       - !secret olga_chat
+      
+notify:
+  - name: telegram
+    platform: telegram
+    chat_id: !secret my_chat
     
+  - name: telegram_olga
+    platform: telegram
+    chat_id: !secret olga_chat
 # Router
 device_tracker:
   - platform: xiaomi
@@ -74,23 +83,28 @@ rest_command:
   narodmon:
     url: http://narodmon.ru/get?ID={{ID}}&T1={{T1}}&H1={{H1}}&P1={{P1}}
 
+panel_custom:
+  - name: config/server_control
+    sidebar_title: Server Controls
+    sidebar_icon: mdi:server
+    module_url: any text
+
+
 sensor: !include_dir_merge_list includes/sensors
 binary_sensor: !include_dir_merge_list includes/bin_sensor
 automation: !include_dir_merge_list includes/automation
 script: !include_dir_merge_named includes/scripts
 switch: !include_dir_merge_list includes/switches
-python_script:
+template: !include_dir_merge_list includes/templates
 
 #Files
 light: !include includes/light.yaml
-scene: !include includes/scenes.yaml
 group: !include includes/groups.yaml
-notify: !include includes/notify.yaml
 timer: !include includes/timer.yaml
 input_boolean: !include includes/input_boolean.yaml
-input_number: !include includes/input_number.yaml
-input_datetime: !include includes/input_datetime.yaml
-remote: !include includes/remote.yaml
+# input_number: !include includes/input_number.yaml
+# input_datetime: !include includes/input_datetime.yaml
+input_select: !include includes/input_select.yaml
 influxdb: !include includes/influxdb.yaml
 
 

@@ -101,11 +101,11 @@
           {% else %} Нет данных {% endif %}
           🌡 {{ state_attr('weather.home_assistant', 'temperature') }} °C  🌬 {{ state_attr('weather.home_assistant', 'wind_speed') }} км/ч
           
-          💡 Бойлер сегодня отработал  {{ state_attr('sensor.boiler_on_today', 'value') }} и сжег {{ states('sensor.mqtt_power_today_broadlink_1') | round(2)}} кВт•ч
+          💡 Бойлер сегодня отработал  {{ state_attr('sensor.boiler_on_today', 'value') }} и сжег {{ states('sensor.mqtt_power_today_bw_shp8') | round(2)}} кВт•ч
           {% set heater = states('sensor.heater_on_today_count') %}
           {% if heater == '0' %}🔥 Котел не включался
           {% else %}🔥 Котел за сутки работал {{ state_attr('sensor.heater_on_today', 'value') }}, ночью включался {{ states('sensor.heater_on_today_count')|format(morph='раз', as_text=false) }}{% endif %}
-          🌡 воды в системе {{states('sensor.water_system')}}, в бойлере {{states('sensor.boiler')}}
+          🌡 воды в системе {{states('sensor.water_system')}}, в бойлере {{states('sensor.bw_shp8_ds18b20')}}
           
           
           

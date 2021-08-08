@@ -77,6 +77,11 @@ cards:
       - entity: sensor.home_humidity_median
         name: Средняя влажность по дому
       - entity: switch.sonoff_mini_001_switch
+      - entity: automation.ventiliatsiia_v_vannoi
+        name: Автоматика
+        icon: mdi:fan
+      - entity: timer.bath_vent
+        name: Таймер
 
   - type: custom:mini-graph-card
     entities:
@@ -117,10 +122,25 @@ cards:
       - sensor.amazfit_gtr_steps
       - sensor.amazfit_gtr_weight
 
+  - type: picture-entity
+    entity: camera.cam_001
 
+  - type: statistics-graph
+    title: 'My Graph'
+    entities:
+      - sensor.pzem_energy_night_tarif
+      - sensor.pzem_energy_day_tarif
+      - sensor.mqtt_power_total_broadlink_1
+      - sensor.mqtt_power_total_broadlink_2
+      - sensor.mqtt_power_total_xiaomi_power_strip
 
-
-
+  - type: entities
+    entities:
+      -  sensor.pzem_energy_night_tarif
+      - sensor.pzem_energy_day_tarif
+      - sensor.mqtt_power_total_broadlink_1
+      - sensor.mqtt_power_total_broadlink_2
+      - sensor.mqtt_power_total_xiaomi_power_strip
 
 
 

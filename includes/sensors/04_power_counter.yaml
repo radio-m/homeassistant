@@ -11,21 +11,29 @@
   state_topic: "power/input_energy/yesterday"
   name: 'mqtt_power_yesterday_input_energy'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
         
 - platform: mqtt
   state_topic: "power/input_energy/today"
   name: 'mqtt_power_today_input_energy'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: mqtt
   state_topic: "power/input_energy/month"
   name: 'mqtt_power_month_input_energy'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
     
 - platform: mqtt
   state_topic: "power/input_energy/lastmonth"
   name: 'mqtt_power_lastmonth_input_energy'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: template
   sensors:
@@ -61,21 +69,36 @@
   state_topic: "power/xiaomi_power_strip/yesterday"
   name: 'mqtt_power_yesterday_xiaomi_power_strip'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
         
 - platform: mqtt
   state_topic: "power/xiaomi_power_strip/today"
   name: 'mqtt_power_today_xiaomi_power_strip'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: mqtt
   state_topic: "power/xiaomi_power_strip/month"
   name: 'mqtt_power_month_xiaomi_power_strip'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
     
 - platform: mqtt
   state_topic: "power/xiaomi_power_strip/lastmonth"
   name: 'mqtt_power_lastmonth_xiaomi_power_strip'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
+  
+- platform: mqtt
+  state_topic: "power/xiaomi_power_strip/total"
+  name: 'mqtt_power_total_xiaomi_power_strip'
+  unit_of_measurement: 'kWh'
+  state_class: measurement
+  device_class: energy
 
 - platform: template
   sensors:
@@ -99,8 +122,8 @@
 - platform: template
   sensors:
     load_broadlink_1:
-      friendly_name: 'Бойлер (broadlink)'
-      value_template: "{{ state_attr('switch.broadlink_1', 'current_power_w') }}"
+      friendly_name: 'Кондиционер'
+      value_template: "{{ states.sensor.broadlink_1_current_power.state }}"
       icon_template: mdi:washing-machine
       unit_of_measurement: 'Вт'
     #   entity_id: switch.broadlink_1
@@ -109,21 +132,36 @@
   state_topic: "power/broadlink_1/yesterday"
   name: 'mqtt_power_yesterday_broadlink_1'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
         
 - platform: mqtt
   state_topic: "power/broadlink_1/today"
   name: 'mqtt_power_today_broadlink_1'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: mqtt
   state_topic: "power/broadlink_1/month"
   name: 'mqtt_power_month_broadlink_1'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
     
 - platform: mqtt
   state_topic: "power/broadlink_1/lastmonth"
   name: 'mqtt_power_lastmonth_broadlink_1'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
+
+- platform: mqtt
+  state_topic: "power/broadlink_1/total"
+  name: 'mqtt_power_total_broadlink_1'
+  unit_of_measurement: 'kWh'
+  state_class: measurement
+  device_class: energy
 
 - platform: template
   sensors:
@@ -147,9 +185,9 @@
 - platform: template
   sensors:
     load_broadlink_2:
-      friendly_name: 'Гирлянда'
-      value_template: "{{ state_attr('switch.broadlink_2', 'current_power_w') }}"
-      icon_template: mdi:washing-machine
+      friendly_name: 'PC accessories'
+      value_template: "{{ states.sensor.broadlink_2_current_power.state }}"
+      icon_template: mdi:monitor-speaker
       unit_of_measurement: 'Вт'
     #   entity_id: switch.broadlink_2
         
@@ -157,21 +195,36 @@
   state_topic: "power/broadlink_2/yesterday"
   name: 'mqtt_power_yesterday_broadlink_2'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
         
 - platform: mqtt
   state_topic: "power/broadlink_2/today"
   name: 'mqtt_power_today_broadlink_2'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: mqtt
   state_topic: "power/broadlink_2/month"
   name: 'mqtt_power_month_broadlink_2'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
     
 - platform: mqtt
   state_topic: "power/broadlink_2/lastmonth"
   name: 'mqtt_power_lastmonth_broadlink_2'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
+
+- platform: mqtt
+  state_topic: "power/broadlink_2/total"
+  name: 'mqtt_power_total_broadlink_2'
+  unit_of_measurement: 'kWh'
+  state_class: measurement
+  device_class: energy
 
 - platform: template
   sensors:
@@ -191,51 +244,59 @@
 
 ################################################################################
 
-#BlitzWolf BW-SHP8
-# - platform: template
-#   sensors:
-#     load_bw_shp8:
-#       friendly_name: 'Бойлер'
-#       value_template: "{{ states('sensor.bw_shp8_power') }}"
-#       icon_template: mdi:water-boiler
-#       unit_of_measurement: 'Вт'
-#     #   entity_id: sensor.0x00158d0003535c2f_power
+# BlitzWolf BW-SHP8
+- platform: template
+  sensors:
+    load_bw_shp8:
+      friendly_name: 'Бойлер'
+      value_template: "{{ states('sensor.bw_shp8_power') }}"
+      icon_template: mdi:water-boiler
+      unit_of_measurement: 'Вт'
+    #   entity_id: sensor.0x00158d0003535c2f_power
 
-# - platform: mqtt
-#   state_topic: "power/bw_shp8/yesterday"
-#   name: 'mqtt_power_yesterday_bw_shp8'
-#   unit_of_measurement: 'кВт⋅ч'
+- platform: mqtt
+  state_topic: "power/bw_shp8/yesterday"
+  name: 'mqtt_power_yesterday_bw_shp8'
+  unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
         
-# - platform: mqtt
-#   state_topic: "power/bw_shp8/today"
-#   name: 'mqtt_power_today_bw_shp8'
-#   unit_of_measurement: 'кВт⋅ч'
+- platform: mqtt
+  state_topic: "power/bw_shp8/today"
+  name: 'mqtt_power_today_bw_shp8'
+  unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
-# - platform: mqtt
-#   state_topic: "power/bw_shp8/month"
-#   name: 'mqtt_power_month_bw_shp8'
-#   unit_of_measurement: 'кВт⋅ч'
+- platform: mqtt
+  state_topic: "power/bw_shp8/month"
+  name: 'mqtt_power_month_bw_shp8'
+  unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
     
-# - platform: mqtt
-#   state_topic: "power/bw_shp8/lastmonth"
-#   name: 'mqtt_power_lastmonth_bw_shp8'
-#   unit_of_measurement: 'кВт⋅ч'
+- platform: mqtt
+  state_topic: "power/bw_shp8/lastmonth"
+  name: 'mqtt_power_lastmonth_bw_shp8'
+  unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
-# - platform: template
-#   sensors:
-#     money_month_bw_shp8:
-#       friendly_name: "Стоимость за текущий месяц"
-#       unit_of_measurement: 'грн'
-#       value_template: "{{ (states.sensor.mqtt_power_month_bw_shp8.state | float * 1.68)|round(2) }}"
-#       icon_template: mdi:square-inc-cash 
+- platform: template
+  sensors:
+    money_month_bw_shp8:
+      friendly_name: "Стоимость за текущий месяц"
+      unit_of_measurement: 'грн'
+      value_template: "{{ (states.sensor.mqtt_power_month_bw_shp8.state | float * 1.68)|round(2) }}"
+      icon_template: mdi:square-inc-cash 
     
-# - platform: template
-#   sensors:
-#     money_lastmonth_bw_shp8:
-#       friendly_name: "Стоимость за прошлый месяц"
-#       unit_of_measurement: 'грн'
-#       value_template: "{{ (states.sensor.mqtt_power_lastmonth_bw_shp8.state | float * 1.68)|round(2) }}"
-#       icon_template: mdi:square-inc-cash 
+- platform: template
+  sensors:
+    money_lastmonth_bw_shp8:
+      friendly_name: "Стоимость за прошлый месяц"
+      unit_of_measurement: 'грн'
+      value_template: "{{ (states.sensor.mqtt_power_lastmonth_bw_shp8.state | float * 1.68)|round(2) }}"
+      icon_template: mdi:square-inc-cash 
 
 ################################################################################
 
@@ -253,21 +314,29 @@
   state_topic: "power/dishwasher/yesterday"
   name: 'mqtt_power_yesterday_dishwasher'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
         
 - platform: mqtt
   state_topic: "power/dishwasher/today"
   name: 'mqtt_power_today_dishwasher'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: mqtt
   state_topic: "power/dishwasher/month"
   name: 'mqtt_power_month_dishwasher'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
     
 - platform: mqtt
   state_topic: "power/dishwasher/lastmonth"
   name: 'mqtt_power_lastmonth_dishwasher'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: template
   sensors:
@@ -301,21 +370,29 @@
   state_topic: "power/humidifier/yesterday"
   name: 'mqtt_power_yesterday_humidifier'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
         
 - platform: mqtt
   state_topic: "power/humidifier/today"
   name: 'mqtt_power_today_humidifier'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: mqtt
   state_topic: "power/humidifier/month"
   name: 'mqtt_power_month_humidifier'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
     
 - platform: mqtt
   state_topic: "power/humidifier/lastmonth"
   name: 'mqtt_power_lastmonth_humidifier'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: template
   sensors:
@@ -349,21 +426,29 @@
   state_topic: "power/my_pc/yesterday"
   name: 'mqtt_power_yesterday_my_pc'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
         
 - platform: mqtt
   state_topic: "power/my_pc/today"
   name: 'mqtt_power_today_my_pc'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: mqtt
   state_topic: "power/my_pc/month"
   name: 'mqtt_power_month_my_pc'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
     
 - platform: mqtt
   state_topic: "power/my_pc/lastmonth"
   name: 'mqtt_power_lastmonth_my_pc'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: template
   sensors:
@@ -395,28 +480,36 @@
             (states.sensor.load_broadlink_2.state | float) +
             (states.sensor.load_dishwasher.state | float) + 
             (states.sensor.load_humidifier.state | float) + 
+            (states.sensor.load_bw_shp8.state | float) +
             (states.sensor.load_my_pc.state | float)) | round(3) }}"
-            # (states.sensor.load_bw_shp8.state | float) +
 
 - platform: mqtt
   state_topic: "power/total_energy/yesterday"
   name: 'mqtt_power_yesterday_total_energy'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
         
 - platform: mqtt
   state_topic: "power/total_energy/today"
   name: 'mqtt_power_today_total_energy'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: mqtt
   state_topic: "power/total_energy/month"
   name: 'mqtt_power_month_total_energy'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
     
 - platform: mqtt
   state_topic: "power/total_energy/lastmonth"
   name: 'mqtt_power_lastmonth_total_energy'
   unit_of_measurement: 'кВт⋅ч'
+  state_class: measurement
+  device_class: energy
 
 - platform: template
   sensors:

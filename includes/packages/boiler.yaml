@@ -1,0 +1,272 @@
+boiler:
+
+  input_datetime:
+    boiler_start:
+      name: Включить бойлер в
+      has_time: true
+      initial: '23:01'
+
+    boiler_stop:
+      name: Выключить бойлер в
+      has_time: true
+      initial: '06:59'
+
+  input_number:
+    boiler_voltage:
+      name: Порог отключения бойлера
+      icon: mdi:alpha-v-circle
+      initial: 185
+      min: 150
+      max: 240
+      step: 1
+
+  binary_sensor:
+    - platform: template
+      sensors:
+        boiler:
+          friendly_name: boiler_state
+          value_template: "{{ states('switch.heater') }}"
+
+    - platform: template
+      sensors:
+        dishwasher:
+          friendly_name: dishwasher_state
+          value_template: "{{ states('sensor.load_dishwasher') | float >= 1 }}"
+
+    - platform: template
+      sensors:
+        washing_machine:
+          friendly_name: washing_machine_state
+          value_template: "{{ states('sensor.stiralnaia_mashina_washer_machine_state') == 'run' }}"
+
+    # - platform: tod
+    #   name: boiler_time
+    #   after: '23:00'
+    #   before: '07:00'
+
+    - platform: template
+      sensors:
+        boiler_timer:
+          friendly_name: boiler_timer
+          value_template: "{{ states('timer.boiler_low_voltage') != 'idle' }}"
+
+  sensor:
+    - platform: template
+      sensors:
+        boiler_power_state:
+          friendly_name: boiler_power_state
+          value_template: >                 # "{{ states('sensor.bw_shp8_power') | float > 5 }}"
+            {% if is_state('climate.boiler_thermostat', 'off') %}
+              off
+            {% elif state_attr('climate.boiler_thermostat', 'hvac_action') == 'off' %}
+              standby-off
+            {% elif state_attr('climate.boiler_thermostat', 'hvac_action') == 'idle' %}
+              standby
+            {% elif state_attr('climate.boiler_thermostat', 'hvac_action') == 'heating' %}
+              heat
+            {% else %}
+              failed
+            {% endif %}
+
+  automation:
+    - alias: Бойлер - включить в 23:00
+      id: "Бойлер - включить в 23:00"
+      description: 'включить розетку бойлера после 23:05, если нагрузка на розетке посудомойки меньше 15 Вт'
+      trigger:
+      - at: input_datetime.boiler_start
+        platform: time
+      condition:
+      - condition: state
+        entity_id: switch.broadlink_1 # розетка бойлера
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.dishwasher # розетка посудомойки
+        state: 'off'
+      action:
+      - service: switch.turn_on
+        entity_id: switch.broadlink_1
+        
+    - alias: Бойлер - выключить в 07:00
+      description: 'выключить розетку бойлера в 12:00'
+      trigger:
+      - at: input_datetime.boiler_stop
+        platform: time
+      condition:
+      - condition: state
+        entity_id: switch.broadlink_1
+        state: 'on'
+      action:
+      - service: switch.turn_off # 
+        entity_id: switch.broadlink_1
+
+    - alias: Бойлер - включить после старта системы
+      id: "Бойлер - включить после старта системы"
+      description: 'включить розетку бойлера после старта системы в период с 23:05 по 12:00, если нагрузка на розетке посудомойки меньше 15 Вт'
+      trigger:
+      - event: start
+        platform: homeassistant
+      condition:
+      - condition: state
+        entity_id: binary_sensor.day_tarif_template
+        state: 'off'
+      - condition: state
+        entity_id: switch.broadlink_1
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.dishwasher
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.washing_machine
+        state: 'off'
+      action:
+      - service: switch.turn_on # 
+        entity_id: switch.broadlink_1
+
+    - alias: Бойлер - выключить после старта системы
+      id: "Бойлер - выключить после старта системы"
+      description: 'выключить розетку бойлера после старта системы в период с 12:00 по 23:05'
+      trigger:
+      - event: start
+        platform: homeassistant
+      condition:
+      - condition: state
+        entity_id: binary_sensor.day_tarif_template
+        state: 'on'
+      - condition: state
+        entity_id: switch.broadlink_1
+        state: 'on'
+      action:
+      - service: switch.turn_off # 
+        entity_id: switch.broadlink_1
+
+    - alias: Бойлер - выключить, когда посдомойка работает
+      id: "Бойлер - выключить, когда посдомойка работает"
+      description: 'выключить розетку бойлера, когда нагрузка на розетке посудомойки больше 15 Вт'
+      trigger:
+      - platform: state
+        entity_id: binary_sensor.dishwasher
+        to: 'on'
+      condition:
+      action:
+        - service: climate.set_hvac_mode
+          data:
+            entity_id: climate.boiler_thermostat
+            hvac_mode: "off"
+        
+    - alias: Бойлер - включить, когда посудомойка домыла
+      id: "Бойлер - включить, когда посудомойка домыла"
+      description: 'включить розетку бойлера, когда нагрузка на розетке посудомойки меньше 15 Вт в течение 15 минут'
+      trigger:
+      - platform: state
+        entity_id: binary_sensor.dishwasher
+        to: 'off'
+      condition:
+      - condition: state
+        entity_id: binary_sensor.day_tarif_template
+        state: 'off'
+      action:
+        - service: climate.set_hvac_mode
+          data:
+            entity_id: climate.boiler_thermostat
+            hvac_mode: "heat"
+    # - alias: Бойлер - выключить, когда стиральная машина работает
+    #   id: "Бойлер - выключить, когда стиральная машина работает"
+    #   description: 'выключить розетку бойлера, когда нагрузка на розетку стиралки больше 5 Вт'
+    #   trigger:
+    #   - platform: state
+    #     entity_id: binary_sensor.washing_machine
+    #     to: 'on'
+    #   condition:
+    #   - condition: state
+    #     entity_id: switch.broadlink_1
+    #     state: 'on'
+    #   action:
+    #   - service: switch.turn_off # 
+    #     entity_id: switch.broadlink_1
+        
+    # - alias: Бойлер - включить, когда стиральная машина достирала
+    #   id: "Бойлер - включить, когда стиральная машина достирала"
+    #   description: 'включить розетку бойлера, когда нагрузка на розетку стиралки меньше 5 Вт'
+    #   trigger:
+    #   - platform: state
+    #     entity_id: binary_sensor.washing_machine
+    #     to: 'off'
+    #   condition:
+    #   - condition: state
+    #     entity_id: binary_sensor.day_tarif_template
+    #     state: 'on'
+    #   - condition: state
+    #     entity_id: switch.broadlink_1
+    #     state: 'off'
+    #   - condition: state
+    #     entity_id: binary_sensor.day_tarif_templater
+    #     state: 'off'
+    #   action:
+    #   - service: switch.turn_on
+    #     entity_id: switch.broadlink_1
+
+    - alias: Бойлер - не запустился
+      id: 'Бойлер - не запустился'
+      description: ''
+      trigger:
+      - platform: state
+        entity_id: binary_sensor.bw_shp8
+        to: 'off'
+      condition:
+      action:
+      - service: notify.telegram
+        data:
+          message: "У бойлера выбило предохранитель"
+
+    - alias: Бойлер - выключить, когда напряжение ниже заданного
+      id: "Бойлер - выключить, когда напряжение ниже заданного"
+      description: 'старт таймера на 10 минут при падении напряжения в сети ниже заданного'
+      trigger:
+      - platform: template
+        value_template: "{{ states('sensor.input_voltage') | int < states('input_number.boiler_voltage') | int }}"
+      condition:
+      - condition: state
+        entity_id: binary_sensor.day_tarif_template
+        state: 'off'
+      action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: timer.boiler_low_voltage
+                state: 'idle'
+            sequence:
+              - service: climate.set_hvac_mode
+                data:
+                  entity_id: climate.boiler_thermostat
+                  hvac_mode: "off"
+              - service: timer.start
+                entity_id: timer.boiler_low_voltage
+        default:
+          - service: timer.cancel
+            entity_id: timer.boiler_low_voltage
+          - service: timer.start
+            entity_id: timer.boiler_low_voltage
+
+    - alias: Бойлер - включить, когда закончился таймер
+      id: "Бойлер - включить, когда закончился таймер"
+      description: 'включение бойлера после таймера на 10 минут при падении напряжения в сети ниже 185v'
+      trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.boiler_low_voltage
+      condition:
+      - condition: state
+        entity_id: binary_sensor.day_tarif_template
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.washing_machine
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.dishwasher
+        state: 'off'
+      action:
+        - service: climate.set_hvac_mode
+          data:
+            entity_id: climate.boiler_thermostat
+            hvac_mode: "heat"

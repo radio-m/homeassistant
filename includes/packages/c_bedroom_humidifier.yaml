@@ -1,0 +1,124 @@
+unit_10_6:
+
+# Увлажнитель воздуха с механическим управлением
+
+    binary_sensor:
+    
+    # Режим увлажнения  
+      - platform: mqtt
+        name: humidity_mode
+        state_topic: "humidity/mode"
+        payload_on: "ON"
+        payload_off: "OFF"
+
+      - platform: template
+        sensors:
+        
+          door_c_bedroom:
+            friendly_name: "Дверь комнате"
+            device_class: door
+            delay_on:
+                seconds: 30
+            value_template: >-
+              {{ is_state('binary_sensor.ble_opening_door_sensor', 'on') }}
+            icon_template: >-
+              {% if is_state('binary_sensor.door_c_bedroom', 'on') %}
+                mdi:door-open
+              {% else %}
+                mdi:door-closed
+              {% endif %} 
+
+          humidity:
+            friendly_name: "Увлажнение"
+            value_template: >-
+              {{ is_state('binary_sensor.door_c_bedroom', 'off')  
+                 and is_state('binary_sensor.humidity_mode', 'on') }}
+            icon_template: >-
+              {% if is_state("binary_sensor.humidity", "on") %}
+              mdi:water-percent
+              {% else %}
+              mdi:air-humidifier
+              {% endif %}
+
+    input_number:
+
+          humidity_level:
+            name: Уровень влажности
+            initial: 50
+            min: 45
+            max: 70
+            step: 1
+
+    switch:
+    
+      - platform: template
+        switches:
+          humidity_mode:
+            friendly_name: "Режим увлажнения воздуха"
+            value_template: "{{  is_state('binary_sensor.humidity_mode', 'on') }}"
+            turn_on:
+              service: mqtt.publish
+              data_template:
+                topic: "humidity/mode"
+                payload_template: 'ON'
+                retain: true 
+            turn_off:
+              service: mqtt.publish
+              data_template:
+                topic: "humidity/mode"
+                payload_template: 'OFF'
+                retain: true 
+            icon_template: >-
+              {% if is_state("switch.humidity_mode", "on") %}
+              mdi:air-humidifier
+              {% else %}
+              mdi:air-humidifier-off
+              {% endif %}
+              
+    automation:
+            
+        - alias: Увлажнитель - в детской
+          id: 'Увлажнитель - в детской'
+          initial_state: true
+          trigger:
+            - platform: homeassistant
+              event: start
+            - platform: state
+              entity_id:
+                - input_number.humidity_level
+                - sensor.c_bedroom_humidity
+                - binary_sensor.humidity
+          action:
+            service_template: >-
+              {% set hi = (states('input_number.humidity_level') | float) + 5 %}
+              {% set lo = (states('input_number.humidity_level') | float) %}
+              {% set humidity = states('sensor.c_bedroom_humidity') | float %}
+              {% if humidity > hi %}
+                switch.turn_off
+              {% elif states.binary_sensor.humidity.state == 'off' %} 
+                switch.turn_off
+              {% elif humidity < lo and states.binary_sensor.humidity.state == 'on' %}
+                switch.turn_on
+              {% else %}
+                switch.turn_{{states('switch.humidifier') | lower}}
+              {% endif %}
+            entity_id: switch.humidifier
+            
+            
+        - alias: Увлажнитель - в детской - уведомление об отключении
+          id: "Увлажнитель - в детской - уведомление об отключении"
+          description: 'Notify when humidifier low water'
+          trigger:
+          - platform: numeric_state
+            entity_id: sensor.humidifier_power
+            below: '5'
+            for: 00:01
+          condition: "{{ is_state('switch.humidifier', 'on') }}"
+          action:
+          - service: notify.telegram
+            data:
+              message: "Увлажнитель не работает! Выключен или кончилась вода. {{now()}}"
+          - service: notify.telegram_olga
+            data:
+              message: "Увлажнитель не работает! Выключен или кончилась вода. {{now()}}"
+          mode: single

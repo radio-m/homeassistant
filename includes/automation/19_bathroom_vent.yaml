@@ -6,20 +6,38 @@
       entity_id: sensor.bathroom_humidity
     - platform: state
       entity_id: sensor.home_humidity_median
-
   action:
     - choose:
-
         - conditions:
             - "{{ (states.sensor.bathroom_humidity.state | float - states.sensor.home_humidity_median.state | float) >= 5 }}"
             - "{{ is_state('switch.sonoff_mini_001_switch', 'off') }}"
           sequence:
             - service: switch.turn_on
               entity_id: switch.sonoff_mini_001_switch
-
         - conditions:
             - "{{ (states.sensor.bathroom_humidity.state | float - states.sensor.home_humidity_median.state | float) < 5 }}"
             - "{{ is_state('switch.sonoff_mini_001_switch', 'on') }}"
+            - "{{ is_state('timer.bath_vent', 'idle') }}"
+            - "{{ is_state('switch.bathroom_single_switch', 'off') }}"
           sequence:
             - service: switch.turn_off
               entity_id: switch.sonoff_mini_001_switch
+
+- alias: Вентиляция в ванной реакция на свет
+  id: "Вентиляция в ванной реакция на свет"
+  mode: restart
+  trigger:
+  - platform: state
+    entity_id: switch.bathroom_single_switch
+  action:
+    - choose:
+        - conditions: "{{ trigger.to_state.state == 'on' }}"
+          sequence:
+            - service: timer.cancel
+              entity_id: timer.bath_vent
+            - service: switch.turn_on
+              entity_id: switch.sonoff_mini_001_switch
+        - conditions: "{{ trigger.to_state.state == 'off' }}"
+          sequence:
+            - service: timer.start
+              entity_id: timer.bath_vent

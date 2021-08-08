@@ -1,7 +1,7 @@
 """Constants for the Passive BLE monitor integration."""
 
 DOMAIN = "ble_monitor"
-PLATFORMS = ["binary_sensor", "sensor"]
+PLATFORMS = ["binary_sensor", "device_tracker", "sensor"]
 
 # Configuration options
 CONF_DECIMALS = "decimals"
@@ -19,6 +19,9 @@ CONF_DEVICE_DECIMALS = "decimals"
 CONF_DEVICE_USE_MEDIAN = "use_median"
 CONF_DEVICE_RESTORE_STATE = "restore_state"
 CONF_DEVICE_RESET_TIMER = "reset_timer"
+CONF_DEVICE_TRACK = "track_device"
+CONF_DEVICE_TRACKER_SCAN_INTERVAL = "tracker_scan_interval"
+CONF_DEVICE_TRACKER_CONSIDER_HOME = "consider_home"
 CONFIG_IS_FLOW = "is_flow"
 
 SERVICE_CLEANUP_ENTRIES = "cleanup_entries"
@@ -37,6 +40,9 @@ DEFAULT_DEVICE_DECIMALS = "default"
 DEFAULT_DEVICE_USE_MEDIAN = "default"
 DEFAULT_DEVICE_RESTORE_STATE = "default"
 DEFAULT_DEVICE_RESET_TIMER = 35
+DEFAULT_DEVICE_TRACKER_SCAN_INTERVAL = 20
+DEFAULT_DEVICE_TRACKER_CONSIDER_HOME = 180
+DEFAULT_DEVICE_TRACK = False
 
 # regex constants for configuration schema
 MAC_REGEX = "(?i)^(?:[0-9A-F]{2}[:]){5}(?:[0-9A-F]{2})$"
@@ -58,7 +64,9 @@ CONF_HMAX = 99.9
 # Dictionary with the available sensors
 SENSOR_DICT = {
     "temperature":              "TemperatureSensor",
+    "temperature outdoor":      "TemperatureOutdoorSensor",
     "humidity":                 "HumiditySensor",
+    "humidity outdoor":         "HumidityOutdoorSensor",
     "moisture":                 "MoistureSensor",
     "pressure":                 "PressureSensor",
     "conductivity":             "ConductivitySensor",
@@ -78,6 +86,8 @@ SENSOR_DICT = {
     "toothbrush mode":          "ToothbrushModeSensor",
     "volume dispensed port 1":  "VolumeDispensedPort1Sensor",
     "volume dispensed port 2":  "VolumeDispensedPort2Sensor",
+    "energy":                   "EnergySensor",
+    "power" :                   "PowerSensor",
     "voltage":                  "VoltageSensor",
     "battery":                  "BatterySensor",
     "one btn switch":           "SingleSwitchSensor",
@@ -123,7 +133,7 @@ MEASUREMENT_DICT = {
     'SJWS01LM'                : [["battery"], [], ["moisture"]],
     'MJYD02YL'                : [["battery"], [], ["light", "motion"]],
     'MUE4094RT'               : [[], [], ["motion"]],
-    'RTCGQ02LM'               : [[], ["button"], ["light", "motion"]],
+    'RTCGQ02LM'               : [["battery"], ["button"], ["light", "motion"]],
     'MMC-T201-1'              : [["temperature", "battery"], [], []],
     'M1S-T500'                : [["battery"], ["toothbrush mode"], []],
     'CGC1'                    : [["temperature", "humidity", "battery"], [], []],
@@ -155,8 +165,15 @@ MEASUREMENT_DICT = {
     'Smart hygrometer'        : [["temperature", "humidity", "battery", "voltage"], [], []],
     'Lanyard/mini hygrometer' : [["temperature", "humidity", "battery", "voltage"], [], []],
     'T201'                    : [["temperature", "humidity", "battery", "voltage"], [], []],
-    'H5074'                   : [["temperature", "humidity", "battery"], [], []],
+    'H5072/H5075'             : [["temperature", "humidity", "battery"], [], []],
+    'H5101/H5102/H5177'       : [["temperature", "humidity", "battery"], [], []],
+    'H5051/H5074'             : [["temperature", "humidity", "battery"], [], []],
+    'H5178'                   : [["temperature", "temperature outdoor", "humidity", "humidity outdoor", "battery"], [], []],
+    'H5179'                   : [["temperature", "humidity", "battery"], [], []],
     'Ruuvitag'                : [["temperature", "humidity", "pressure", "battery", "voltage"], ["acceleration"], ["motion"]],
+    'iNode Energy Meter'      : [["battery", "voltage"], ["energy", "power"], []],
+    'Blue Puck T'             : [["temperature"], [], []],
+    'Blue Puck RHT'           : [["temperature", "humidity"], [], []],
 }
 
 KETTLES = ('YM-K1501', 'YM-K1501EU', 'V-SK152')
@@ -209,6 +226,13 @@ MANUFACTURER_DICT = {
     'Smart hygrometer'        : 'Thermoplus',
     'Lanyard/mini hygrometer' : 'Thermoplus',
     'T201'                    : 'Brifit',
-    'H5074'                   : 'Govee',
+    'H5072/H5075'             : 'Govee',
+    'H5101/H5102/H5177'       : 'Govee',
+    'H5051/H5074'             : 'Govee',
+    'H5178'                   : 'Govee',
+    'H5179'                   : 'Govee',
     'Ruuvitag'                : 'Ruuvitag',
+    'iNode Energy Meter'      : 'iNode',
+    'Blue Puck T'             : 'Teltonika',
+    'Blue Puck RHT'           : 'Teltonika',
 }

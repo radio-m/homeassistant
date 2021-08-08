@@ -25,3 +25,7 @@
   westen:
     name: 'westen timer'
     duration: '01:00:00'
+
+  bath_vent:
+    name: 'bath vent'
+    duration: '00:10:00'

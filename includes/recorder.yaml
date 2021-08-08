@@ -17,6 +17,9 @@
       - sensor.water_system
       - sensor.water_out
       - climate.basement
+      
+      - climate.boiler_thermostat
+      - binary_sensor.night_tarif_esp
 
 #System
       - sensor.cpu_temperature
@@ -65,19 +68,26 @@
       - sensor.load_total_energy
       - sensor.load_xiaomi_power_strip
       - sensor.load_input_energy
-      - sensor.load_my_pc
 
       - sensor.bw_shp8_power
       - sensor.bw_shp8_current
       - sensor.bw_shp8_voltage
+      - sensor.bw_shp8_ds18b20
 
       - sensor.dishwasher_power
       - sensor.dishwasher_current
       - sensor.dishwasher_voltage
+      - sensor.dishwasher_energy
 
       - sensor.humidifier_power
       - sensor.humidifier_current
       - sensor.humidifier_voltage
+      - sensor.humidifier_energy
+      
+      - sensor.my_pc_power
+      - sensor.my_pc_current
+      - sensor.my_pc_voltage
+      - sensor.my_pc_energy
 
 #ASUSwrt
       - sensor.asuswrt_download_speed
@@ -96,6 +106,15 @@
       - sensor.input_power_factor_2
       - sensor.input_voltage
       - sensor.voltage_stat
+
+      - sensor.pzem_power_day
+      - sensor.pzem_power_night
+
+      - sensor.pzem_energy_night_tarif
+      - sensor.pzem_energy_day_tarif
+      - sensor.mqtt_power_total_broadlink_1
+      - sensor.mqtt_power_total_broadlink_2
+      - sensor.mqtt_power_total_xiaomi_power_strip
 
 # Persons
       - person.anatolii

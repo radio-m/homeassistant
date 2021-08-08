@@ -1,0 +1,136 @@
+- alias: Выключатель в ванной - проходной
+  id: "Выключатель в ванной - проходной"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id: sensor.bathroom_double_switch_action
+      to: "single_left"
+    - platform: state
+      entity_id: sensor.bathroom_double_switch_action
+      to: "single_both"
+  action:
+    - service: switch.toggle
+      entity_id: switch.bathroom_single_switch
+
+- alias: Выключатель в прихожей - включить свет в дворике
+  id: "Выключатель в прихожей - включить свет в дворике"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id:
+        - switch.wall_switch_entrance_right
+        - switch.patio_switch
+      to: "on"
+      for: 00:00:02
+  action:
+    - service: switch.turn_on
+      entity_id:
+        - switch.patio_switch
+        - switch.wall_switch_entrance_right
+
+- alias: Выключатель в прихожей - выключить свет в дворике
+  id: "Выключатель в прихожей - выключить свет в дворике"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id:
+        - switch.wall_switch_entrance_right
+        - switch.patio_switch
+      to: "off"
+      for: 00:00:02
+  action:
+    - service: switch.turn_off
+      entity_id:
+        - switch.patio_switch
+        - switch.wall_switch_entrance_right
+
+- alias: Выключатель в прихожей - включить свет во дворе
+  id: "Выключатель в прихожей - включить свет во дворе"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id:
+        - switch.wall_switch_entrance_left
+        - switch.yard_switch
+      to: "on"
+      for: 00:00:02
+  action:
+    - service: switch.turn_on
+      entity_id:
+        - switch.yard_switch
+        - switch.wall_switch_entrance_left
+
+- alias: Выключатель в прихожей - выключить свет во дворе
+  id: "Выключатель в прихожей - выключить свет во дворе"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id:
+        - switch.wall_switch_entrance_left
+        - switch.yard_switch
+      to: "off"
+      for: 00:00:02
+  action:
+    - service: switch.turn_off
+      entity_id:
+        - switch.yard_switch
+        - switch.wall_switch_entrance_left
+
+- alias: Выключатель в коридоре - подсветка
+  id: "Выключатель в коридоре - подсветка"
+  trigger: 
+    - platform: state
+      entity_id: light.coridor_floor
+  action:
+    - choose:
+        - conditions: "{{ trigger.to_state.state == 'on' }}"
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.coridor_rgb
+                brightness_pct: 2
+        - conditions: "{{ trigger.to_state.state == 'off' }}"
+          sequence:
+            - service: light.turn_off
+              data:
+                entity_id: light.coridor_rgb
+
+- alias: Выключатель в гостинной - торшер
+  id: "Выключатель в гостинной - торшер"
+  trigger: 
+    - platform: state
+      entity_id: light.lr_night_light
+  action:
+    - choose:
+        - conditions: "{{ trigger.to_state.state == 'on' }}"
+          sequence:
+            - service: switch.turn_on
+              data:
+                entity_id: switch.broadlink_3
+        - conditions: "{{ trigger.to_state.state == 'off' }}"
+          sequence:
+            - service: switch.turn_off
+              data:
+                entity_id: switch.broadlink_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

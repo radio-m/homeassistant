@@ -125,16 +125,23 @@ cards:
 
       
   - type: entities
-    title: 'Power strip'
+    title: 'Zigbee розетки'
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - switch.my_pc_2
+      - switch.dishwasher
+      - switch.humidifier
+      - switch.basement_vent
+
+  - type: entities
+    title: 'Wi-Fi розетки'
     show_header_toggle: false
     state_color: true
     entities:
       - switch.xiaomi_power_strip
-
-  - type: entities
-    title: 'Wi-Fi socket'
-    show_header_toggle: false
-    state_color: true
-    entities:
       - switch.undertabble_mi_wifi_socket
+      - type: divider
       - switch.broadlink_1
+      - switch.broadlink_2
+      - switch.broadlink_3
