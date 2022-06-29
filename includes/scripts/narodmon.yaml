@@ -1,9 +1,9 @@
-'1549561403890':
-  alias: narodmon
-  sequence:
-    - service: rest_command.narodmon
-      data_template:
-        H1: '{{ states.sensor.bme280_humidity_wo_errors.state }}'
-        P1: '{{ states.sensor.bme280_pressure_in_mmhg_wo_errors.state }}'
-        T1: '{{ states.sensor.bme280_temperature_wo_errors.state }}'
-        ID: BC-DD-C2-ED-A3-FE
+# '1549561403890':
+#   alias: narodmon
+#   sequence:
+#     - service: rest_command.narodmon
+#       data_template:
+#         H1: '{{ states.sensor.bme280_humidity_wo_errors.state }}'
+#         P1: '{{ states.sensor.bme280_pressure_in_mmhg_wo_errors.state }}'
+#         T1: '{{ states.sensor.bme280_temperature_wo_errors.state }}'
+#         ID: BC-DD-C2-ED-A3-FE

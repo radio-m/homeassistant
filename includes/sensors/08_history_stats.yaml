@@ -1,10 +1,13 @@
   - platform: history_stats
     name: Boiler ON today
-    entity_id: binary_sensor.boiler # switch.bw_shp8_relay
+    entity_id: binary_sensor.boiler_state # switch.bw_shp8_relay
     state: 'on'
     type: time
-    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    end: '{{ now() }}'
+#    start: '{{ now().replace(hour=23, minute=0, second=0) }}'
+    end: "{{ (now().replace(minute=0,second=0) + timedelta(hours=1)).replace(hour=23) }}"
+#    end: '{{ now() }}'
+    duration:
+      hours: 24
     
   - platform: history_stats
     name: Heater ON today
@@ -27,12 +30,14 @@
     entity_id: binary_sensor.gas_heater_relay
     max_age:
       hours: 8
+    state_characteristic: mean
     name: gas heater stat
 
   - platform: statistics
     entity_id: binary_sensor.boiler_state
     max_age:
       hours: 8
+    state_characteristic: mean
     name: boiler stat
 
   - platform: statistics
@@ -40,4 +45,5 @@
     sampling_size: 1440
     max_age:
       hours: 12
+    state_characteristic: mean
     name: voltage stat

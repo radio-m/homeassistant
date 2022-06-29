@@ -23,11 +23,11 @@ cards:
         entities:
             - entity: sensor.stiralnaia_mashina_deltaenergy
               name: Delta
-            - entity: sensor.stiralnaia_mashina_energy
+            - entity: sensor.stiralnaia_mashina_energy_2
               name: Energy
             - entity: sensor.stiralnaia_mashina_energysaved
               name: Saved
-            - entity: sensor.stiralnaia_mashina_power
+            - entity: sensor.stiralnaia_mashina_power_2
               name: Power
             - entity: sensor.stiralnaia_mashina_powerenergy
               name: PE

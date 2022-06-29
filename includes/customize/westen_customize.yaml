@@ -79,7 +79,7 @@ sensor.heater_relay_status:
   templates:
     icon_color: "if (state === 'on') return 'rgb(0, 153, 255)'; else return 'rgb(189, 189, 189)';"
     icon: "if (state === 'on') return 'mdi:toggle-switch'; else return 'mdi:toggle-switch-off-outline';"
-    state: if (state === 'on') return 'Вкл'; else return 'Викл';
+    state: if (state === 'on') return 'РазДва'; else return 'ТриЧетыре';
 input_boolean.heater_show_additional_params:
   friendly_name: Показати Автоматизації
   templates:
@@ -113,3 +113,6 @@ automation.heater_set_auto_mode_when_outdoor_temp_equals_or_lower:
   friendly_name: "Авто-режим, якщо t зменшилась"
 automation.heater_set_off_mode_when_outdoor_temp_equals_or_highter:
   friendly_name: "Вимк якщо t збільшилась"
+  
+  
+  

@@ -76,7 +76,7 @@ cards:
         name: Community updates avaliable
         icon: mdi:update
       - type: divider
-      - entity: sensor.home_assistant_v2_db
+      - entity: sensor.home_assistant_v2_db_size
         name: Объем базы данных
         icon: mdi:database
       - type: divider
@@ -268,48 +268,53 @@ cards:
       url: /api/hassio_ingress/nw5Vvh_JZFJOYI9__JMBsgImpnCRt69SETFOQXhgKG8/d-solo/0ExBFeWRz/energy-monitor?orgId=1&panelId=2
       aspect_ratio: 50%
 
-  - type: glance
-    title: '-- Component Count --'
-    columns: 4
-    style: |
-        ha-card {
-          --ha-card-background: rgba(0, 0, 0, 0.6);
-          color: white
-          }
-    entities:
-          - entity: sensor.count_automations
-            name: Automations
-            icon: mdi:autorenew
-          - entity: sensor.count_scripts
-            name: Scripts
-            icon: mdi:script-text-outline
-          - entity: sensor.count_zones
-            name: Zones
-            icon: mdi:map-marker-radius
-          - entity: sensor.count_device_trackers
-            name: Device Trackers
-            icon: mdi:map-marker
-          - entity: sensor.count_switches
-            name: Switches
-            icon: mdi:light-switch
-          - entity: sensor.count_sensors
-            name: Sensors
-            icon: mdi:resistor
-          - entity: sensor.count_binary_sensors
-            name: Binary Sensors
-            icon: mdi:unfold-more-horizontal
-          - entity: sensor.count_input_booleans
-            name: Input Booleans
-            icon: mdi:toggle-switch
-          - entity: sensor.count_input_numbers
-            name: Input Numbers
-            icon: mdi:numeric
-          - entity: sensor.count_input_texts
-            name: Input Texts
-            icon: mdi:alphabetical
-          - entity: sensor.count_input_selects
-            name: Input Select
-            icon: mdi:view-list
-          - entity: sensor.count_input_datetimes
-            name: Input Date Times
-            icon: mdi:calendar-clock
+    - type: iframe
+      id: graph3
+      url: https://alerts.in.ua
+      aspect_ratio: 100%
+
+#   - type: glance
+#     title: '-- Component Count --'
+#     columns: 4
+#     style: |
+#         ha-card {
+#           --ha-card-background: rgba(0, 0, 0, 0.6);
+#           color: white
+#           }
+#     entities:
+#           - entity: sensor.count_automations
+#             name: Automations
+#             icon: mdi:autorenew
+#           - entity: sensor.count_scripts
+#             name: Scripts
+#             icon: mdi:script-text-outline
+#           - entity: sensor.count_zones
+#             name: Zones
+#             icon: mdi:map-marker-radius
+#           - entity: sensor.count_device_trackers
+#             name: Device Trackers
+#             icon: mdi:map-marker
+#           - entity: sensor.count_switches
+#             name: Switches
+#             icon: mdi:light-switch
+#           - entity: sensor.count_sensors
+#             name: Sensors
+#             icon: mdi:resistor
+#           - entity: sensor.count_binary_sensors
+#             name: Binary Sensors
+#             icon: mdi:unfold-more-horizontal
+#           - entity: sensor.count_input_booleans
+#             name: Input Booleans
+#             icon: mdi:toggle-switch
+#           - entity: sensor.count_input_numbers
+#             name: Input Numbers
+#             icon: mdi:numeric
+#           - entity: sensor.count_input_texts
+#             name: Input Texts
+#             icon: mdi:alphabetical
+#           - entity: sensor.count_input_selects
+#             name: Input Select
+#             icon: mdi:view-list
+#           - entity: sensor.count_input_datetimes
+#             name: Input Date Times
+#             icon: mdi:calendar-clock

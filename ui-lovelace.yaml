@@ -10,7 +10,7 @@
     - !include lovelace/07_zigbee2mqtt.yaml
     - !include lovelace/08_washing_machine.yaml
     - !include lovelace/09_boiler.yaml
-#   - !include lovelace/.yaml
+    - !include lovelace/10_irrigation.yaml
 
   resources:
     - url: /hacsfiles/canvas-gauge-card/canvas-gauge-card.js
@@ -38,4 +38,6 @@
     - url: /hacsfiles/bar-card/bar-card.js
       type: module
     - url: /hacsfiles/timer-bar-card/timer-bar-card.js
+      type: module
+    - url: /local/mushroom.js
       type: module

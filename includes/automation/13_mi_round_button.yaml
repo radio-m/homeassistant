@@ -12,15 +12,15 @@
           sequence:
             - service: homeassistant.turn_on
               data:
-                entity_id: group.motion_light
+                entity_id: automation.svet_v_detskoi_potolochnyi # group.motion_light
 
         - conditions: "{{ trigger.to_state.state == 'double' }}"
           sequence:
             - service: homeassistant.turn_off
               data:
-                entity_id: group.motion_light
-            - service: timer.cancel
-              entity_id: timer.bath_light
+                entity_id: automation.svet_v_detskoi_potolochnyi # group.motion_light
+            # - service: timer.cancel
+            #   entity_id: timer.bath_light
 
         - conditions: "{{ trigger.to_state.state == 'hold' }}"
           sequence:
@@ -28,7 +28,16 @@
               data:
                 entity_id: switch.my_pc
 
-
+- alias: Круглая кнопка - тест
+  id: "Круглая кнопка - тест"
+  mode: parallel
+  trigger:
+    - platform: state
+      entity_id: sensor.mi_round_button_action
+      to: single
+  action:
+    - service: light.toggle
+      entity_id: light.lr_night_light
 
 
 

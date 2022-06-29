@@ -10,7 +10,7 @@
     ignore_availability: true
     name: "Holidays in Ukraine"
     track: true
-    max_results: 15
+    # max_results: 15
 
 - cal_id: addressbook#contacts@group.v.calendar.google.com
   entities:
@@ -18,7 +18,7 @@
     ignore_availability: true
     name: Contacts
     track: true
-    max_results: 15
+    # max_results: 15
 
 - cal_id: ru.ukrainian#holiday@group.v.calendar.google.com
   entities:
@@ -26,4 +26,4 @@
     ignore_availability: true
     name: "Holidays in Ukraine ru"
     track: true
-    max_results: 15
+    # max_results: 15

@@ -1,15 +1,15 @@
 unit_10_6:
 
 # Увлажнитель воздуха с механическим управлением
+    # Режим увлажнения  
+    mqtt:
+      binary_sensor:
+        - name: humidity_mode
+          state_topic: "humidity/mode"
+          payload_on: "ON"
+          payload_off: "OFF"
 
     binary_sensor:
-    
-    # Режим увлажнения  
-      - platform: mqtt
-        name: humidity_mode
-        state_topic: "humidity/mode"
-        payload_on: "ON"
-        payload_off: "OFF"
 
       - platform: template
         sensors:
@@ -80,6 +80,7 @@ unit_10_6:
         - alias: Увлажнитель - в детской
           id: 'Увлажнитель - в детской'
           initial_state: true
+          mode: restart
           trigger:
             - platform: homeassistant
               event: start

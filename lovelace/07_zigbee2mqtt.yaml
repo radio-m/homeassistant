@@ -72,47 +72,6 @@ cards:
 
   - type: entities
     entities:
-      - entity: sensor.bathroom_humidity
-        name: Влажность в ванной
-      - entity: sensor.home_humidity_median
-        name: Средняя влажность по дому
-      - entity: switch.sonoff_mini_001_switch
-      - entity: automation.ventiliatsiia_v_vannoi
-        name: Автоматика
-        icon: mdi:fan
-      - entity: timer.bath_vent
-        name: Таймер
-
-  - type: custom:mini-graph-card
-    entities:
-      - color: green
-        entity: binary_sensor.sonoff_mini_001_relay
-        name: Вентилятор
-        show_line: true
-        show_points: false
-        show_legend: false
-        show_state: false
-        y_axis: secondary
-      - entity: sensor.home_humidity_median
-        name: Средняя влажность по дому
-      - entity: sensor.bathroom_humidity
-        name: Влажность в ванной
-        show_state: true
-
-    # smoothing: false
-    points_per_hour: 6
-    update_interval: 30
-    show:
-      labels: true
-      labels_secondary: false
-    state_map:
-      - value: "off"
-        label: Выкл
-      - value: "on"
-        label: Вкл
-
-  - type: entities
-    entities:
       - sensor.amazfit_gtr_calories
       - sensor.amazfit_gtr_distance
       - sensor.amazfit_gtr_heart_rate
@@ -122,34 +81,62 @@ cards:
       - sensor.amazfit_gtr_steps
       - sensor.amazfit_gtr_weight
 
-  - type: picture-entity
-    entity: camera.cam_001
-
-  - type: statistics-graph
-    title: 'My Graph'
+  - type: history-graph
+    title: 'Last seen about 1h'
     entities:
-      - sensor.pzem_energy_night_tarif
-      - sensor.pzem_energy_day_tarif
-      - sensor.mqtt_power_total_broadlink_1
-      - sensor.mqtt_power_total_broadlink_2
-      - sensor.mqtt_power_total_xiaomi_power_strip
+      - sensor.last_seen_bathroom_ht
+      - sensor.last_seen_c_bedroom_double_switch
+      - sensor.last_seen_c_bedroom_ht
+      - sensor.last_seen_m_bedroom_temp
+      - sensor.last_seen_mi_round_button
+
+  - type: history-graph
+    title: 'Last seen'
+    entities:
+      - sensor.last_seen_basement_temp
+    #   - sensor.last_seen_bath_motion
+      - sensor.last_seen_lumber_temp
+      - sensor.last_seen_motion
 
   - type: entities
     entities:
-      -  sensor.pzem_energy_night_tarif
-      - sensor.pzem_energy_day_tarif
-      - sensor.mqtt_power_total_broadlink_1
-      - sensor.mqtt_power_total_broadlink_2
-      - sensor.mqtt_power_total_xiaomi_power_strip
+      - sensor.last_seen_in_time_bathroom_ht
+      - sensor.last_seen_in_time_c_bedroom_double_switch
+      - sensor.last_seen_in_time_c_bedroom_ht
+      - sensor.last_seen_in_time_m_bedroom_temp
+      - sensor.last_seen_in_time_mi_round_button
+      - sensor.last_seen_in_time_basement_temp
+      - sensor.last_seen_in_time_bath_motion
+      - sensor.last_seen_in_time_lumber_temp
+      - sensor.last_seen_in_time_motion
 
+  - type: iframe
+    id: gasmeter
+    url: http://192.168.31.164/img_tmp/alg_roi.jpg
+    acpect_ratio: 50%
 
+  - type: entities
+    entities:
+      - sensor.mqtt_gasmeter_value
 
+  - type: 'custom:vertical-stack-in-card'
+    cards:
+    - type: history-graph
+      title: 'Last seen about 1h'
+      entities:
+        - sensor.last_seen_bathroom_ht
+        - sensor.last_seen_c_bedroom_double_switch
+        - sensor.last_seen_c_bedroom_ht
+        - sensor.last_seen_m_bedroom_temp
+        - sensor.last_seen_mi_round_button
 
-
-
-
-
-
+    - type: history-graph
+      title: 'Last seen'
+      entities:
+        - sensor.last_seen_basement_temp
+      #   - sensor.last_seen_bath_motion
+        - sensor.last_seen_lumber_temp
+        - sensor.last_seen_motion
 
 
 

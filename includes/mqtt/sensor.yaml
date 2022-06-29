@@ -1,0 +1,19 @@
+  sensor:
+  - name: Main bridge state
+    state_topic: "zigbee2mqtt/bridge/state"
+    icon: mdi:router-wireless
+
+  - name: Second bridge state
+    state_topic: "zigbee2mqtt_2nd/bridge/state"
+    icon: mdi:router-wireless
+    
+  - state_topic: "gasmeter/main/value"
+    name: 'mqtt_gasmeter_value'
+    unit_of_measurement: 'м³'
+    state_class: measurement
+
+  - state_topic: "gasmeter/main/json"
+    name: 'mqtt_gasmeter_value_json'
+    value_template: "{{ value_json.value }}"
+    unit_of_measurement: 'м³'
+    state_class: measurement

@@ -1,45 +1,46 @@
-binary_sensor.energy_monitor_input:
+binary_sensor.energy_monitor_input_online:
   templates:
     icon_color: >
       if (state === 'on') return 'rgb(0, 180, 30)';
       else return 'rgb(255, 0, 0)';
       
-binary_sensor.gas_heater_control:
+binary_sensor.gas_heater_control_online:
   templates:
     icon_color: >
       if (state === 'on') return 'rgb(0, 180, 30)';
       else return 'rgb(255, 0, 0)';
       
-binary_sensor.wall_switch_bedroom:
+binary_sensor.wall_switch_bedroom_online:
   templates:
     icon_color: >
       if (state === 'on') return 'rgb(0, 180, 30)';
       else return 'rgb(255, 0, 0)';
       
-binary_sensor.coridor_light:
+binary_sensor.coridor_light_online:
   templates:
     icon_color: >
       if (state === 'on') return 'rgb(0, 180, 30)';
       else return 'rgb(255, 0, 0)';
       
-binary_sensor.bme280:
+binary_sensor.outside_sensor_online:
   templates:
     icon_color: >
       if (state === 'on') return 'rgb(0, 180, 30)';
       else return 'rgb(255, 0, 0)';
 
-binary_sensor.magic_light:
+binary_sensor.magic_light_online:
   templates:
     icon_color: >
       if (state === 'on') return 'rgb(0, 180, 30)';
       else return 'rgb(255, 0, 0)';
       
-binary_sensor.diy_wireless_relay:
+binary_sensor.diy_wireless_relay_online:
   templates:
     icon_color: >
       if (state === 'on') return 'rgb(0, 180, 30)';
       else return 'rgb(255, 0, 0)';
-binary_sensor.gas_heater_relay:
+
+binary_sensor.gas_heater_relay_online:
   templates:
     icon_color: >
       if (state === 'on') return 'rgb(255, 195, 0)';
@@ -47,3 +48,15 @@ binary_sensor.gas_heater_relay:
     icon: >
       if (state === 'on') return 'mdi:radiator';
       else return 'mdi:radiator-disabled';
+
+binary_sensor.sonoff_mini_001_online:
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';
+
+binary_sensor.weather_display_online:
+  templates:
+    icon_color: >
+      if (state === 'on') return 'rgb(0, 180, 30)';
+      else return 'rgb(255, 0, 0)';

@@ -82,13 +82,13 @@ basement:
     - alias: Вентиляция в подвале - включение автоматического режима, когда температура на улице ниже заданной
       trigger:
         - platform: state
-          entity_id: sensor.bme280_temperature
+          entity_id: sensor.outside_temperature
       condition:
          - condition: state
            entity_id: input_select.basement_automode_cooler
            state: 'Off'
          - condition: template
-           value_template: "{{ (states.sensor.bme280_temperature.state|float) <= (states.input_number.basement_set_outdoor_temp.state|float) }}"
+           value_template: "{{ (states.sensor.outside_temperature.state|float) <= (states.input_number.basement_set_outdoor_temp.state|float) }}"
       action:
         - service: input_select.select_option
           data:
@@ -102,10 +102,10 @@ basement:
     - alias: Вентиляция в подвале - отключение, когда температура на улице выше заданной
       trigger:
         - platform: state
-          entity_id: sensor.bme280_temperature
+          entity_id: sensor.outside_temperature
       condition:
          - condition: template
-           value_template: "{{ (states.sensor.bme280_temperature.state|float) >= (states.input_number.basement_set_outdoor_temp.state|float) }}"
+           value_template: "{{ (states.sensor.outside_temperature.state|float) >= (states.input_number.basement_set_outdoor_temp.state|float) }}"
          - condition: template
            value_template: "{{ states.input_select.basement_automode_cooler.state != 'Manual' }}"
       action:
@@ -130,7 +130,7 @@ basement:
            entity_id: input_select.basement_automode_cooler
            state: 'Off'
          - condition: template
-           value_template: "{{ (states.sensor.bme280_temperature.state|float) <= (states.input_number.basement_set_outdoor_temp.state|float) }}"
+           value_template: "{{ (states.sensor.outside_temperature.state|float) <= (states.input_number.basement_set_outdoor_temp.state|float) }}"
       action:
         - service: input_select.select_option
           data:
@@ -148,7 +148,7 @@ basement:
          - condition: template
            value_template: "{{ states.input_select.basement_automode_cooler.state != 'Manual' }}"
          - condition: template
-           value_template: "{{ (states.sensor.bme280_temperature.state|float) >= (states.input_number.basement_set_outdoor_temp.state|float) }}"
+           value_template: "{{ (states.sensor.outside_temperature.state|float) >= (states.input_number.basement_set_outdoor_temp.state|float) }}"
       action:
         - service: input_select.select_option
           data:

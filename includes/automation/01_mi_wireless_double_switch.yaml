@@ -21,7 +21,8 @@
     - service: light.turn_on
       data:
         entity_id: light.magic_light
-        brightness_pct: 10
+        color_name: red
+        brightness_pct: 25
     - choose:
         - conditions:
             - condition: state
@@ -51,6 +52,7 @@
     - service: light.turn_on
       data:
         entity_id: light.magic_light
+        color_name: red
         brightness_pct: 100
     - choose:
         - conditions:

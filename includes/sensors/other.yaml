@@ -10,48 +10,6 @@
         friendly_name: 'Set temperature'
         value_template: "{{(state_attr('climate.westen' , 'temperature')|round(1))}}"
 
-# - platform: template
-#   sensors:      
-#     unavailable:
-#       friendly_name: 'Sensors that need attention'
-#       value_template: >
-#         {{ states | selectattr('state', 'in', ['unavailable', 'unknown', 'none']) | list | length }}
-#       attribute_templates:
-#         entities: >
-#           {{ states | selectattr('state', 'in', ['unavailable', 'unknown', 'none']) | map(attribute='entity_id') | list | join('\n') }}
-
-#   - platform: influxdb
-#     host: a0d7b954-influxdb
-#     port: 8086
-#     username: !secret influx_usr
-#     password: !secret influx_pwd
-#     scan_interval: 3600
-#     queries:
-#       - name: InfluxDB _internal DB size
-#         unit_of_measurement: MB
-#         value_template: "{{ (value|float / 1024 /1024)|round(1) }}"
-#         group_function: sum
-#         measurement: '"monitor"."shard"'
-#         database: _internal
-#         where: "time > now() - 10s"
-#         field: diskBytes
-
-#   - platform: influxdb
-#     host: a0d7b954-influxdb
-#     port: 8086
-#     username: !secret influx_usr
-#     password: !secret influx_pwd
-#     scan_interval: 3600
-#     queries:
-#       - name: InfluxDB home_assistant DB size
-#         unit_of_measurement: MB
-#         value_template: '{{ (value | float / 1024 /1024) | round(1) }}'
-#         group_function: mean
-#         measurement: '"monitor"."shard"'
-#         database: _internal
-#         where: 'time > now() - 1m AND "database"=''home_assistant'''
-#         field: diskBytes 
-        
   - platform: template
     sensors:
       tariff_difference_month:
@@ -66,7 +24,18 @@
         friendly_name: 'Разница тарифов за день'
         value_template: "{{ (states.sensor.mqtt_power_today_input_energy.state | float * 1.68 - (states.sensor.mqtt_power_today_day_input_energy.state | float * 1.68 + states.sensor.mqtt_power_today_night_input_energy.state | float * 0.84))|round(2) }}"
         
-        
+#   - platform: mqtt
+#     state_topic: "gasmeter/main/value"
+#     name: 'mqtt_gasmeter_value'
+#     unit_of_measurement: 'м³'
+#     state_class: measurement
+
+#   - platform: mqtt
+#     state_topic: "gasmeter/main/json"
+#     name: 'mqtt_gasmeter_value_json'
+#     value_template: "{{ value_json.value }}"
+#     unit_of_measurement: 'м³'
+#     state_class: measurement
         
         
         

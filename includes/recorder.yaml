@@ -6,74 +6,35 @@
     domains:
       - switch
       - light
+      - person
+      - climate
+    entity_globs:
+      - binary_sensor.*_online
+      - binary_sensor.*_occupancy
+      - sensor.*temperature*
+      - sensor.*humidity*
+      - sensor.load_*
+      - sensor.last_seen*
     entities:
-#Climate
-      - climate.westen
       - binary_sensor.gas_heater_relay
       - switch.gas_heater_relay
       - sensor.heater_relay_status
       - sensor.thermostat_status
       - group.central_heater
-      - sensor.water_system
-      - sensor.water_out
-      - climate.basement
       
-      - climate.boiler_thermostat
       - binary_sensor.night_tarif_esp
-
 #System
       - sensor.cpu_temperature
       - sensor.processor_use
       - sensor.memory_use_percent
       - sensor.home_assistant_v2_db
-
 #BME280
-      - sensor.ds18b20_out_temperature
-      - sensor.bme280_humidity
       - sensor.bme280_pressure
       - sensor.bme280_pressure_in_mmhg
-      - sensor.bme280_temperature
       - sensor.dew_point
 
-#zigbee sensors
-#Mi
-      - sensor.m_bedroom_temperature
-      - sensor.c_bedroom_temperature
-      - sensor.bathroom_temperature
-
-      - sensor.m_bedroom_humidity
-      - sensor.c_bedroom_humidity
-      - sensor.bathroom_humidity
-#SONOff
-      - sensor.basement_temp_temperature
-      - sensor.lumber_temp_temperature
-      
-      - sensor.basement_temp_humidity
-      - sensor.lumber_temp_humidity
-      
       - binary_sensor.sonoff_mini_001_relay
-
-#BT sensors
-      - sensor.ble_humidity_c_bedroom_bt
-      - sensor.ble_temperature_c_bedroom_bt
-      - sensor.ble_humidity_living_room
-      - sensor.ble_temperature_living_room
-
-#Power current
-      - sensor.load_broadlink_1
-      - sensor.load_broadlink_2
-      - sensor.load_bw_shp8
-      - sensor.load_dishwasher
-      - sensor.load_humidifier
-      - sensor.load_total_energy
-      - sensor.load_xiaomi_power_strip
-      - sensor.load_input_energy
-
-      - sensor.bw_shp8_power
-      - sensor.bw_shp8_current
-      - sensor.bw_shp8_voltage
-      - sensor.bw_shp8_ds18b20
-
+#BW-SHP13
       - sensor.dishwasher_power
       - sensor.dishwasher_current
       - sensor.dishwasher_voltage
@@ -88,15 +49,10 @@
       - sensor.my_pc_current
       - sensor.my_pc_voltage
       - sensor.my_pc_energy
-
-#ASUSwrt
-      - sensor.asuswrt_download_speed
-      - sensor.asuswrt_upload_speed
-
+#Speedtest
       - sensor.speedtest_download
       - sensor.speedtest_ping
       - sensor.speedtest_upload
-
 #Energy monitor
       - sensor.input_current
       - sensor.input_energy
@@ -106,52 +62,43 @@
       - sensor.input_power_factor_2
       - sensor.input_voltage
       - sensor.voltage_stat
+# boiler
+      - sensor.boiler_current
+      - sensor.boiler_energy
+      - sensor.boiler_frequency
+      - sensor.boiler_power
+      - sensor.boiler_power_factor
+      - sensor.boiler_voltage
+      - sensor.boiler_ds18b20
 
       - sensor.pzem_power_day
       - sensor.pzem_power_night
-
+#Energy monitor
       - sensor.pzem_energy_night_tarif
       - sensor.pzem_energy_day_tarif
       - sensor.mqtt_power_total_broadlink_1
       - sensor.mqtt_power_total_broadlink_2
       - sensor.mqtt_power_total_xiaomi_power_strip
 
-# Persons
-      - person.anatolii
-      - person.olga
-      - person.sergei
-      - person.svetlana
-
-      - binary_sensor.boiler
-      - sensor.c_bedroom_temperature_median
-      - sensor.c_bedroom_humidity_median
-      - sensor.home_humidity_median
-      
-
-
+      - sensor.pzem_energy_day_tarif_cost
+      - sensor.pzem_energy_night_tarif_cost
 #Boiler automation
-      - binary_sensor.boiler
-      - binary_sensor.dishwasher
-      - binary_sensor.washing_machine
+      - binary_sensor.boiler_state
+      - binary_sensor.dishwasher_state
+      - binary_sensor.washing_machine_state
       - binary_sensor.boiler_time
       - binary_sensor.boiler_timer
-      - sensor.boiler
 
       - switch.stiralnaia_mashina
       - sensor.stiralnaia_mashina_washer_completion_time
       - sensor.stiralnaia_mashina_washer_job_state
       - sensor.stiralnaia_mashina_washer_machine_state
-      
+      - sensor.stiralnaia_mashina_energy
+
       - binary_sensor.day_tarif_template
-
-
   exclude:
-    entities:
-      - switch.restart_gas_heater_control
-      - switch.restart_wall_switch_bedroom
-      - switch.restart_corridor_light
-      - switch.restart_bme280
-      - switch.restart_diy_wireless_relay
-      - switch.restart_magic_light
-      - switch.xiaomi_power_strip
+#    entities:
+    entity_globs:
+      - switch.restart_*
+      - sensor.last_seen_in_*
       

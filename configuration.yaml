@@ -50,10 +50,29 @@ frontend:
 tts:
   - platform: google_translate
 
-google:
-  client_id: !secret google_client_id 
-  client_secret: !secret google_client_secret
-  
+# google:
+#   client_id: !secret google_client_id 
+#   client_secret: !secret google_client_secret
+
+#GAssistant
+google_assistant:
+  project_id: !secret gassistant_project_id
+  api_key: !secret gassistant_api
+  exposed_domains:
+    - switch
+    - light
+    - climate
+    - media_player
+  entity_config:
+    sensor.outside_temperature:
+      name: Температура на улице
+      aliases:
+        - out_temp
+    sensor.ble_temperature_living_room:
+      name: Температура в доме
+      aliases:
+        - in_temp
+
 # Telegram Bot
 telegram_bot:
   - platform: polling
@@ -79,16 +98,20 @@ device_tracker:
     new_device_defaults:
       track_new_devices: false
 
-rest_command:
-  narodmon:
-    url: http://narodmon.ru/get?ID={{ID}}&T1={{T1}}&H1={{H1}}&P1={{P1}}
+# rest_command:
+#   narodmon:
+#     url: http://narodmon.ru/get?ID={{ID}}&T1={{T1}}&H1={{H1}}&P1={{P1}}
 
 panel_custom:
   - name: config/server_control
     sidebar_title: Server Controls
     sidebar_icon: mdi:server
     module_url: any text
-
+# Example configuration.yaml entry
+panel_iframe:
+  router:
+    title: "Z2M 2"
+    url: "/z2m"
 
 sensor: !include_dir_merge_list includes/sensors
 binary_sensor: !include_dir_merge_list includes/bin_sensor
@@ -96,6 +119,7 @@ automation: !include_dir_merge_list includes/automation
 script: !include_dir_merge_named includes/scripts
 switch: !include_dir_merge_list includes/switches
 template: !include_dir_merge_list includes/templates
+mqtt: !include_dir_merge_named includes/mqtt
 
 #Files
 light: !include includes/light.yaml

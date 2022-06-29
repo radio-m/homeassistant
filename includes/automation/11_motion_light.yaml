@@ -121,6 +121,7 @@
     - service: light.turn_on
       data:
         entity_id: light.coridor_rgb
+        color_name: yellow
         brightness_pct: 2
         
 - id: "Датчик движения - коридор - выключить подсветку"

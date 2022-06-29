@@ -1,3 +1,8 @@
 switch.broadlink_1:
   icon: mdi:air-conditioner
   friendly_name: "Кондиционер"
+  assumed_state: false
+switch.broadlink_2:
+  assumed_state: false
+switch.broadlink_3:
+  assumed_state: false

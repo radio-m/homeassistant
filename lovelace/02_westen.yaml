@@ -15,19 +15,19 @@ cards:
             - entity: timer.westen
             - entity: climate.westen
               name: "Котел Westen"
-            - entity: sensor.bme280_temperature
+            - entity: sensor.outside_temperature
               type: custom:multiple-entity-row
               name: Температура повітря
               state_header: надворі
               entities:
                 - entity: sensor.ble_temperature_living_room
                   name: вдома
-            - entity: sensor.water_out
+            - entity: sensor.water_out_temperature
               type: custom:multiple-entity-row
               name: Температура води
               state_header: вихід
               entities:
-                - entity: sensor.water_system
+                - entity: sensor.water_system_temperature
                   name: система
             - entity: binary_sensor.gas_heater_relay
               name: "Реле котла"
@@ -87,7 +87,7 @@ cards:
 
       - type: custom:mini-graph-card
         entities:
-          - sensor.bme280_temperature
+          - sensor.outside_temperature
         #   - color: red
         #     entity: sensor.dew_point
         name: Out temp
@@ -131,8 +131,8 @@ cards:
             color: "#ffff00"
         hours_to_show: 24
         points_per_hour: 2
-        lower_bound: 15
-        upper_bound: 30
+        lower_bound: 17
+        upper_bound: 24
         state_map:
           - value: "off"
             label: Не греет
@@ -164,12 +164,12 @@ cards:
     cards:
       - type: entities
         entities:
-          - entity: sensor.bme280_temperature
+          - entity: sensor.outside_temperature
             type: custom:multiple-entity-row
             name: На улице
             show_state: false
             entities:
-              - entity: sensor.bme280_temperature
+              - entity: sensor.outside_temperature
                 name: Температура
               - entity: sensor.bme280_humidity
                 name: Влажность
@@ -256,7 +256,7 @@ cards:
             - entity: input_boolean.cooler_automation_active
             - entity: climate.basement
               name: "Вентилятор в подвале"
-            - entity: sensor.bme280_temperature
+            - entity: sensor.outside_temperature
               type: custom:multiple-entity-row
               name: Температура воздуха
               state_header: на улице
@@ -266,7 +266,7 @@ cards:
 
             # - entity: sensor.basement_temp_temperature #mi_t_582d3434ca5b
             #   name: "Температура в подвале"
-            # - entity: sensor.bme280_temperature
+            # - entity: sensor.outside_temperature
             #   name: "Температура на улице"
             - type: divider
             - entity: input_select.basement_automode_cooler
@@ -291,7 +291,47 @@ cards:
                   name: Режим "авто", когда заданная t на улице изменилась
                 - entity: automation.ventiliatsiia_v_podvale_otkliuchenie_kogda_temperatura_na_ulitse_vyshe_zadannoi_pri_izmenenii
                   name: Отключение, когда заданная t на улице изменилась
-          
+
+  - type: entities
+    entities:
+      - entity: sensor.bathroom_humidity
+        name: Влажность в ванной
+      - entity: sensor.home_humidity_median
+        name: Средняя влажность по дому
+      - entity: switch.sonoff_mini_001_switch
+      - entity: automation.ventiliatsiia_v_vannoi
+        name: Автоматика
+        icon: mdi:fan
+      - entity: timer.bath_vent
+        name: Таймер
+
+  - type: custom:mini-graph-card
+    entities:
+      - color: green
+        entity: binary_sensor.sonoff_mini_001_relay
+        name: Вентилятор
+        show_line: true
+        show_points: false
+        show_legend: false
+        show_state: false
+        y_axis: secondary
+      - entity: sensor.home_humidity_median
+        name: Средняя влажность по дому
+      - entity: sensor.bathroom_humidity
+        name: Влажность в ванной
+        show_state: true
+
+    # smoothing: false
+    points_per_hour: 6
+    update_interval: 30
+    show:
+      labels: true
+      labels_secondary: false
+    state_map:
+      - value: "off"
+        label: Выкл
+      - value: "on"
+        label: Вкл
           
           
           

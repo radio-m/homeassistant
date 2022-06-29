@@ -1,20 +1,35 @@
 sensor.pzem_energy_night_tarif:
+  friendly_name: Потребление по ночному тарифу
   last_reset: '1970-01-01T00:00:00+00:00'
   device_class: energy
-  state_class: measurement
+  state_class: total_increasing
 sensor.pzem_energy_day_tarif:
+  friendly_name: Потребление по дневному тарифу
   last_reset: '1970-01-01T00:00:00+00:00'
   device_class: energy
-  state_class: measurement
+  state_class: total_increasing
 sensor.mqtt_power_total_broadlink_1:
+  friendly_name: Кондиционер
   last_reset: '1970-01-01T00:00:00+00:00'
   device_class: energy
-  state_class: measurement
+  state_class: total_increasing
 sensor.mqtt_power_total_broadlink_2:
+  friendly_name: PC accessories
   last_reset: '1970-01-01T00:00:00+00:00'
   device_class: energy
-  state_class: measurement
+  state_class: total_increasing
 sensor.mqtt_power_total_xiaomi_power_strip:
+  friendly_name: Xiaomi 3+3
   last_reset: '1970-01-01T00:00:00+00:00'
   device_class: energy
-  state_class: measurement
+  state_class: total_increasing
+sensor.boiler_energy:
+  friendly_name: Бойлер
+sensor.my_pc_energy:
+  friendly_name: Компьютер
+sensor.humidifier_energy:
+  friendly_name: Увлажнитель
+sensor.dishwasher_energy:
+  friendly_name: Посудомоечная машина
+sensor.stiralnaia_mashina_energy:
+  friendly_name: Стиральная машина

@@ -10,7 +10,7 @@ westen:
       min_temp: 18
       max_temp: 25
       hot_tolerance: 0.5
-      cold_tolerance: 0.2
+      cold_tolerance: 0
       away_temp: 18
   
   group:
@@ -19,7 +19,7 @@ westen:
         entities:
           - input_boolean.heater_automation_active
           - climate.westen
-          - sensor.bme280_temperature
+          - sensor.outside_temperature
           - sensor.heater_relay_status
       heater_show_automations:
         name: Show Heater automations
@@ -58,8 +58,8 @@ westen:
       sensors:
         heater_away_mode_status:
           value_template: '{{ states.climate.westen.attributes.preset_mode }}'
-#         heater_relay_status:
-#           value_template: '{{ states.switch.gas_heater_relay.state }}'
+        heater_relay_status:
+          value_template: '{{ states.switch.gas_heater_relay.state }}'
   
 #   ### westen gas-heater switch from custom esp8266 relay
 #   switch:
@@ -281,7 +281,7 @@ westen:
     - alias: Газовый котел - включить, когда температура на улице ниже заданной
       trigger:
         - platform: state
-          entity_id: sensor.bme280_temperature
+          entity_id: sensor.outside_temperature
       condition:
          - condition: state
            entity_id: input_boolean.heater_automation_active
@@ -293,7 +293,7 @@ westen:
            entity_id: input_select.heater_automode_heater
            state: 'Off'
          - condition: template
-           value_template: "{{ (states.sensor.bme280_temperature.state|float) <= (states.input_number.heater_set_outdoor_temp.state|float) }}"
+           value_template: "{{ (states.sensor.outside_temperature.state|float) <= (states.input_number.heater_set_outdoor_temp.state|float) }}"
       action:
         - service: input_select.select_option
           data:
@@ -305,14 +305,14 @@ westen:
           data_template:
             title: 'Котел'
             message: 
-              'включений Автоматичний режим: На вулиці знизилась температура до {{ states.sensor.bme280_temperature.state}}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
+              'включений Автоматичний режим: На вулиці знизилась температура до {{ states.sensor.outside_temperature.state}}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
         - service: homeassistant.turn_off
           entity_id: automation.gazovyi_kotel_vkliuchit_kogda_temperatura_na_ulitse_nizhe_zadannoi
   
     - alias: Газовый котел - выключить, когда температура на улице выше заданной
       trigger:
         - platform: state
-          entity_id: sensor.bme280_temperature
+          entity_id: sensor.outside_temperature
       condition:
          - condition: state
            entity_id: input_boolean.heater_automation_active
@@ -321,7 +321,7 @@ westen:
            entity_id: input_boolean.heater_outdoor_temp_mode
            state: 'on'
          - condition: template
-           value_template: "{{ (states.sensor.bme280_temperature.state|float) >= (states.input_number.heater_set_outdoor_temp.state|float) }}"
+           value_template: "{{ (states.sensor.outside_temperature.state|float) >= (states.input_number.heater_set_outdoor_temp.state|float) }}"
          - condition: template
            value_template: "{{ states.input_select.heater_automode_heater.state != 'Manual' }}"
       action:
@@ -335,7 +335,7 @@ westen:
           data_template:
             title: 'Котел'
             message: 
-              'виключений: На вулиці виросла температура до {{ states.sensor.bme280_temperature.state}}°C'
+              'виключений: На вулиці виросла температура до {{ states.sensor.outside_temperature.state}}°C'
         - service: homeassistant.turn_off
           entity_id: automation.gazovyi_kotel_vykliuchit_kogda_temperatura_na_ulitse_vyshe_zadannoi
   
@@ -354,7 +354,7 @@ westen:
            entity_id: input_select.heater_automode_heater
            state: 'Off'
          - condition: template
-           value_template: "{{ (states.sensor.bme280_temperature.state|float) <= (states.input_number.heater_set_outdoor_temp.state|float) }}"
+           value_template: "{{ (states.sensor.outside_temperature.state|float) <= (states.input_number.heater_set_outdoor_temp.state|float) }}"
       action:
         - service: input_select.select_option
           data:
@@ -364,7 +364,7 @@ westen:
           data_template:
             title: 'Котел'
             message: 
-              'включений Автоматичний режим: На вулиці знизилась температура до {{ states.sensor.bme280_temperature.state}}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
+              'включений Автоматичний режим: На вулиці знизилась температура до {{ states.sensor.outside_temperature.state}}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
   
     - alias: Газовый котел - выключить, когда температура на улице выше заданной (изм)
       trigger:
@@ -380,7 +380,7 @@ westen:
          - condition: template
            value_template: "{{ states.input_select.heater_automode_heater.state != 'Manual' }}"
          - condition: template
-           value_template: "{{ (states.sensor.bme280_temperature.state|float) >= (states.input_number.heater_set_outdoor_temp.state|float) }}"
+           value_template: "{{ (states.sensor.outside_temperature.state|float) >= (states.input_number.heater_set_outdoor_temp.state|float) }}"
       action:
         - service: input_select.select_option
           data:
@@ -390,7 +390,7 @@ westen:
           data_template:
             title: 'Котел'
             message: 
-              'виключений: На вулиці виросла температура до {{ states.sensor.bme280_temperature.state}}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
+              'виключений: На вулиці виросла температура до {{ states.sensor.outside_temperature.state}}°C, поточна температура {{ states.climate.westen.attributes.current_temperature }}°C'
   
     - alias: Газовый котел - включить режим зависимости от температуры на улице
       trigger:
@@ -404,7 +404,7 @@ westen:
            entity_id: input_boolean.heater_outdoor_temp_mode
            state: 'on'
          - condition: template
-           value_template: "{{ (states.sensor.bme280_temperature.state|float) <= (states.input_number.heater_set_outdoor_temp.state|float) }}"
+           value_template: "{{ (states.sensor.outside_temperature.state|float) <= (states.input_number.heater_set_outdoor_temp.state|float) }}"
       action:
         - service: homeassistant.turn_on
           entity_id: automation.gazovyi_kotel_vykliuchit_kogda_temperatura_na_ulitse_vyshe_zadannoi
@@ -423,7 +423,7 @@ westen:
            entity_id: input_boolean.heater_outdoor_temp_mode
            state: 'on'
          - condition: template
-           value_template: "{{ (states.sensor.bme280_temperature.state|float) >= (states.input_number.heater_set_outdoor_temp.state|float) }}"
+           value_template: "{{ (states.sensor.outside_temperature.state|float) >= (states.input_number.heater_set_outdoor_temp.state|float) }}"
       action:
         - service: homeassistant.turn_on
           entity_id: automation.gazovyi_kotel_vkliuchit_kogda_temperatura_na_ulitse_nizhe_zadannoi

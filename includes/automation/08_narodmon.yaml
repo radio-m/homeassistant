@@ -1,8 +1,8 @@
-- id: 'Narodmon - отправка данных каждые 10 минут'
-  alias: Narodmon - отправка данных каждые 10 минут
-  trigger:
-    - platform: time_pattern
-      minutes: '/10'
-  condition: []
-  action:
-  - service: script.1549561403890
+# - id: 'Narodmon - отправка данных каждые 10 минут'
+#   alias: Narodmon - отправка данных каждые 10 минут
+#   trigger:
+#     - platform: time_pattern
+#       minutes: '/10'
+#   condition: []
+#   action:
+#   - service: script.1549561403890

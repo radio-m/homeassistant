@@ -1,7 +1,7 @@
 oled_page:
   name: OLED page
   options:
-    - 'page1'
-    - 'page2'
-    - 'page3'
-    - 'page4'
+    - 'out_temp'
+    - 'in_temp'
+    - 'humidity'
+    - 'pressure'

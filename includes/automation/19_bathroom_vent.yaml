@@ -37,7 +37,9 @@
               entity_id: timer.bath_vent
             - service: switch.turn_on
               entity_id: switch.sonoff_mini_001_switch
-        - conditions: "{{ trigger.to_state.state == 'off' }}"
+        - conditions:
+            - "{{ trigger.from_state.state == 'on' }}"
+            - "{{ trigger.to_state.state == 'off' }}"
           sequence:
             - service: timer.start
               entity_id: timer.bath_vent

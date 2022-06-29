@@ -19,7 +19,7 @@
       - switch.bathroom_double_switch_right #Boiler room
       - light.magic_light
 #Sensors
-      - sensor.bme280_temperature
+      - sensor.outside_temperature
       - sensor.m_bedroom_temperature #M bedroom
       - sensor.c_bedroom_temperature #C bedroom
       - sensor.g_bedroom_temperature #G bedroom
@@ -27,7 +27,7 @@
       - sensor.lumber_temp_temperature #Lumber room
 
   condition:
-
+    - "{{ is_state('group.electricity', 'on') }}"
   action:
     - service: notify.telegram
       data:
@@ -48,7 +48,7 @@
       - sensor.m_bedroom_battery
       - sensor.c_bedroom_battery
       - sensor.bathroom_battery
-      - sensor.mi_round_button_battery
+#      - sensor.mi_round_button_battery
       - sensor.basement_temp_battery
       - sensor.lumber_temp_battery
       - sensor.motion_sensor_battery
@@ -89,6 +89,16 @@
       data:
          message: "🚒🚒🚒 Задымление на кухне!!!"
 
+- alias: Notify Отсутствует электричество
+  id: "Notify Отсутствует электричество"
+  trigger:
+    platform: state
+    entity_id: group.electricity
+    to: 'off'
+  action:
+    - service: notify.telegram
+      data:
+         message: "Отсутствует электричество"
 
 
 

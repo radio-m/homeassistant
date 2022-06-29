@@ -12,14 +12,14 @@ sensor.boiler_power_state:
       if (state === 'standby-off') return 'mdi:water-boiler';
       else return 'mdi:water-boiler-off';
 
-binary_sensor.dishwasher:
+binary_sensor.dishwasher_state:
   icon: mdi:dishwasher
   templates:
     icon_color: >
       if (state === 'on') return 'rgb(0, 180, 30)';
       else return 'rgb(255, 0, 0)';
 
-binary_sensor.washing_machine:
+binary_sensor.washing_machine_state:
   icon: mdi:washing-machine
   templates:
     icon_color: >
@@ -40,7 +40,7 @@ binary_sensor.boiler_timer:
       if (state === 'on') return 'rgb(0, 180, 30)';
       else return 'rgb(255, 0, 0)';
 
-sensor.bw_shp8_ds18b20:
+sensor.boiler_ds18b20_temperature:
   templates:
     icon_color: >
       if (state < 10) return 'rgb(0, 0, 255)';

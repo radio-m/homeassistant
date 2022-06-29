@@ -7,10 +7,10 @@
   - type: last_boot
   - type: disk_free
     arg: /
-
-- platform: filesize
-  file_paths:
-    - /config/home-assistant_v2.db
+# deprecated
+# - platform: filesize
+#   file_paths:
+#     - /config/home-assistant_v2.db
       
 - platform: command_line
   name: CPU Temperature
@@ -18,12 +18,12 @@
   unit_of_measurement: "°C"
   value_template: '{{ value | multiply(0.001) | round(1) }}'
   
-- platform: version
-  name: current_ha
-  scan_interval: 1800
+# - platform: version
+#   name: current_ha
+#   scan_interval: 1800
 
 - platform: template
   sensors:
     version:
       friendly_name: 'Последняя версия - '
-      value_template: '{{ states.binary_sensor.updater.attributes["newest_version"] }}'
+      value_template: '{{ states.update.home_assistant_core_update.attributes["latest_version"] }}'

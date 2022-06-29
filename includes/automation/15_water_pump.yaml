@@ -6,7 +6,7 @@
     entity_id: switch.gas_heater_relay
     to: 'off'
   - platform: state
-    entity_id: sensor.water_system
+    entity_id: sensor.water_system_temperature
     
   condition:
   - condition: state
@@ -16,7 +16,7 @@
     entity_id: switch.water_pump
     state: 'off'
   - condition: numeric_state
-    entity_id: sensor.water_system
+    entity_id: sensor.water_system_temperature
     above: 30
 
   action:
@@ -28,7 +28,7 @@
   trigger:
   - platform: numeric_state
     below: 30
-    entity_id: sensor.water_system
+    entity_id: sensor.water_system_temperature
   - platform: state
     entity_id: switch.gas_heater_relay
     to: "on"

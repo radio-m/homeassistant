@@ -1,6 +1,11 @@
-# Parser for Kegtron BLE advertisements
+"""Parser for Kegtron BLE advertisements"""
 import logging
 from struct import unpack
+
+from .helpers import (
+    to_mac,
+    to_unformatted_mac,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -20,7 +25,7 @@ KEGTRON_SIZE_DICT = {
 
 
 def parse_kegtron(self, data, source_mac, rssi):
-    # check for adstruc length
+    """Parser for Kegtron sensors"""
     msg_length = len(data)
     if msg_length == 31:
         firmware = "Kegtron"
@@ -74,14 +79,14 @@ def parse_kegtron(self, data, source_mac, rssi):
             return None
 
         # check for MAC presence in sensor whitelist, if needed
-        if self.discovery is False and kegtron_mac.lower() not in self.sensor_whitelist:
+        if self.discovery is False and kegtron_mac not in self.sensor_whitelist:
             _LOGGER.debug("Discovery is disabled. MAC: %s is not whitelisted!", to_mac(kegtron_mac))
             return None
 
         result.update({
             "type": device_type,
             "firmware": firmware,
-            "mac": ''.join('{:02X}'.format(x) for x in kegtron_mac),
+            "mac": to_unformatted_mac(kegtron_mac),
             "packet": "no packet id",
             "rssi": rssi,
             "data": True,
@@ -95,7 +100,3 @@ def parse_kegtron(self, data, source_mac, rssi):
                 data.hex()
             )
         return None
-
-
-def to_mac(addr: int):
-    return ':'.join('{:02x}'.format(x) for x in addr).upper()

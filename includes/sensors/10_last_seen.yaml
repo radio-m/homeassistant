@@ -1,0 +1,93 @@
+  - platform: template
+    sensors:
+      last_seen_basement_temp:
+        friendly_name: "НТ в подвале"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.basement_temp_temperature', 'last_seen'))) | int }}"
+
+      last_seen_bath_motion:
+        friendly_name: "ДД в ванной"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('binary_sensor.bath_motion_sensor_occupancy', 'last_seen'))) | int }}"
+
+      last_seen_bathroom_ht:
+        friendly_name: "НТ в ванной"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.bathroom_humidity', 'last_seen'))) | int }}"
+
+      last_seen_c_bedroom_ht:
+        friendly_name: "НТ в детской"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.c_bedroom_temperature', 'last_seen'))) | int }}"
+
+      last_seen_c_bedroom_double_switch:
+        friendly_name: "Выключатель в детской"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.c_bedroom_double_switch_action', 'last_seen'))) | int }}"
+
+      last_seen_lumber_temp:
+        friendly_name: "НТ в чулане"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.lumber_temp_temperature', 'last_seen'))) | int }}"
+
+      last_seen_m_bedroom_temp:
+        friendly_name: "НТ у родителей"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.m_bedroom_temperature', 'last_seen'))) | int }}"
+
+      last_seen_mi_round_button:
+        friendly_name: "Кнопка"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.mi_round_button_action', 'last_seen'))) | int }}"
+
+      last_seen_motion:
+        friendly_name: "ДД"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('binary_sensor.motion_sensor_occupancy', 'last_seen'))) | int }}"
+
+      last_seen_in_time_basement_temp:
+        friendly_name: "НТ в подвале"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.basement_temp_temperature', 'last_seen'))) | int | timestamp_custom('%H:%M:%S', 0) }}"
+
+      last_seen_in_time_bath_motion:
+        friendly_name: "ДД в ванной"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('binary_sensor.bath_motion_sensor_occupancy', 'last_seen'))) | int | timestamp_custom('%H:%M:%S', 0) }}"
+
+      last_seen_in_time_bathroom_ht:
+        friendly_name: "НТ в ванной"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.bathroom_humidity', 'last_seen'))) | int | timestamp_custom('%H:%M:%S', 0) }}"
+
+      last_seen_in_time_c_bedroom_ht:
+        friendly_name: "НТ в детской"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.c_bedroom_temperature', 'last_seen'))) | int | timestamp_custom('%H:%M:%S', 0) }}"
+
+      last_seen_in_time_c_bedroom_double_switch:
+        friendly_name: "Выключатель в детской"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.c_bedroom_double_switch_action', 'last_seen'))) | int | timestamp_custom('%H:%M:%S', 0) }}"
+
+      last_seen_in_time_lumber_temp:
+        friendly_name: "НТ в чулане"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.lumber_temp_temperature', 'last_seen'))) | int | timestamp_custom('%H:%M:%S', 0) }}"
+
+      last_seen_in_time_m_bedroom_temp:
+        friendly_name: "НТ у родителей"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.m_bedroom_temperature', 'last_seen'))) | int | timestamp_custom('%H:%M:%S', 0) }}"
+
+      last_seen_in_time_mi_round_button:
+        friendly_name: "Кнопка"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.mi_round_button_action', 'last_seen'))) | int | timestamp_custom('%H:%M:%S', 0) }}"
+
+      last_seen_in_time_motion:
+        friendly_name: "ДД"
+        unit_of_measurement: 's'
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('binary_sensor.motion_sensor_occupancy', 'last_seen'))) | int | timestamp_custom('%H:%M:%S', 0) }}"
+
+# timestamp_custom('%H:%M:%S', 0) }}"

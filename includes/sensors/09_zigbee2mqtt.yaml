@@ -1,9 +1,9 @@
-  - platform: mqtt
-    name: Main bridge state
-    state_topic: "zigbee2mqtt/bridge/state"
-    icon: mdi:router-wireless
+#   - platform: mqtt
+#     name: Main bridge state
+#     state_topic: "zigbee2mqtt/bridge/state"
+#     icon: mdi:router-wireless
 
-  - platform: mqtt
-    name: Second bridge state
-    state_topic: "zigbee2mqtt_2nd/bridge/state"
-    icon: mdi:router-wireless
+#   - platform: mqtt
+#     name: Second bridge state
+#     state_topic: "zigbee2mqtt_2nd/bridge/state"
+#     icon: mdi:router-wireless

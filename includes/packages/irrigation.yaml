@@ -1,0 +1,59 @@
+irrigation:
+
+    input_text:
+      irrigation_zone1_times:
+        name: Zone 1 Time Periods
+        icon: mdi:chart-timeline
+      irrigation_zone2_times:
+        name: Zone 2 Time Periods
+        icon: mdi:chart-timeline
+      irrigation_zone3_times:
+        name: Zone 3 Time Periods
+        icon: mdi:chart-timeline
+      irrigation_zone4_times:
+        name: Zone 4 Time Periods
+        icon: mdi:chart-timeline
+      irrigation_zone1_days:
+        name: Zone 1 Days of the Week
+        icon: mdi:calendar-week
+      irrigation_zone2_days:
+        name: Zone 2 Days of the Week
+        icon: mdi:calendar-week
+      irrigation_zone3_days:
+        name: Zone 3 Days of the Week
+        icon: mdi:calendar-week
+      irrigation_zone4_days:
+        name: Zone 4 Days of the Week
+        icon: mdi:calendar-week
+
+    input_number:
+      irrigation_zone1_duration:
+        name: Zone 1 Duration
+        icon: mdi:timer
+        min: 2
+        max: 60
+        step: 2    
+      irrigation_zone2_duration:
+        name: Zone 2 Duration
+        icon: mdi:timer
+        min: 2
+        max: 60
+        step: 2  
+      irrigation_zone3_duration:
+        name: Zone 3 Duration
+        icon: mdi:timer
+        min: 2
+        max: 60
+        step: 2  
+      irrigation_zone4_duration:
+        name: Zone 4 Duration
+        icon: mdi:timer
+        min: 2
+        max: 60
+        step: 2
+
+
+    input_boolean:
+      stop_irrigation_automation:
+        name: stop_irrigation_automation
+        initial: off

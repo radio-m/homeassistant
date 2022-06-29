@@ -104,21 +104,21 @@ cards:
     - type: entities
       show_header_toggle: false
       entities:
-      - entity: sensor.load_bw_shp8
+      - entity: sensor.load_boiler
         secondary_info: >-
           сегодня: <b>[[
-          sensor.mqtt_power_today_bw_shp8.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_today_boiler.state ]]</b> кВт⋅ч<br>
           этот месяц: <b>[[
-          sensor.mqtt_power_month_bw_shp8.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_month_boiler.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_month_bw_shp8.state
+          sensor.money_month_boiler.state
           ]]</b> грн<br>
           вчера: <b>[[
-          sensor.mqtt_power_yesterday_bw_shp8.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_yesterday_boiler.state ]]</b> кВт⋅ч<br>
           прошлый месяц: <b>[[
-          sensor.mqtt_power_lastmonth_bw_shp8.state ]]</b> кВт⋅ч<br>
+          sensor.mqtt_power_lastmonth_boiler.state ]]</b> кВт⋅ч<br>
           сумма: <b>[[ 
-          sensor.money_lastmonth_bw_shp8.state ]]</b> грн
+          sensor.money_lastmonth_boiler.state ]]</b> грн
         type: 'custom:secondaryinfo-entity-row'
 # Холодильник
     - type: entities

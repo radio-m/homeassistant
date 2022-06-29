@@ -1,0 +1,40 @@
+  light:
+  - name: gateway_led
+    availability_topic: "Zigbee4A18/bridge/state"
+    command_topic: "Zigbee4A18/led"
+    state_topic: "Zigbee4A18/led"
+    rgb_command_topic: "Zigbee4A18/led"
+    rgb_command_template: >-
+      {
+        "mode": "manual",
+        "hex": "#{{ '%02x%02x%02x' | format(red, green, blue) }}"
+      }
+    on_command_type: "brightness"
+    payload_off: '{"mode": "auto"}'
+    payload_on: 'ON'
+    state_value_template: >
+      {% if value_json.mode == "auto" %}
+      {"mode": "auto"}
+      {% else %}
+      ON
+      {% endif %}
+
+  - name: gateway2_led
+    availability_topic: "Zigbee502C/bridge/state"
+    command_topic: "Zigbee502C/led"
+    state_topic: "Zigbee502C/led"
+    rgb_command_topic: "Zigbee502C/led"
+    rgb_command_template: >-
+      {
+        "mode": "manual",
+        "hex": "#{{ '%02x%02x%02x' | format(red, green, blue) }}"
+      }
+    on_command_type: "brightness"
+    payload_off: '{"mode": "auto"}'
+    payload_on: 'ON'
+    state_value_template: >
+      {% if value_json.mode == "auto" %}
+      {"mode": "auto"}
+      {% else %}
+      ON
+      {% endif %}

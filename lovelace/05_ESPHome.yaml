@@ -7,7 +7,7 @@ cards:
     show_header_toggle: false
     state_color: true
     entities:
-      - binary_sensor.energy_monitor_input
+      - binary_sensor.energy_monitor_input_online
       - sensor.ip_energy_monitor_input
       - sensor.status_energy_monitor_input
       - type: divider
@@ -37,21 +37,21 @@ cards:
           - entity: sensor.pzem_energy_monthly_night
             name: ночь
 
-      - switch.restart_energy_monitor_input
+      - button.restart_energy_monitor_input
 
   - type: entities
     title: 'Gas-heater control'
     show_header_toggle: false
     state_color: true
     entities:
-      - binary_sensor.gas_heater_control
+      - binary_sensor.gas_heater_control_online
       - sensor.ip_gas_heater_control
       - sensor.status_gas_heater_control
       - type: divider
-      - sensor.water_system
-      - sensor.water_out
+      - sensor.water_system_temperature
+      - sensor.water_out_temperature
       - switch.gas_heater_relay
-      - switch.restart_gas_heater_control
+      - button.restart_gas_heater_control
       
 #   - type: entities
 #     title: 'Wall switch'
@@ -71,29 +71,29 @@ cards:
     show_header_toggle: false
     state_color: true
     entities:
-      - binary_sensor.coridor_light
+      - binary_sensor.coridor_light_online
       - sensor.ip_coridor_light
       - sensor.status_coridor_light
       - type: divider
       - binary_sensor.coridor_night_light_button
       - switch.coridor_night_light_relay
-      - switch.restart_coridor_light
+      - button.restart_coridor_light
       
   - type: entities
     title: 'BME280'
     show_header_toggle: false
     state_color: true
     entities:
-      - binary_sensor.bme280
-      - sensor.ip_bme280
-      - sensor.status_bme280
+      - binary_sensor.outside_sensor_online
+      - sensor.ip_outside_sensor
+      - sensor.status_outside_sensor
       - type: divider
-      - sensor.bme280_temperature
-      - sensor.bme280_humidity
-      - sensor.bme280_pressure
-      - sensor.bme280_pressure_in_mmhg
-      - sensor.dew_point
-      - switch.restart_bme280
+      - sensor.outside_temperature
+    #   - sensor.bme280_humidity
+    #   - sensor.bme280_pressure
+    #   - sensor.bme280_pressure_in_mmhg
+    #   - sensor.dew_point
+      - button.restart_outside_sensor
 
 #   - type: entities
 #     title: 'Бойлер'
@@ -110,17 +110,66 @@ cards:
 #       - switch.bw_shp8_relay
 #       - switch.bw_shp8_restart_switch
 
-  - type: entities
-    title: 'Magic Light'
-    show_header_toggle: false
-    state_color: true
-    entities:
-      - binary_sensor.magic_light
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.magic_light_online
+        state: "on"
+    card:
+      type: entities
+      title: 'Magic light'
+      state_color: true
+#   - type: entities
+#     title: 'Magic Light'
+#     show_header_toggle: false
+#     state_color: true
+      entities:
+      - binary_sensor.magic_light_online
       - sensor.ip_magic_light
       - sensor.status_magic_light
       - type: divider
       - light.magic_light
-      - switch.restart_magic_light
+      - button.restart_magic_light
+
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.weather_display_online
+        state: "on"
+    card:
+      type: entities
+      title: 'Wether display'
+      state_color: true
+      entities:
+        - binary_sensor.weather_display_online
+        - sensor.ip_weather_display
+        - sensor.status_weather_display
+        - type: divider
+        - sensor.bme280_humidity
+        - sensor.bme280_pressure
+        - sensor.bme280_pressure_in_mmhg
+        - sensor.bme280_temperature
+        - type: divider
+        - sensor.weather_display_esphome_version
+        - sensor.uptime_weather_display
+        - button.restart_weather_display
+        - input_select.oled_page
+
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.sonoff_mini_001_online
+        state: "on"
+    card:
+      type: entities
+      title: 'Bathroom vent'
+      state_color: true
+      entities:
+        - binary_sensor.sonoff_mini_001_online
+        - sensor.ip_sonoff_mini_001
+        - sensor.status_sonoff_mini_001
+        - type: divider
+        - binary_sensor.sonoff_mini_001_relay
+        - binary_sensor.sonoff_mini_001_status
+        - switch.sonoff_mini_001_switch
+        - button.restart_sonoff_mini_001
 
 
       
@@ -129,7 +178,7 @@ cards:
     show_header_toggle: false
     state_color: true
     entities:
-      - switch.my_pc_2
+      - switch.my_pc_switch
       - switch.dishwasher
       - switch.humidifier
       - switch.basement_vent

@@ -2,10 +2,6 @@
     name: Coridor light
     entity_id: switch.coridor_night_light_relay
     
-#   - platform: switch
-#     name: Wall switch
-#     entity_id: switch.relay_wall_switch_bedroom
-    
   - platform: switch
     name: Bath
     entity_id: switch.bathroom_single_switch
@@ -62,51 +58,45 @@
     name: Patio
     entity_id: switch.patio_switch
 
-  - platform: mqtt
-    name: gateway_led
-    availability_topic: "Zigbee4A18/bridge/state"
-    command_topic: "Zigbee4A18/led"
-    state_topic: "Zigbee4A18/led"
-    rgb_command_topic: "Zigbee4A18/led"
-    rgb_command_template: >-
-      {
-        "mode": "manual",
-        "hex": "#{{ '%02x%02x%02x' | format(red, green, blue) }}"
-      }
-    on_command_type: "brightness"
-    payload_off: '{"mode": "auto"}'
-    payload_on: 'ON'
-    state_value_template: >
-      {% if value_json.mode == "auto" %}
-      {"mode": "auto"}
-      {% else %}
-      ON
-      {% endif %}
+#   - platform: mqtt
+#     name: gateway_led
+#     availability_topic: "Zigbee4A18/bridge/state"
+#     command_topic: "Zigbee4A18/led"
+#     state_topic: "Zigbee4A18/led"
+#     rgb_command_topic: "Zigbee4A18/led"
+#     rgb_command_template: >-
+#       {
+#         "mode": "manual",
+#         "hex": "#{{ '%02x%02x%02x' | format(red, green, blue) }}"
+#       }
+#     on_command_type: "brightness"
+#     payload_off: '{"mode": "auto"}'
+#     payload_on: 'ON'
+#     state_value_template: >
+#       {% if value_json.mode == "auto" %}
+#       {"mode": "auto"}
+#       {% else %}
+#       ON
+#       {% endif %}
 
-  - platform: mqtt
-    name: gateway2_led
-    availability_topic: "Zigbee502C/bridge/state"
-    command_topic: "Zigbee502C/led"
-    state_topic: "Zigbee502C/led"
-    rgb_command_topic: "Zigbee502C/led"
-    rgb_command_template: >-
-      {
-        "mode": "manual",
-        "hex": "#{{ '%02x%02x%02x' | format(red, green, blue) }}"
-      }
-    on_command_type: "brightness"
-    payload_off: '{"mode": "auto"}'
-    payload_on: 'ON'
-    state_value_template: >
-      {% if value_json.mode == "auto" %}
-      {"mode": "auto"}
-      {% else %}
-      ON
-      {% endif %}
+#   - platform: mqtt
+#     name: gateway2_led
+#     availability_topic: "Zigbee502C/bridge/state"
+#     command_topic: "Zigbee502C/led"
+#     state_topic: "Zigbee502C/led"
+#     rgb_command_topic: "Zigbee502C/led"
+#     rgb_command_template: >-
+#       {
+#         "mode": "manual",
+#         "hex": "#{{ '%02x%02x%02x' | format(red, green, blue) }}"
+#       }
+#     on_command_type: "brightness"
+#     payload_off: '{"mode": "auto"}'
+#     payload_on: 'ON'
+#     state_value_template: >
+#       {% if value_json.mode == "auto" %}
+#       {"mode": "auto"}
+#       {% else %}
+#       ON
+#       {% endif %}
 
-# Example configuration.yaml entry
-  - platform: flux_led
-    devices:
-      192.168.31.250:
-        name: coridor_rgb
-        mode: "rgb"

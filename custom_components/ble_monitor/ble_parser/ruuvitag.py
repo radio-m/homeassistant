@@ -4,15 +4,20 @@ import logging
 import math
 from struct import unpack
 
+from .helpers import (
+    to_mac,
+    to_unformatted_mac,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
 
 def parse_ruuvitag(self, data, source_mac, rssi):
+    """Ruuvitag parser"""
     ruuvitag_mac = source_mac
     device_type = "Ruuvitag"
     result = {
-        "mac": "".join("{:02X}".format(x) for x in ruuvitag_mac[:]),
+        "mac": to_unformatted_mac(ruuvitag_mac),
         "type": device_type,
         "rssi": rssi,
         "data": False,
@@ -192,7 +197,7 @@ def parse_ruuvitag(self, data, source_mac, rssi):
             batt = 0
         result["battery"] = round(batt, 1)
     # check for MAC presence in sensor whitelist, if needed
-    if self.discovery is False and ruuvitag_mac.lower() not in self.sensor_whitelist:
+    if self.discovery is False and ruuvitag_mac not in self.sensor_whitelist:
         _LOGGER.debug("Discovery is disabled. MAC: %s is not whitelisted!", to_mac(ruuvitag_mac))
         return None
     if version < 5:
@@ -202,7 +207,3 @@ def parse_ruuvitag(self, data, source_mac, rssi):
             to_mac(ruuvitag_mac),
         )
     return result
-
-
-def to_mac(addr: int):
-    return ":".join("{:02x}".format(x) for x in addr).upper()

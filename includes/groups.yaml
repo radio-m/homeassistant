@@ -26,9 +26,9 @@ boiler_low_voltage:
 #   name: Battery
 #   entity_globs:
 #     - sensor.*battery
-elecrticity:
+electricity:
   name: свет
   entities:
-    - binary_sensor.energy_monitor_input
-    - binary_sensor.gas_heater_control
-    - binary_sensor.coridor_light
+    - binary_sensor.energy_monitor_input_online
+    - binary_sensor.gas_heater_control_online
+    - binary_sensor.coridor_light_online

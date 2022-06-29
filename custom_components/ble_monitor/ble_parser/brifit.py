@@ -1,12 +1,17 @@
-# Parser for Brifit BLE advertisements
+"""Parser for Brifit BLE advertisements"""
 import logging
 from struct import unpack
+
+from .helpers import (
+    to_mac,
+    to_unformatted_mac,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
 
 def parse_brifit(self, data, source_mac, rssi):
-    # check for adstruc length
+    """Parser for Brifit sensors"""
     msg_length = len(data)
     if msg_length == 21:
         device_id = data[2]
@@ -43,20 +48,16 @@ def parse_brifit(self, data, source_mac, rssi):
         return None
 
     # check for MAC presence in sensor whitelist, if needed
-    if self.discovery is False and brifit_mac.lower() not in self.sensor_whitelist:
+    if self.discovery is False and brifit_mac not in self.sensor_whitelist:
         _LOGGER.debug("Discovery is disabled. MAC: %s is not whitelisted!", to_mac(brifit_mac))
         return None
 
     result.update({
         "rssi": rssi,
-        "mac": ''.join('{:02X}'.format(x) for x in brifit_mac[:]),
+        "mac": to_unformatted_mac(brifit_mac),
         "type": device_type,
         "packet": "no packet id",
         "firmware": firmware,
         "data": True
     })
     return result
-
-
-def to_mac(addr: int):
-    return ':'.join('{:02x}'.format(x) for x in addr).upper()

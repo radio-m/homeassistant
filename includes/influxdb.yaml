@@ -12,18 +12,9 @@
       - sensor.home_assistant_v2_db
 
 #Power current
-      - sensor.load_broadlink_1
-      - sensor.load_broadlink_2
-      - sensor.load_bw_shp8
-      - sensor.load_dishwasher
-      - sensor.load_humidifier
-      - sensor.load_total_energy
-      - sensor.load_xiaomi_power_strip
-      - sensor.load_input_energy
-
-      - sensor.mqtt_power_today_input_energy
-      - sensor.mqtt_power_today_day_input_energy
-      - sensor.mqtt_power_today_night_input_energy
+      - sensor.mqtt_power_today_input_energy #
+      - sensor.mqtt_power_today_day_input_energy #
+      - sensor.mqtt_power_today_night_input_energy #
 
       - sensor.mqtt_power_month_input_energy
       - sensor.mqtt_power_month_day_input_energy
