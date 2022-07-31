@@ -110,33 +110,7 @@ cards:
       - sensor.last_seen_in_time_lumber_temp
       - sensor.last_seen_in_time_motion
 
-  - type: iframe
-    id: gasmeter
-    url: http://192.168.31.164/img_tmp/alg_roi.jpg
-    acpect_ratio: 50%
 
-  - type: entities
-    entities:
-      - sensor.mqtt_gasmeter_value
-
-  - type: 'custom:vertical-stack-in-card'
-    cards:
-    - type: history-graph
-      title: 'Last seen about 1h'
-      entities:
-        - sensor.last_seen_bathroom_ht
-        - sensor.last_seen_c_bedroom_double_switch
-        - sensor.last_seen_c_bedroom_ht
-        - sensor.last_seen_m_bedroom_temp
-        - sensor.last_seen_mi_round_button
-
-    - type: history-graph
-      title: 'Last seen'
-      entities:
-        - sensor.last_seen_basement_temp
-      #   - sensor.last_seen_bath_motion
-        - sensor.last_seen_lumber_temp
-        - sensor.last_seen_motion
 
 
 

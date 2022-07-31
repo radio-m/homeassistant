@@ -34,6 +34,8 @@ westen:
           - automation.gazovyi_kotel_vykliuchit_kogda_temperatura_na_ulitse_vyshe_zadannoi
           - automation.gazovyi_kotel_vkliuchit_kogda_temperatura_na_ulitse_nizhe_zadannoi_izm
           - automation.gazovyi_kotel_vykliuchit_kogda_temperatura_na_ulitse_vyshe_zadannoi_izm
+          - automation.vodianoi_nasos_vkliuchenie
+          - automation.vodianoi_nasos_vykliuchenie
   
   input_boolean:
     heater_automation_active:

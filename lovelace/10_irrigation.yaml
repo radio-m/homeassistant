@@ -7,8 +7,8 @@ cards:
           - entity: input_text.irrigation_zone1_days
           - entity: input_text.irrigation_zone1_times
           - entity: input_number.irrigation_zone1_duration
-          - entity: sensor.zona_1_next_watering
-          - entity: sensor.zona_1_time_left
+          - entity: sensor.zone_1_next_watering
+          - entity: sensor.zone_1_time_left
         title: Backyard Zone 1 - Schedule
       - type: entities
         entities:
@@ -28,8 +28,8 @@ cards:
           - entity: input_text.irrigation_zone2_days
           - entity: input_text.irrigation_zone2_times
           - entity: input_number.irrigation_zone2_duration
-          - entity: sensor.zona_2_next_watering
-          - entity: sensor.zona_2_time_left
+          - entity: sensor.zone_2_next_watering
+          - entity: sensor.zone_2_time_left
         title: Backyard Zone 2 - Schedule
       - type: entities
         entities:
@@ -49,8 +49,8 @@ cards:
           - entity: input_text.irrigation_zone3_days
           - entity: input_text.irrigation_zone3_times
           - entity: input_number.irrigation_zone3_duration
-          - entity: sensor.zona_3_next_watering
-          - entity: sensor.zona_3_time_left
+          - entity: sensor.zone_3_next_watering
+          - entity: sensor.zone_3_time_left
         title: Backyard Zone 3 - Schedule
       - type: entities
         entities:
@@ -70,8 +70,8 @@ cards:
           - entity: input_text.irrigation_zone4_days
           - entity: input_text.irrigation_zone4_times
           - entity: input_number.irrigation_zone4_duration
-          - entity: sensor.zona_4_next_watering
-          - entity: sensor.zona_4_time_left
+          - entity: sensor.zone_4_next_watering
+          - entity: sensor.zone_4_time_left
         title: Backyard Zone 4 - Schedule
       - type: entities
         entities:

@@ -8,6 +8,7 @@ cards:
     state_color: true
     entities:
       - binary_sensor.energy_monitor_input_online
+      - sensor.energy_monitor_input_ssid
       - sensor.ip_energy_monitor_input
       - sensor.status_energy_monitor_input
       - type: divider
@@ -45,6 +46,7 @@ cards:
     state_color: true
     entities:
       - binary_sensor.gas_heater_control_online
+      - sensor.gas_heater_control_ssid
       - sensor.ip_gas_heater_control
       - sensor.status_gas_heater_control
       - type: divider
@@ -72,6 +74,7 @@ cards:
     state_color: true
     entities:
       - binary_sensor.coridor_light_online
+      - sensor.coridor_light_ssid
       - sensor.ip_coridor_light
       - sensor.status_coridor_light
       - type: divider
@@ -163,6 +166,7 @@ cards:
       state_color: true
       entities:
         - binary_sensor.sonoff_mini_001_online
+        - sensor.sonoff_mini_001_ssid
         - sensor.ip_sonoff_mini_001
         - sensor.status_sonoff_mini_001
         - type: divider

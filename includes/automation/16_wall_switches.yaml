@@ -12,33 +12,6 @@
     - service: switch.toggle
       entity_id: switch.bathroom_single_switch
 
-- alias: Датчик двери в ванной - красный
-  id: "Датчик двери в ванной - красный"
-  mode: restart
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.bath_door
-  action:
-    - choose:
-        - conditions:
-            - "{{ trigger.to_state.state == 'off' }}"
-#            - "{{ is_state('binary_sensor.boiler_motion', 'on') }}"
-          sequence:
-            - service: light.turn_on
-              data:
-                entity_id: light.coridor_rgb
-                color_name: red
-                brightness_pct: 2
-            - service: homeassistant.turn_off
-              entity_id: automation.motion_light_on_2
-        - conditions: "{{ trigger.to_state.state == 'on' }}"
-          sequence:
-            - service: light.turn_off
-              data:
-                entity_id: light.coridor_rgb
-            - service: homeassistant.turn_on
-              entity_id: automation.motion_light_on_2
-
 - alias: Выключатель в прихожей - включить свет в дворике
   id: "Выключатель в прихожей - включить свет в дворике"
   mode: restart
@@ -117,11 +90,21 @@
                 entity_id: light.coridor_rgb
                 color_name: yellow
                 brightness_pct: 2
-        - conditions: "{{ trigger.to_state.state == 'off' }}"
+        - conditions:
+            - "{{ trigger.to_state.state == 'off' }}"
+            - condition: state
+              entity_id: binary_sensor.bath_door
+              state: "off"
           sequence:
-            - service: light.turn_off
+            - service: light.turn_on
               data:
                 entity_id: light.coridor_rgb
+                color_name: red
+                brightness_pct: 2
+      default: 
+          - service: light.turn_off
+            data:
+              entity_id: light.coridor_rgb
 
 - alias: Выключатель в гостинной - торшер
   id: "Выключатель в гостинной - торшер"

@@ -32,7 +32,7 @@ cards:
             - entity: binary_sensor.gas_heater_relay
               name: "Реле котла"
               secondary_info: >-
-                сегодня: [[ sensor.heater_on_today.attributes.value ]]
+                сегодня: [[ sensor.heater_on_today ]]
               type: 'custom:secondaryinfo-entity-row'
             - entity: sensor.heater_away_mode_status
               name: "Режим 'Нікого немає вдома'"
@@ -131,8 +131,8 @@ cards:
             color: "#ffff00"
         hours_to_show: 24
         points_per_hour: 2
-        lower_bound: 17
-        upper_bound: 24
+        lower_bound: 20
+        upper_bound: 30
         state_map:
           - value: "off"
             label: Не греет

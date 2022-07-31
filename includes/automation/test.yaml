@@ -1,6 +1,54 @@
+#   alias: Cycle light color every 30s
+#   trigger:
+#     platform: time_pattern
+#     seconds: '/30'
+#   action:
+#     - service: light.turn_on
+#       data:
+#         entity_id: light.YOUR_RGB_LIGHT_GROUP
+#         color_name: "{{ states('input_select.light_color') }}" 
+#     - service: input_select.select_next 
+#       entity_id: input_select.light_color
 
-
-
+# - id: "Датчик движения - коридор - включить подсветку"
+#   alias: Датчик движения - коридор - включить подсветку
+#   trigger:
+#     - platform: state
+#       to: "on"
+#       entity_id: binary_sensor.motion_sensor_occupancy
+#   condition:
+#     # - condition: time
+#     #   after: 00:00:00
+#     - condition: sun
+#       before: sunrise
+#   action:
+#     - service: light.turn_on
+#       data:
+#         entity_id: light.gateway_led
+#         brightness_pct: 1
+#         color_name: white
+#     - service: light.turn_on
+#       data:
+#         entity_id: light.coridor_rgb
+#         color_name: yellow
+#         brightness_pct: 2
+        
+# - id: "Датчик движения - коридор - выключить подсветку"
+#   alias: Датчик движения - коридор - выключить подсветку
+#   trigger:
+#     - platform: state
+#       to: "off"
+#       entity_id: binary_sensor.motion_sensor_occupancy
+#   condition:
+#     - condition: sun
+#       before: sunrise
+#   action:
+#     - service: light.turn_off
+#       data:
+#         entity_id: light.gateway_led
+#     - service: light.turn_off
+#       data:
+#         entity_id: light.coridor_rgb
 
 
 

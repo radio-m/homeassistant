@@ -70,10 +70,9 @@ cards:
             - entity: sensor.boiler_power
               name: Мощность
 
-        - type: attribute
-          entity: sensor.boiler_on_today
+        - entity: sensor.boiler_on_today
           name: "Бойлер сегодня включен"
-          attribute: value
+        #   attribute: value
 
 
         - type: custom:fold-entity-row
@@ -92,3 +91,16 @@ cards:
             - entity: input_datetime.boiler_stop
           group_config: 
             secondary_info: last-triggered
+
+    - type: entities
+      title: 'Boiler'
+      show_header_toggle: false
+      state_color: true
+      entities:
+        - binary_sensor.boiler_online
+        - sensor.boiler_ssid
+        - sensor.ip_boiler
+        - sensor.status_boiler
+        - type: divider
+        - binary_sensor.bath_door
+        - button.restart_boiler

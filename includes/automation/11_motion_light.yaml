@@ -118,6 +118,7 @@
       data:
         entity_id: light.gateway_led
         brightness_pct: 1
+        color_name: white
     - service: light.turn_on
       data:
         entity_id: light.coridor_rgb
@@ -131,16 +132,28 @@
       to: "off"
       entity_id: binary_sensor.motion_sensor_occupancy
   condition:
-    - condition: state
-      entity_id: light.gateway_led
-      state: 'on'
+    - condition: sun
+      before: sunrise
   action:
-    - service: light.turn_off
-      data:
-        entity_id: light.gateway_led
-    - service: light.turn_off
-      data:
-        entity_id: light.coridor_rgb
+      - choose:
+          # IF morning
+          - conditions:
+              - condition: state
+                entity_id: binary_sensor.bath_door
+                state: "off"
+            sequence:
+              - service: light.turn_on
+                data:
+                  entity_id: light.coridor_rgb
+                  color_name: red
+                  brightness_pct: 2
+        default: 
+          - service: light.turn_off
+            data:
+              entity_id: light.gateway_led
+          - service: light.turn_off
+            data:
+              entity_id: light.coridor_rgb
 
 - alias: Датчик движения - прихожая - выключить свет
   id: "Датчик движения - прихожая - выключить свет"
@@ -158,5 +171,42 @@
         entity_id: light.entrance
 
 
+- alias: Датчик двери в ванной - красный
+  id: "Датчик двери в ванной - красный"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bath_door
+  action:
+    - choose:
+        - conditions:
+            - "{{ trigger.to_state.state == 'off' }}"
+#            - "{{ is_state('binary_sensor.boiler_motion', 'on') }}"
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.coridor_rgb
+                color_name: red
+                brightness_pct: 2
+            - service: light.turn_on
+              data:
+                entity_id: light.gateway_led
+                brightness_pct: >
+                  {%- set state = states.sun.sun.attributes.elevation -%}
+                  {% if state >= -7 %} {{ (states.sun.sun.attributes.elevation + 10)|round(0) }}
+                  {% else %} 2 {% endif %}
+                color_name: red
+#            - service: homeassistant.turn_off
+#              entity_id: automation.motion_light_on_2
+        - conditions: "{{ trigger.to_state.state == 'on' }}"
+          sequence:
+            - service: light.turn_off
+              data:
+                entity_id: light.coridor_rgb
+#            - service: homeassistant.turn_on
+#              entity_id: automation.motion_light_on_2
+            - service: light.turn_off
+              data:
+                entity_id: light.gateway_led
 
 
